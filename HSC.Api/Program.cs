@@ -1,25 +1,43 @@
-var builder = WebApplication.CreateBuilder(args);
+using Serilog;
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+namespace EWorklog.Backend.Api;
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+public static class Program
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    public static void Main(string[] args)
+    {
+        ConfigurationSetup();
+
+        try
+        {
+            Log.Information("Starting web host.");
+            CreateHostBuilder(args).Build().Run();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Application start-up failed.");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+       Host.CreateDefaultBuilder(args)
+           .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+           .UseSerilog();
+
+    private static void ConfigurationSetup()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+            .Build();
+
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapRazorPages();
-
-app.Run();
