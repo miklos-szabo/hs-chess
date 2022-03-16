@@ -6,6 +6,14 @@ namespace HSC.Dal.Configurations
     {
         public static void ConfigureAllEntities(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new BlockConfiguration());
+            modelBuilder.ApplyConfiguration(new ChallengeConfiguration());
+            modelBuilder.ApplyConfiguration(new FriendRequestConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupConfiguration());
+            modelBuilder.ApplyConfiguration(new MatchConfiguration());
+            modelBuilder.ApplyConfiguration(new TournamentConfiguration());
+            modelBuilder.ApplyConfiguration(new TournamentMessageConfiguration());
+            modelBuilder.ApplyConfiguration(new TournamentPlayerConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
