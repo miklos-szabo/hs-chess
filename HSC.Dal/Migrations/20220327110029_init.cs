@@ -86,6 +86,23 @@ namespace HSC.Dal.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SearchingPlayer",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    TimeLimit = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Increment = table.Column<TimeSpan>(type: "time", nullable: false),
+                    MinimumBet = table.Column<double>(type: "float", nullable: false),
+                    MaximumBet = table.Column<double>(type: "float", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SearchingPlayer", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tournament",
                 columns: table => new
                 {
@@ -140,10 +157,6 @@ namespace HSC.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WhiteUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BlackUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WhiteRating = table.Column<int>(type: "int", nullable: false),
-                    BlackRating = table.Column<int>(type: "int", nullable: false),
                     TimeLimit = table.Column<TimeSpan>(type: "time", nullable: false),
                     Increment = table.Column<TimeSpan>(type: "time", nullable: false),
                     StartTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -230,6 +243,29 @@ namespace HSC.Dal.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "MatchPlayer",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    MyProperty = table.Column<int>(type: "int", nullable: false),
+                    Color = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    IsWinner = table.Column<bool>(type: "bit", nullable: false),
+                    MatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MatchPlayer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MatchPlayer_Match",
+                        column: x => x.MatchId,
+                        principalTable: "Match",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_GroupUser_UsersId",
                 table: "GroupUser",
@@ -239,6 +275,11 @@ namespace HSC.Dal.Migrations
                 name: "IX_Match_TournamentId",
                 table: "Match",
                 column: "TournamentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatchPlayer_MatchId",
+                table: "MatchPlayer",
+                column: "MatchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TournamentMessage_TournamentId",
@@ -269,7 +310,10 @@ namespace HSC.Dal.Migrations
                 name: "GroupUser");
 
             migrationBuilder.DropTable(
-                name: "Match");
+                name: "MatchPlayer");
+
+            migrationBuilder.DropTable(
+                name: "SearchingPlayer");
 
             migrationBuilder.DropTable(
                 name: "TournamentMessage");
@@ -282,6 +326,9 @@ namespace HSC.Dal.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Match");
 
             migrationBuilder.DropTable(
                 name: "Tournament");

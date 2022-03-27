@@ -9,11 +9,12 @@ namespace HSC.Dal.Entities
 {
     public class Match
     {
+        public Match()
+        {
+            MatchPlayers = new HashSet<MatchPlayer>();
+        }
+
         public Guid Id { get; set; }
-        public string WhiteUsername { get; set; }
-        public string BlackUsername { get; set; }
-        public int WhiteRating { get; set; }
-        public int BlackRating { get; set; }
         public TimeSpan TimeLimit { get; set; }
         public TimeSpan Increment { get; set; }
         public DateTimeOffset StartTime { get; set; }
@@ -25,5 +26,7 @@ namespace HSC.Dal.Entities
 
         public int? TournamentId { get; set; }
         public Tournament Tournament { get; set; }
+
+        public virtual ICollection<MatchPlayer> MatchPlayers { get; set; }
     }
 }

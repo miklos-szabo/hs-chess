@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HSC.Dal.Migrations
 {
     [DbContext(typeof(HSCContext))]
-    [Migration("20220316165250_init")]
+    [Migration("20220327110029_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,13 +169,6 @@ namespace HSC.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BlackRating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BlackUsername")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("CurrentBet")
                         .HasColumnType("float");
 
@@ -205,18 +198,71 @@ namespace HSC.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("WhiteRating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("WhiteUsername")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("TournamentId");
 
                     b.ToTable("Match", (string)null);
+                });
+
+            modelBuilder.Entity("HSC.Dal.Entities.MatchPlayer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Color")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsWinner")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("MatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.ToTable("MatchPlayer", (string)null);
+                });
+
+            modelBuilder.Entity("HSC.Dal.Entities.SearchingPlayer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<TimeSpan>("Increment")
+                        .HasColumnType("time");
+
+                    b.Property<double>("MaximumBet")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MinimumBet")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TimeLimit")
+                        .HasColumnType("time");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SearchingPlayer", (string)null);
                 });
 
             modelBuilder.Entity("HSC.Dal.Entities.Tournament", b =>
@@ -388,6 +434,18 @@ namespace HSC.Dal.Migrations
                     b.Navigation("Tournament");
                 });
 
+            modelBuilder.Entity("HSC.Dal.Entities.MatchPlayer", b =>
+                {
+                    b.HasOne("HSC.Dal.Entities.Match", "Match")
+                        .WithMany("MatchPlayers")
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_MatchPlayer_Match");
+
+                    b.Navigation("Match");
+                });
+
             modelBuilder.Entity("HSC.Dal.Entities.TournamentMessage", b =>
                 {
                     b.HasOne("HSC.Dal.Entities.Tournament", "Tournament")
@@ -417,6 +475,11 @@ namespace HSC.Dal.Migrations
                     b.HasOne("HSC.Dal.Entities.User", null)
                         .WithMany("Friends")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("HSC.Dal.Entities.Match", b =>
+                {
+                    b.Navigation("MatchPlayers");
                 });
 
             modelBuilder.Entity("HSC.Dal.Entities.Tournament", b =>

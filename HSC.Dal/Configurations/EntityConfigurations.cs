@@ -15,6 +15,8 @@ namespace HSC.Dal.Configurations
             modelBuilder.ApplyConfiguration(new TournamentMessageConfiguration());
             modelBuilder.ApplyConfiguration(new TournamentPlayerConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new MatchPlayerConfiguration());
+            modelBuilder.ApplyConfiguration(new SearchingPlayerConfiguration());
         }
     }
 }

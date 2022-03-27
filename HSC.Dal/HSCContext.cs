@@ -16,6 +16,8 @@ namespace HSC.Dal
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<TournamentMessage> TournamentMessages { get; set; }
         public DbSet<TournamentPlayer> TournamentPlayers { get; set; }
+        public DbSet<MatchPlayer> MatchPlayers { get; set; }
+        public DbSet<SearchingPlayer> SearchingPlayers { get; set; }
 
         public HSCContext(DbContextOptions<HSCContext> options) : base(options)
         {
