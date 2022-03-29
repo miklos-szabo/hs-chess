@@ -31,9 +31,18 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules\\chessground\\assets\\chessground.base.css",
+              "node_modules\\chessground\\assets\\chessground.brown.css",
+              "node_modules\\chessground\\assets\\chessground.cburnett.css"
             ],
-            "scripts": []
+            "scripts": [
+              {
+                "input": "node_modules\\chess.js\\chess.js",
+                "inject": true,
+                "bundleName": "chessjs"
+              }
+              ]
           },
           "configurations": {
             "production": {

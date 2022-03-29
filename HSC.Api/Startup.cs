@@ -1,6 +1,7 @@
 using AutoMapper;
 using HSC.Api.ExceptionHandling;
 using HSC.Api.Extensions;
+using HSC.Bll.Hubs;
 using HSC.Bll.Mappings;
 using HSC.Common.Options;
 using HSC.Common.RequestContext;
@@ -32,12 +33,13 @@ public class Startup
         services.AddLogging();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerDocument();
+        services.AddSignalR();
 
         services.AddCors(options =>
         {
             options.AddPolicy(_debugCorsPolicy, builder =>
             {
-                builder.WithOrigins("https://localhost:7228/")
+                builder.WithOrigins("https://localhost:5000/")
                 .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
@@ -71,12 +73,16 @@ public class Startup
         }
 
         app.UseHttpsRedirection();
-
+        app.UseCors(_debugCorsPolicy);
         app.UseRouting();
 
         app.UseAuthorization();
 
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapHub<ChessHub>("/hubs/chessHub");
+        });
 
         app.UseSpa(spa =>
         {
@@ -84,7 +90,7 @@ public class Startup
 
             if (env.IsDevelopment())
             {
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:5000");
+                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             }
         });
     }
