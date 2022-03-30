@@ -1,0 +1,12 @@
+<div *ngIf="data.color === 'white'" class="d-flex flex-row justify-between">
+  <img class="pointer-cursor" src="assets/pieces/queen-white.svg" (click)="qClicked()"/>
+  <img class="pointer-cursor" src="assets/pieces/rook-white.svg" (click)="rClicked()"/>
+  <img class="pointer-cursor" src="assets/pieces/bishop-white.svg" (click)="bClicked()"/>
+  <img class="pointer-cursor" src="assets/pieces/knight-white.svg" (click)="nClicked()"/>
+</div>
+<div *ngIf="data.color === 'black'" class="d-flex flex-row justify-between">
+  <img class="pointer-cursor" src="assets/pieces/queen-black.svg" (click)="qClicked()"/>
+  <img class="pointer-cursor" src="assets/pieces/rook-black.svg" (click)="rClicked()"/>
+  <img class="pointer-cursor" src="assets/pieces/bishop-black.svg" (click)="bClicked()"/>
+  <img class="pointer-cursor" src="assets/pieces/knight-black.svg" (click)="nClicked()"/>
+</div>

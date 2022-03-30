@@ -20,9 +20,9 @@ namespace HSC.Bll.Hubs
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, matchId.ToString());
         }
 
-        public Task SendMoveToServer(string origin, string destination)
+        public Task SendMoveToServer(string origin, string destination, string promotion)
         {
-            return Clients.Others.ReceiveMove(origin, destination);
+            return Clients.Others.ReceiveMove(origin, destination, promotion);
         }
     }
 }

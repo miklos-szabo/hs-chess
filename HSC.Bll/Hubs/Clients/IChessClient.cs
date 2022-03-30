@@ -8,8 +8,8 @@ namespace HSC.Bll.Hubs.Clients
 {
     public interface IChessClient
     {
-        Task ReceiveMove(string origin, string destination);
-        public Task SendMoveToServer(string origin, string destination);
+        Task ReceiveMove(string origin, string destination, string promotion);
+        public Task SendMoveToServer(string origin, string destination, string promotion);
         public Task JoinMatch(Guid matchId);
         public Task LeaveMatch(Guid matchId);
     }
