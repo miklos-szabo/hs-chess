@@ -21,3 +21,9 @@
 .flex-1{
   flex: 1;
 }
+
+@for $i from 1 through 100 {
+  .w-#{($i)} {
+    width: $i * 1%;
+  }
+}
