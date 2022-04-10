@@ -99,7 +99,7 @@ export class ChessBoardComponent implements OnInit {
 
   checkPromotionAndSendMove(orig: any, dest: any) {
     if (
-      ((origin.charAt(1) === '2' && dest.charAt(1) === '1') || (orig.charAt(1) === '7' && dest.charAt(1) === '8')) &&
+      ((orig.charAt(1) === '2' && dest.charAt(1) === '1') || (orig.charAt(1) === '7' && dest.charAt(1) === '8')) &&
       this.chess.get(orig)?.type === 'p'
     ) {
       // Promotion

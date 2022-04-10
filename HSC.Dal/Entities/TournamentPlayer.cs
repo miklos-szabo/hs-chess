@@ -10,7 +10,7 @@ namespace HSC.Dal.Entities
     {
         public int TournamentId { get; set; }
         public string UserName { get; set; }
-        public double? Points { get; set; }
+        public decimal? Points { get; set; }
 
         public Tournament Tournament { get; set; }
     }

@@ -11,4 +11,16 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HSC.Common\HSC.Common.csproj" />
+    <ProjectReference Include="..\HSC.Dal\HSC.Dal.csproj" />
+    <ProjectReference Include="..\HSC.Transfer\HSC.Transfer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ChatService\" />
+    <Folder Include="FriendService\" />
+    <Folder Include="GroupService\" />
+  </ItemGroup>
+
 </Project>

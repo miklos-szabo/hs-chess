@@ -13,7 +13,7 @@ namespace HSC.Dal.Entities
         public string Receiver { get; set; }
         public TimeSpan TimeLimit { get; set; }
         public TimeSpan Increment { get; set; }
-        public double MinimumBet { get; set; }
-        public double MaximumBet { get; set; }
+        public decimal MinimumBet { get; set; }
+        public decimal MaximumBet { get; set; }
     }
 }

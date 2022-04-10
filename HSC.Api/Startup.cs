@@ -1,8 +1,10 @@
 using AutoMapper;
 using HSC.Api.ExceptionHandling;
 using HSC.Api.Extensions;
+using HSC.Bll.BettingService;
 using HSC.Bll.Hubs;
 using HSC.Bll.Mappings;
+using HSC.Bll.MatchFinderService;
 using HSC.Common.Options;
 using HSC.Common.RequestContext;
 using OnlineAuction.Api.RequestContext;
@@ -55,6 +57,8 @@ public class Startup
         services.AddHttpContextAccessor();
         services.AddMemoryCache();
         services.AddScoped<IRequestContext, RequestContext>();
+        services.AddScoped<IMatchFinderService, MatchFinderService>();
+        services.AddScoped<IBettingService, BettingService>();
         services.AddDAL(connectionStringOptions);
         
     }

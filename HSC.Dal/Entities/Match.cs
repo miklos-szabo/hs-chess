@@ -20,9 +20,9 @@ namespace HSC.Dal.Entities
         public DateTimeOffset StartTime { get; set; }
         public Result Result { get; set; }
         public string Moves { get; set; }
-        public double MinimumBet { get; set; }
-        public double MaximumBet { get; set; }
-        public double CurrentBet { get; set; }
+        public decimal MinimumBet { get; set; }
+        public decimal MaximumBet { get; set; }
+        public decimal CurrentBet { get; set; }
 
         public int? TournamentId { get; set; }
         public Tournament Tournament { get; set; }

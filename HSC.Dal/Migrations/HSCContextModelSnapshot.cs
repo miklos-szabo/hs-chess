@@ -27,12 +27,12 @@ namespace HSC.Dal.Migrations
                     b.Property<int>("GroupsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsersUserName")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("GroupsId", "UsersId");
+                    b.HasKey("GroupsId", "UsersUserName");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UsersUserName");
 
                     b.ToTable("GroupUser");
                 });
@@ -69,11 +69,11 @@ namespace HSC.Dal.Migrations
                     b.Property<TimeSpan>("Increment")
                         .HasColumnType("time");
 
-                    b.Property<double>("MaximumBet")
-                        .HasColumnType("float");
+                    b.Property<decimal>("MaximumBet")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("MinimumBet")
-                        .HasColumnType("float");
+                    b.Property<decimal>("MinimumBet")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Offerer")
                         .IsRequired()
@@ -117,6 +117,21 @@ namespace HSC.Dal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("HSC.Dal.Entities.Friend", b =>
+                {
+                    b.Property<string>("UserName1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserName2")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserName1", "UserName2");
+
+                    b.HasIndex("UserName2");
+
+                    b.ToTable("Friend");
                 });
 
             modelBuilder.Entity("HSC.Dal.Entities.FriendRequest", b =>
@@ -167,17 +182,17 @@ namespace HSC.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("CurrentBet")
-                        .HasColumnType("float");
+                    b.Property<decimal>("CurrentBet")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<TimeSpan>("Increment")
                         .HasColumnType("time");
 
-                    b.Property<double>("MaximumBet")
-                        .HasColumnType("float");
+                    b.Property<decimal>("MaximumBet")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("MinimumBet")
-                        .HasColumnType("float");
+                    b.Property<decimal>("MinimumBet")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Moves")
                         .IsRequired()
@@ -243,11 +258,11 @@ namespace HSC.Dal.Migrations
                     b.Property<TimeSpan>("Increment")
                         .HasColumnType("time");
 
-                    b.Property<double>("MaximumBet")
-                        .HasColumnType("float");
+                    b.Property<decimal>("MaximumBet")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("MinimumBet")
-                        .HasColumnType("float");
+                    b.Property<decimal>("MinimumBet")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -255,8 +270,9 @@ namespace HSC.Dal.Migrations
                     b.Property<TimeSpan>("TimeLimit")
                         .HasColumnType("time");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -271,8 +287,8 @@ namespace HSC.Dal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<double>("BuyIn")
-                        .HasColumnType("float");
+                    b.Property<decimal>("BuyIn")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -287,8 +303,8 @@ namespace HSC.Dal.Migrations
                     b.Property<TimeSpan>("Length")
                         .HasColumnType("time");
 
-                    b.Property<double>("PrizePool")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PrizePool")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("datetimeoffset");
@@ -346,8 +362,8 @@ namespace HSC.Dal.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<double?>("Points")
-                        .HasColumnType("float");
+                    b.Property<decimal?>("Points")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("TournamentId", "UserName");
 
@@ -356,14 +372,11 @@ namespace HSC.Dal.Migrations
 
             modelBuilder.Entity("HSC.Dal.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<double>("Balance")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -376,8 +389,8 @@ namespace HSC.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("PlayMoneyBalance")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PlayMoneyBalance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RatingBlitz")
                         .HasColumnType("int");
@@ -391,16 +404,7 @@ namespace HSC.Dal.Migrations
                     b.Property<int>("RatingRapid")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("UserName");
 
                     b.ToTable("User", (string)null);
                 });
@@ -415,8 +419,23 @@ namespace HSC.Dal.Migrations
 
                     b.HasOne("HSC.Dal.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UsersUserName")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HSC.Dal.Entities.Friend", b =>
+                {
+                    b.HasOne("HSC.Dal.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserName1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HSC.Dal.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserName2")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
@@ -468,13 +487,6 @@ namespace HSC.Dal.Migrations
                     b.Navigation("Tournament");
                 });
 
-            modelBuilder.Entity("HSC.Dal.Entities.User", b =>
-                {
-                    b.HasOne("HSC.Dal.Entities.User", null)
-                        .WithMany("Friends")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("HSC.Dal.Entities.Match", b =>
                 {
                     b.Navigation("MatchPlayers");
@@ -487,11 +499,6 @@ namespace HSC.Dal.Migrations
                     b.Navigation("Messages");
 
                     b.Navigation("Players");
-                });
-
-            modelBuilder.Entity("HSC.Dal.Entities.User", b =>
-                {
-                    b.Navigation("Friends");
                 });
 #pragma warning restore 612, 618
         }

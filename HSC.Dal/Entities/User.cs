@@ -1,4 +1,6 @@
-﻿namespace HSC.Dal.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HSC.Dal.Entities
 {
     public class User
     {
@@ -6,9 +8,9 @@
         {
             Groups = new HashSet<Group>();
             Friends = new HashSet<User>();
+            FriendsOf = new HashSet<User>();
         }
 
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
@@ -16,12 +18,13 @@
         public int RatingBlitz { get; set; }
         public int RatingRapid { get; set; }
         public int RatingClassical { get; set; }
-        public double Balance { get; set; }
-        public double PlayMoneyBalance { get; set; }
+        public decimal Balance { get; set; }
+        public decimal PlayMoneyBalance { get; set; }
         public DateTimeOffset LastPlayMoneyRedeemDate { get; set; }
 
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<User> Friends { get; set; }
+        public virtual ICollection<User> FriendsOf { get; set; }
 
     }
 }

@@ -25,8 +25,8 @@ namespace HSC.Dal.Entities
         public TimeSpan GameIncrement { get; set; }
         public TournamentType Type { get; set; }
         public string WinnerUserName { get; set; }
-        public double BuyIn { get; set; }
-        public double PrizePool { get; set; }
+        public decimal BuyIn { get; set; }
+        public decimal PrizePool { get; set; }
 
         public virtual ICollection<Match> Matches { get; set; }
         public virtual ICollection<TournamentPlayer> Players { get; set; }

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSC.Dal.Entities
+namespace HSC.Transfer.Searching
 {
-    public class SearchingPlayer
+    public class SearchingForMatchDto
     {
-        public Guid Id { get; set; }
         public string UserName { get; set; }
         public TimeSpan TimeLimit { get; set; }
         public TimeSpan Increment { get; set; }
