@@ -6,6 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   declarations: [HeaderComponent],
   imports: [CommonModule, TranslateModule],
-  exports: [HeaderComponent]
+  exports: [HeaderComponent, TranslateModule]
 })
 export class ComponentsModule {}

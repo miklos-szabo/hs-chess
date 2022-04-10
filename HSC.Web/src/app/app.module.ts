@@ -7,7 +7,7 @@ import { PromotionPickerComponent } from './pages/chess-board/promotion-picker/p
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ComponentsModule } from './components/components.module';
 
@@ -22,6 +22,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
+    HttpClientModule,
     ComponentsModule,
     TranslateModule.forRoot({
       loader: {
