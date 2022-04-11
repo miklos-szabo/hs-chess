@@ -1,3 +1,9 @@
 {
-  "test": "testEn"
+  "Header.Play": "Play",
+  "Header.History": "History",
+  "Header.Groups": "Groups",
+  "Header.Friends": "Friends",
+  "Play.QuickMatchTab": "Quick match",
+  "Play.TournamentsTab": "Tournaments",
+  "Play.BrowseGamesTab": "Browse games"
 }

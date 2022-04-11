@@ -31,8 +31,8 @@ namespace HSC.Dal.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Offerer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Receiver = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TimeLimit = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Increment = table.Column<TimeSpan>(type: "time", nullable: false),
+                    TimeLimitMinutes = table.Column<int>(type: "int", nullable: false),
+                    Increment = table.Column<int>(type: "int", nullable: false),
                     MinimumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MaximumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -91,8 +91,8 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TimeLimit = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Increment = table.Column<TimeSpan>(type: "time", nullable: false),
+                    TimeLimitMinutes = table.Column<int>(type: "int", nullable: false),
+                    Increment = table.Column<int>(type: "int", nullable: false),
                     MinimumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MaximumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false)
@@ -112,8 +112,8 @@ namespace HSC.Dal.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Length = table.Column<TimeSpan>(type: "time", nullable: false),
-                    GameTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    GameIncrement = table.Column<TimeSpan>(type: "time", nullable: false),
+                    GameTimeMinutes = table.Column<int>(type: "int", nullable: false),
+                    GameIncrement = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     WinnerUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BuyIn = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -149,8 +149,8 @@ namespace HSC.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TimeLimit = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Increment = table.Column<TimeSpan>(type: "time", nullable: false),
+                    TimeLimitMinutes = table.Column<int>(type: "int", nullable: false),
+                    Increment = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Result = table.Column<int>(type: "int", nullable: false),
                     Moves = table.Column<string>(type: "nvarchar(max)", nullable: false),

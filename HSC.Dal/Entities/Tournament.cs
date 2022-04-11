@@ -21,8 +21,8 @@ namespace HSC.Dal.Entities
         public string Title { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public TimeSpan Length { get; set; }
-        public TimeSpan GameTime { get; set; }
-        public TimeSpan GameIncrement { get; set; }
+        public int GameTimeMinutes { get; set; }
+        public int GameIncrement { get; set; }
         public TournamentType Type { get; set; }
         public string WinnerUserName { get; set; }
         public decimal BuyIn { get; set; }

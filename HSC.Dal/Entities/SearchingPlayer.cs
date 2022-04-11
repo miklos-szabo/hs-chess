@@ -10,8 +10,8 @@ namespace HSC.Dal.Entities
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
-        public TimeSpan TimeLimit { get; set; }
-        public TimeSpan Increment { get; set; }
+        public int TimeLimitMinutes { get; set; }
+        public int Increment { get; set; }
         public decimal MinimumBet { get; set; }
         public decimal MaximumBet { get; set; }
         public int Rating { get; set; }

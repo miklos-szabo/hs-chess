@@ -1,8 +1,30 @@
 .header-conatiner{
   height: 80px;
+  background-color: lightgray;
+  font-size: 18px;
 }
 
 .nav-link{
   width: 120px;
+  padding-top: 45px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+a:link, a:visited{
+  color: black;
+  text-decoration: none;
+}
+
+nav{
+  display: flex;
+}
+
+.nav-label{
+  cursor: pointer;
+}
+
+.nav-link:hover, .nav-link-selected{
+  background-color: lightslategray;
 }

@@ -1,0 +1,11 @@
+<mat-tab-group animationDuration="0ms">
+  <mat-tab [label]="'Play.QuickMatchTab' | translate"
+    ><ng-template matTabContent> <app-quick-match-page></app-quick-match-page> </ng-template
+  ></mat-tab>
+  <mat-tab [label]="'Play.TournamentsTab' | translate"
+    ><ng-template matTabContent> <app-tournaments-page></app-tournaments-page> </ng-template
+  ></mat-tab>
+  <mat-tab [label]="'Play.BrowseGamesTab' | translate">
+    <ng-template matTabContent> <app-browse-games-page></app-browse-games-page> </ng-template
+  ></mat-tab>
+</mat-tab-group>

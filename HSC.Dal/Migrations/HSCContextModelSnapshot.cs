@@ -66,8 +66,8 @@ namespace HSC.Dal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<TimeSpan>("Increment")
-                        .HasColumnType("time");
+                    b.Property<int>("Increment")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("MaximumBet")
                         .HasColumnType("decimal(18,2)");
@@ -83,8 +83,8 @@ namespace HSC.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("TimeLimit")
-                        .HasColumnType("time");
+                    b.Property<int>("TimeLimitMinutes")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -185,8 +185,8 @@ namespace HSC.Dal.Migrations
                     b.Property<decimal>("CurrentBet")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<TimeSpan>("Increment")
-                        .HasColumnType("time");
+                    b.Property<int>("Increment")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("MaximumBet")
                         .HasColumnType("decimal(18,2)");
@@ -204,8 +204,8 @@ namespace HSC.Dal.Migrations
                     b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<TimeSpan>("TimeLimit")
-                        .HasColumnType("time");
+                    b.Property<int>("TimeLimitMinutes")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TournamentId")
                         .IsRequired()
@@ -255,8 +255,8 @@ namespace HSC.Dal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<TimeSpan>("Increment")
-                        .HasColumnType("time");
+                    b.Property<int>("Increment")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("MaximumBet")
                         .HasColumnType("decimal(18,2)");
@@ -267,8 +267,8 @@ namespace HSC.Dal.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("TimeLimit")
-                        .HasColumnType("time");
+                    b.Property<int>("TimeLimitMinutes")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -294,11 +294,11 @@ namespace HSC.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("GameIncrement")
-                        .HasColumnType("time");
+                    b.Property<int>("GameIncrement")
+                        .HasColumnType("int");
 
-                    b.Property<TimeSpan>("GameTime")
-                        .HasColumnType("time");
+                    b.Property<int>("GameTimeMinutes")
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("Length")
                         .HasColumnType("time");

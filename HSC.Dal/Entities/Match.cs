@@ -15,8 +15,8 @@ namespace HSC.Dal.Entities
         }
 
         public Guid Id { get; set; }
-        public TimeSpan TimeLimit { get; set; }
-        public TimeSpan Increment { get; set; }
+        public int TimeLimitMinutes { get; set; }
+        public int Increment { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public Result Result { get; set; }
         public string Moves { get; set; }

@@ -1,4 +1,6 @@
-﻿using HSC.Transfer.Searching;
+﻿using HSC.Common.RequestContext;
+using HSC.Dal;
+using HSC.Transfer.Searching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,15 @@ namespace HSC.Bll.MatchFinderService
 {
     public class MatchFinderService : IMatchFinderService
     {
+        private readonly HSCContext _dbContext;
+        private readonly IRequestContext _requestContext;
+
+        public MatchFinderService(HSCContext context, IRequestContext requestContext)
+        {
+            _dbContext = context;
+            _requestContext = requestContext;
+        }
+
         public Task CreateCustomGameAsync(CreateCustomGameDto dto)
         {
             throw new NotImplementedException();
@@ -24,9 +35,9 @@ namespace HSC.Bll.MatchFinderService
             throw new NotImplementedException();
         }
 
-        public Task SearchForMatchAsync(SearchingForMatchDto dto)
+        public async Task SearchForMatchAsync(SearchingForMatchDto dto)
         {
-            throw new NotImplementedException();
+            var un = _requestContext.UserName;
         }
     }
 }

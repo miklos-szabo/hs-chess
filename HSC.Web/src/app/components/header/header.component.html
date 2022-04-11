@@ -3,8 +3,21 @@
     <!-- TODO logo? -->
   </div>
   <nav>
-    <a href="/" class="nav-link"></a>
+    <a class="nav-link" [routerLink]="['/']" [routerLinkActive]="['selected']"
+      ><label class="nav-label">{{ 'Header.Play' | translate }}</label></a
+    >
+    <a class="nav-link" [routerLink]="['/history']" [routerLinkActive]="['selected']"
+      ><label class="nav-label">{{ 'Header.History' | translate }}</label></a
+    >
+    <a class="nav-link" [routerLink]="['/groups']" [routerLinkActive]="['selected']"
+      ><label class="nav-label">{{ 'Header.Groups' | translate }}</label></a
+    >
+    <a class="nav-link" [routerLink]="['/friends']" [routerLinkActive]="['selected']"
+      ><label class="nav-label">{{ 'Header.Friends' | translate }}</label></a
+    >
   </nav>
-  <label>{{"test" | translate}}</label>
-  <button (click)="changeLanguage()">SwitchLanguage</button>
+  <mat-form-field>
+    <input mat-input [(ngModel)]="userName" (ngModelChange)="(setUserName)" />
+  </mat-form-field>
+  <button (click)="setUserName()">Set username</button>
 </div>

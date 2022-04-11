@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { UserService } from 'src/app/services/auth/user.service';
 
 @Component({
   selector: 'app-header',
@@ -7,14 +8,21 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  constructor(private translateService: TranslateService) {}
+  userName = '';
+  constructor(private translateService: TranslateService, private userService: UserService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userName = this.userService.getUserName();
+  }
 
   changeLanguage() {
     if (this.translateService.currentLang === 'en') this.translateService.use('hu');
     else {
       this.translateService.use('en');
     }
+  }
+
+  setUserName() {
+    this.userService.setUserName(this.userName);
   }
 }

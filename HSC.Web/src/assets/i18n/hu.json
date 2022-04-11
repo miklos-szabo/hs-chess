@@ -1,3 +1,9 @@
 {
-  "test": "tesztHu"
+  "Header.Play": "Játék",
+  "Header.History": "Múltbeli játékok",
+  "Header.Groups": "Csoportok",
+  "Header.Friends": "Barátok",
+  "Play.QuickMatchTab": "Azonnali játék",
+  "Play.TournamentsTab": "Bajnokságok",
+  "Play.BrowseGamesTab": "Játékok böngészése"
 }
