@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Color } from 'chessground/types';
-import { observable, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatchService, MatchStartDto } from 'src/app/api/app.generated';
 import { UserService } from 'src/app/services/auth/user.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
@@ -14,6 +14,7 @@ import { SignalrService } from 'src/app/services/signalr/signalr.service';
 export class ChessPageComponent implements OnInit {
   matchId = '';
   matchData$: Observable<MatchStartDto>;
+  orientation: Color | undefined = 'white';
 
   constructor(
     private route: ActivatedRoute,
@@ -32,9 +33,11 @@ export class ChessPageComponent implements OnInit {
   getColorFromData(data: MatchStartDto): Color | undefined {
     let userName = this.userService.getUserName();
     if (userName === data.whiteUserName) {
+      this.orientation = 'white';
       return 'white';
     }
     if (userName === data.blackUserName) {
+      this.orientation = 'black';
       return 'black';
     } else return undefined;
   }

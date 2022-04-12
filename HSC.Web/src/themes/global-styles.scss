@@ -1,3 +1,5 @@
+@import 'src/themes/variables.scss';
+
 .d-flex {
   display: flex;
 }
@@ -14,6 +16,10 @@
   justify-content: space-between;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
 .align-center{
   align-items: center;
 }
@@ -22,8 +28,94 @@
   flex: 1;
 }
 
+.font-weight-bold{
+  font-weight: bold;
+}
+
 @for $i from 1 through 100 {
   .w-#{($i)} {
     width: $i * 1%;
+  }
+}
+
+@for $i from 0 through 9 {
+  .p-#{$i} {
+    padding: $spacing-base * $i !important;
+  }
+
+  .pt-#{$i} {
+    padding-top: $spacing-base * $i !important;
+  }
+
+  .pr-#{$i} {
+    padding-right: $spacing-base * $i !important;
+  }
+
+  .pb-#{$i} {
+    padding-bottom: $spacing-base * $i !important;
+  }
+
+  .pl-#{$i} {
+    padding-left: $spacing-base * $i !important;
+  }
+
+  .m-#{$i} {
+    margin: $spacing-base * $i !important;
+  }
+
+  .mt-#{$i} {
+    margin-top: $spacing-base * $i !important;
+  }
+
+  .mr-#{$i} {
+    margin-right: $spacing-base * $i !important;
+  }
+
+  .mb-#{$i} {
+    margin-bottom: $spacing-base * $i !important;
+  }
+
+  .ml-#{$i} {
+    margin-left: $spacing-base * $i !important;
+  }
+
+  .p-half {
+    padding: $spacing-half !important;
+  }
+
+  .pt-half {
+    padding-top: $spacing-half !important;
+  }
+
+  .pr-half {
+    padding-right: $spacing-half !important;
+  }
+
+  .pb-half {
+    padding-bottom: $spacing-half !important;
+  }
+
+  .pl-half {
+    padding-left: $spacing-half !important;
+  }
+
+  .m-half {
+    margin: $spacing-half !important;
+  }
+
+  .mt-half {
+    margin-top: $spacing-half !important;
+  }
+
+  .mr-half {
+    margin-right: $spacing-half !important;
+  }
+
+  .mb-half {
+    margin-bottom: $spacing-half !important;
+  }
+
+  .ml-half {
+    margin-left: $spacing-half !important;
   }
 }

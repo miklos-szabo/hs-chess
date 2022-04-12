@@ -1,5 +1,7 @@
+@import 'src/themes/variables.scss';
+
 .header-conatiner{
-  height: 80px;
+  height: $header-height;
   background-color: lightgray;
   font-size: 18px;
 }

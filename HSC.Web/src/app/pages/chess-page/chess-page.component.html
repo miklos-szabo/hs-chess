@@ -1,3 +1,17 @@
 <ng-container *ngIf="matchData$ | async as data">
-  <app-chess-board [matchId]="matchId" [color]="getColorFromData(data)"></app-chess-board
-></ng-container>
+  <div class="main-container d-flex flex-column justify-center">
+    <div class="d-flex flex-row pb-1">
+      <label class="pr-half">{{ orientation == 'white' ? data.blackUserName : data.whiteUserName }}</label>
+      <label>{{ '(' + orientation == 'white' ? data.blackRating : data.whiteRating + ')' }}</label>
+    </div>
+
+    <app-chess-board [matchId]="matchId" [color]="getColorFromData(data)"></app-chess-board>
+
+    <div class="d-flex flex-row pt-1">
+      <label class="pr-half">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
+      <label>{{ '(' + orientation == 'white' ? data.whiteRating : data.blackRating + ')' }}</label>
+    </div>
+  </div>
+
+  ></ng-container
+>

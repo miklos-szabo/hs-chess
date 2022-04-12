@@ -1,0 +1,8 @@
+@import 'src/themes/variables.scss';
+
+.main-container{
+  width: 100%;
+  height: calc(100% - #{$header-height});
+  position: absolute;
+  left: 20%;
+}
