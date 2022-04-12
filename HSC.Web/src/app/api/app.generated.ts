@@ -236,6 +236,71 @@ export class BettingService {
 @Injectable({
     providedIn: 'root'
 })
+export class MatchService {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getMatchStartingData(matchId: string): Observable<MatchStartDto> {
+        let url_ = this.baseUrl + "/api/Match/GetMatchStartingData/{matchId}";
+        if (matchId === undefined || matchId === null)
+            throw new Error("The parameter 'matchId' must be defined.");
+        url_ = url_.replace("{matchId}", encodeURIComponent("" + matchId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMatchStartingData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMatchStartingData(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MatchStartDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MatchStartDto>;
+        }));
+    }
+
+    protected processGetMatchStartingData(response: HttpResponseBase): Observable<MatchStartDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MatchStartDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MatchStartDto>(null as any);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
 export class MatchFinderService {
     private http: HttpClient;
     private baseUrl: string;
@@ -451,8 +516,56 @@ export class MatchFinderService {
     }
 }
 
+export class MatchStartDto implements IMatchStartDto {
+    blackUserName?: string | undefined;
+    blackRating?: string | undefined;
+    whiteUserName?: string | undefined;
+    whiteRating?: string | undefined;
+
+    constructor(data?: IMatchStartDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.blackUserName = _data["blackUserName"];
+            this.blackRating = _data["blackRating"];
+            this.whiteUserName = _data["whiteUserName"];
+            this.whiteRating = _data["whiteRating"];
+        }
+    }
+
+    static fromJS(data: any): MatchStartDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MatchStartDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["blackUserName"] = this.blackUserName;
+        data["blackRating"] = this.blackRating;
+        data["whiteUserName"] = this.whiteUserName;
+        data["whiteRating"] = this.whiteRating;
+        return data;
+    }
+}
+
+export interface IMatchStartDto {
+    blackUserName?: string | undefined;
+    blackRating?: string | undefined;
+    whiteUserName?: string | undefined;
+    whiteRating?: string | undefined;
+}
+
 export class SearchingForMatchDto implements ISearchingForMatchDto {
-    userName!: string;
+    userName?: string | undefined;
     timeLimitMinutes!: number;
     increment!: number;
     minimumBet!: number;
@@ -499,7 +612,7 @@ export class SearchingForMatchDto implements ISearchingForMatchDto {
 }
 
 export interface ISearchingForMatchDto {
-    userName: string;
+    userName?: string | undefined;
     timeLimitMinutes: number;
     increment: number;
     minimumBet: number;
@@ -509,7 +622,7 @@ export interface ISearchingForMatchDto {
 
 export class CustomGameDto implements ICustomGameDto {
     challengeId!: number;
-    userName!: string;
+    userName?: string | undefined;
     rating!: number;
     timeLimitMinutes!: number;
     increment!: number;
@@ -559,7 +672,7 @@ export class CustomGameDto implements ICustomGameDto {
 
 export interface ICustomGameDto {
     challengeId: number;
-    userName: string;
+    userName?: string | undefined;
     rating: number;
     timeLimitMinutes: number;
     increment: number;
@@ -568,7 +681,7 @@ export interface ICustomGameDto {
 }
 
 export class CreateCustomGameDto implements ICreateCustomGameDto {
-    userName!: string;
+    userName?: string | undefined;
     timeLimitMinutes!: number;
     increment!: number;
     minimumBet!: number;
@@ -612,7 +725,7 @@ export class CreateCustomGameDto implements ICreateCustomGameDto {
 }
 
 export interface ICreateCustomGameDto {
-    userName: string;
+    userName?: string | undefined;
     timeLimitMinutes: number;
     increment: number;
     minimumBet: number;

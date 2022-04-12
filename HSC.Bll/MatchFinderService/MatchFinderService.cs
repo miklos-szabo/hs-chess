@@ -7,11 +7,6 @@ using HSC.Dal.Entities;
 using HSC.Transfer.Searching;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HSC.Bll.MatchFinderService
 {
@@ -72,13 +67,13 @@ namespace HSC.Bll.MatchFinderService
                 Random rd = new Random();
                 var firstPlayerColor = rd.Next(0, 1);
 
-                var match = new Match()
+                var match = new Dal.Entities.Match
                 {
                     MatchPlayers = new List<MatchPlayer>()
                     {
                         new MatchPlayer
                         {
-                            UserName = dto.UserName,
+                            UserName = otherPlayer.UserName,
                             Color = (Color)firstPlayerColor,
                             Rating = 1000,
                         },

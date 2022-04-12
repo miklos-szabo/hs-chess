@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HSC.Common\HSC.Common.csproj" />
+  </ItemGroup>
+
 </Project>

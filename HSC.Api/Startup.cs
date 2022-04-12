@@ -4,6 +4,7 @@ using HSC.Api.Extensions;
 using HSC.Bll.BettingService;
 using HSC.Bll.Hubs;
 using HSC.Bll.Mappings;
+using HSC.Bll.Match;
 using HSC.Bll.MatchFinderService;
 using HSC.Common.Options;
 using HSC.Common.RequestContext;
@@ -59,6 +60,7 @@ public class Startup
         services.AddScoped<IRequestContext, RequestContext>();
         services.AddScoped<IMatchFinderService, MatchFinderService>();
         services.AddScoped<IBettingService, BettingService>();
+        services.AddScoped<IMatchService, MatchService>();
         services.AddDAL(connectionStringOptions);
         
     }

@@ -24,8 +24,8 @@ export class QuickMatchPageComponent implements OnInit {
   ngOnInit(): void {}
 
   searchForMatch() {
-    this.signalrService.matchFoundEvent.subscribe((matchId) => {
-      this.matchFound(matchId);
+    this.signalrService.matchFoundEvent.subscribe((dto) => {
+      this.matchFound(dto);
     });
     this.searchDto.userName = this.userService.getUserName();
     this.matchFinderService.searchForMatch(this.searchDto).subscribe(() => {

@@ -6,6 +6,7 @@ import { Api } from 'chessground/api';
 import { MatDialog } from '@angular/material/dialog';
 import { PromotionPickerComponent } from './promotion-picker/promotion-picker.component';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
+import { MatchService } from 'src/app/api/app.generated';
 
 @Component({
   selector: 'app-chess-board',
@@ -21,15 +22,16 @@ export class ChessBoardComponent implements OnInit {
   matchId = '';
 
   @Input()
-  color = '';
+  color: Color | undefined = undefined;
 
-  constructor(private dialog: MatDialog, private signalrService: SignalrService) {}
+  constructor(private dialog: MatDialog, private signalrService: SignalrService, private matchService: MatchService) {}
 
   ngOnInit(): void {
     this.cg = Chessground(document.getElementById('board')!, {
       turnColor: 'white',
+      orientation: this.color,
       movable: {
-        color: 'white',
+        color: this.color,
         free: false,
         dests: this.getDestinations(this.chess)
       },
@@ -40,14 +42,14 @@ export class ChessBoardComponent implements OnInit {
     this.cg.set({
       movable: {
         events: {
-          after: this.thisPlayerMoved(this.cg, this.chess)
+          after: this.thisPlayerMoved()
         }
       }
     });
+
     this.signalrService.moveReceivedEvent.subscribe((move) => {
       this.otherPlayerMoved(move.origin, move.destination, move.promotion);
     });
-    this.signalrService.joinMatch(this.matchId);
   }
 
   getDestinations(chess: ChessInstance): Map<Key, Key[]> {
@@ -63,7 +65,7 @@ export class ChessBoardComponent implements OnInit {
     return dests;
   }
 
-  thisPlayerMoved(cg: Api, chess: ChessInstance) {
+  thisPlayerMoved() {
     return (orig: any, dest: any) => {
       this.checkPromotionAndSendMove(orig, dest);
     };
@@ -75,17 +77,6 @@ export class ChessBoardComponent implements OnInit {
     } else {
       this.makeOtherPlayersMove(orig, dest);
     }
-  }
-
-  black() {
-    this.cg.set({
-      movable: {
-        color: 'black',
-        free: false,
-        dests: this.getDestinations(this.chess)
-      },
-      orientation: 'black'
-    });
   }
 
   holyHell(m: Move) {

@@ -1,1 +1,3 @@
-<app-chess-board [id]="matchId"></app-chess-board>
+<ng-container *ngIf="matchData$ | async as data">
+  <app-chess-board [matchId]="matchId" [color]="getColorFromData(data)"></app-chess-board
+></ng-container>
