@@ -1,4 +1,5 @@
-﻿using HSC.Transfer.Match;
+﻿using HSC.Common.Enums;
+using HSC.Transfer.Match;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace HSC.Bll.Match
     public interface IMatchService
     {
         Task<MatchStartDto> GetMatchStartingDataAsync(Guid matchId);
+        Task MatchOver(Guid matchId, Result result, string winnerUserName);
     }
 }

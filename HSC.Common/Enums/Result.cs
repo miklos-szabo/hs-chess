@@ -8,6 +8,7 @@ namespace HSC.Common.Enums
 {
     public enum Result
     {
+        Ongoing,
         WhiteWonByTimeout,
         WhiteWonByCheckmate,
         WhiteWonByResignation,
@@ -18,5 +19,6 @@ namespace HSC.Common.Enums
         DrawByStalemate,
         DrawByAgreement,
         DrawByTimeoutVsInsufficientMaterial,
+        DrawByThreefoldRepetition,
     }
 }

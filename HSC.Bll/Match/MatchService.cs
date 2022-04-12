@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HSC.Common.Enums;
 using HSC.Common.RequestContext;
 using HSC.Dal;
 using HSC.Transfer.Match;
@@ -31,6 +32,14 @@ namespace HSC.Bll.Match
                 .Where(m => m.Id == matchId)
                 .ProjectTo<MatchStartDto>(_mapper.ConfigurationProvider)
                 .FirstAsync();
+        }
+
+        public async Task MatchOver(Guid matchId, Result result, string winnerUserName)
+        {
+            var match = await _dbContext.Matches.Include(m => m.MatchPlayers).SingleAsync(m => m.Id == matchId);
+            match.Result = result;
+            match.MatchPlayers.Single(mp => mp.UserName == winnerUserName).IsWinner = true;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

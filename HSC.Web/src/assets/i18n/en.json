@@ -5,5 +5,8 @@
   "Header.Friends": "Friends",
   "Play.QuickMatchTab": "Quick match",
   "Play.TournamentsTab": "Tournaments",
-  "Play.BrowseGamesTab": "Browse games"
+  "Play.BrowseGamesTab": "Browse games",
+  "EndPopup.Victory": "Victory",
+  "EndPopup.Defeat": "Defeat",
+  "EndPopup.Stalemate": "Stalemate"
 }

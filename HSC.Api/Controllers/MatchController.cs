@@ -1,4 +1,5 @@
 ﻿using HSC.Bll.Match;
+using HSC.Common.Enums;
 using HSC.Transfer.Match;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,12 @@ namespace HSC.Api.Controllers
         public async Task<MatchStartDto> GetMatchStartingDataAsync(Guid matchId)
         {
             return await _matchService.GetMatchStartingDataAsync(matchId);
+        }
+
+        [HttpPost("{matchId}")]
+        public async Task MatchOver(Guid matchId, Result result, string winnerUserName)
+        {
+            await _matchService.MatchOver(matchId, result, winnerUserName);
         }
     }
 }

@@ -296,6 +296,59 @@ export class MatchService {
         }
         return _observableOf<MatchStartDto>(null as any);
     }
+
+    matchOver(matchId: string, result: Result | undefined, winnerUserName: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Match/MatchOver/{matchId}?";
+        if (matchId === undefined || matchId === null)
+            throw new Error("The parameter 'matchId' must be defined.");
+        url_ = url_.replace("{matchId}", encodeURIComponent("" + matchId));
+        if (result === null)
+            throw new Error("The parameter 'result' cannot be null.");
+        else if (result !== undefined)
+            url_ += "result=" + encodeURIComponent("" + result) + "&";
+        if (winnerUserName !== undefined && winnerUserName !== null)
+            url_ += "winnerUserName=" + encodeURIComponent("" + winnerUserName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMatchOver(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMatchOver(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processMatchOver(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
 }
 
 @Injectable({
@@ -562,6 +615,21 @@ export interface IMatchStartDto {
     blackRating?: string | undefined;
     whiteUserName?: string | undefined;
     whiteRating?: string | undefined;
+}
+
+export enum Result {
+    Ongoing = 0,
+    WhiteWonByTimeout = 1,
+    WhiteWonByCheckmate = 2,
+    WhiteWonByResignation = 3,
+    BlackWonByTimeOut = 4,
+    BlackWonByCheckmate = 5,
+    BlackWonByResignation = 6,
+    DrawByInsufficientMaterial = 7,
+    DrawByStalemate = 8,
+    DrawByAgreement = 9,
+    DrawByTimeoutVsInsufficientMaterial = 10,
+    DrawByThreefoldRepetition = 11,
 }
 
 export class SearchingForMatchDto implements ISearchingForMatchDto {

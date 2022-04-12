@@ -5,5 +5,8 @@
   "Header.Friends": "Barátok",
   "Play.QuickMatchTab": "Azonnali játék",
   "Play.TournamentsTab": "Bajnokságok",
-  "Play.BrowseGamesTab": "Játékok böngészése"
+  "Play.BrowseGamesTab": "Játékok böngészése",
+  "EndPopup.Victory": "Győzelem",
+  "EndPopup.Defeat": "Vereség",
+  "EndPopup.Stalemate": "Patt"
 }

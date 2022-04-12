@@ -6,7 +6,8 @@ import { Api } from 'chessground/api';
 import { MatDialog } from '@angular/material/dialog';
 import { PromotionPickerComponent } from './promotion-picker/promotion-picker.component';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
-import { MatchService } from 'src/app/api/app.generated';
+import { MatchService, MatchStartDto, Result } from 'src/app/api/app.generated';
+import { EndPopupComponent } from './end-popup/end-popup.component';
 
 @Component({
   selector: 'app-chess-board',
@@ -23,6 +24,9 @@ export class ChessBoardComponent implements OnInit {
 
   @Input()
   color: Color | undefined = undefined;
+
+  @Input()
+  matchData: MatchStartDto = new MatchStartDto();
 
   constructor(private dialog: MatDialog, private signalrService: SignalrService, private matchService: MatchService) {}
 
@@ -112,6 +116,13 @@ export class ChessBoardComponent implements OnInit {
     if (moveResult?.flags === 'e') this.holyHell(moveResult);
 
     this.signalrService.sendMoveToServer({ origin: orig, destination: dest, promotion: '' }, this.matchId);
+
+    if (this.chess.game_over()) {
+      const result = this.getGameOverReason();
+      this.openEndPopup(result);
+      this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
+      this.cg.stop();
+    }
   }
 
   makeAndSendPromotionMove(orig: any, dest: any, promotion: any) {
@@ -130,6 +141,13 @@ export class ChessBoardComponent implements OnInit {
     if (moveResult?.flags === 'e') this.holyHell(moveResult);
 
     this.signalrService.sendMoveToServer({ origin: orig, destination: dest, promotion: promotion }, this.matchId);
+
+    if (this.chess.game_over()) {
+      const result = this.getGameOverReason();
+      this.openEndPopup(result);
+      this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
+      this.cg.stop();
+    }
   }
 
   makeOtherPlayersMove(orig: any, dest: any) {
@@ -142,6 +160,12 @@ export class ChessBoardComponent implements OnInit {
       }
     });
     if (m?.flags === 'e') this.holyHell(m);
+
+    if (this.chess.game_over()) {
+      const result = this.getGameOverReason();
+      this.openEndPopup(result);
+      this.cg.stop();
+    }
   }
 
   makeOtherPlayersPromotionMove(orig: any, dest: any, promotion: any) {
@@ -157,6 +181,12 @@ export class ChessBoardComponent implements OnInit {
       }
     });
     if (m?.flags === 'e') this.holyHell(m);
+
+    if (this.chess.game_over()) {
+      const result = this.getGameOverReason();
+      this.openEndPopup(result);
+      this.cg.stop();
+    }
   }
 
   toGuiPiece(enginePiece: any): Role {
@@ -184,5 +214,27 @@ export class ChessBoardComponent implements OnInit {
 
   toOtherGuiColor(chess: any): Color {
     return chess.turn() === 'w' ? 'black' : 'white';
+  }
+
+  getGameOverReason(): Result {
+    let whitesTurn = this.chess.turn() === 'w';
+
+    if (this.chess.in_checkmate()) return whitesTurn ? Result.BlackWonByCheckmate : Result.WhiteWonByCheckmate;
+    else if (this.chess.insufficient_material()) return Result.DrawByInsufficientMaterial;
+    else if (this.chess.in_threefold_repetition()) return Result.DrawByThreefoldRepetition;
+    else return Result.DrawByStalemate;
+  }
+
+  openEndPopup(result: Result) {
+    this.dialog.open(EndPopupComponent, {
+      data: {
+        color: this.color,
+        result: result
+      }
+    });
+  }
+
+  getUserNameOfNextPlayer(): string | undefined {
+    return this.chess.turn() === 'w' ? this.matchData.whiteUserName : this.matchData.blackUserName;
   }
 }
