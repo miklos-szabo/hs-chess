@@ -1,2 +1,12 @@
-<button (click)="searchForMatch()">aaaaaaa</button>
 <app-time-bet-selector [value1]="10" [value2]="100" (selectedEvent)="updateTimeControl($event)"></app-time-bet-selector>
+<app-time-bet-selector
+  [value1]="10"
+  [value2]="100"
+  unit="$"
+  (selectedEvent)="updateBetValue($event)"
+></app-time-bet-selector>
+<button (click)="searchForMatch()">Search for match</button>
+<div *ngIf="isSearching" class="d-flex flex-row">
+  <label>Searching for match </label>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>

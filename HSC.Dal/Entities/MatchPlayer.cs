@@ -10,8 +10,7 @@ namespace HSC.Dal.Entities
     public class MatchPlayer
     {
         public Guid Id { get; set; }
-        public int UserID { get; set; }
-        public int MyProperty { get; set; }
+        public string UserName { get; set; }
         public Color Color { get; set; }
         public int Rating { get; set; }
         public bool IsWinner { get; set; }

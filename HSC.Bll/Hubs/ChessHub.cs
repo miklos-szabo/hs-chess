@@ -1,4 +1,5 @@
 ﻿using HSC.Bll.Hubs.Clients;
+using HSC.Transfer.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace HSC.Bll.Hubs
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, matchId.ToString());
         }
 
-        public Task SendMoveToServer(string origin, string destination, string promotion)
+        public Task SendMoveToServer(MoveDto move, Guid matchId)
         {
-            return Clients.Others.ReceiveMove(origin, destination, promotion);
+            return Clients.OthersInGroup(matchId.ToString()).ReceiveMove(move);
         }
     }
 }

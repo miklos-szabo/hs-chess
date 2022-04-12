@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSC.Common.Enums
+namespace HSC.Bll.Match
 {
-    public enum Color
+    public interface IMatchService
     {
-        White = 0,
-        Black = 1
     }
 }

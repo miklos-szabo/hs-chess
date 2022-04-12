@@ -12,13 +12,19 @@ export class TimeBetSelectorComponent implements OnInit {
   @Input()
   value2: number = 0;
 
+  @Input()
+  unit = '';
+
   @Output()
   selectedEvent = new EventEmitter<SelectorTwoValues>();
+
+  selected = false;
   constructor() {}
 
   ngOnInit(): void {}
 
   itemClicked() {
+    this.selected = true;
     this.selectedEvent.emit({ value1: this.value1, value2: this.value2 });
   }
 }

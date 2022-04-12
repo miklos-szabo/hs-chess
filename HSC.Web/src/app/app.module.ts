@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { DefaultInterceptor } from './services/interceptors/default-interceptor';
 import { TimeBetSelectorComponent } from './pages/play-page/quick-match-page/time-bet-selector/time-bet-selector.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -53,6 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatTabsModule,
     ComponentsModule,
     FormsModule,
+    MatProgressSpinnerModule,
 
     TranslateModule.forRoot({
       loader: {

@@ -15,8 +15,8 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BlockerUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BlockedUsername = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    BlockerUsername = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BlockedUsername = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,8 +29,8 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Offerer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Receiver = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Offerer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Receiver = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeLimitMinutes = table.Column<int>(type: "int", nullable: false),
                     Increment = table.Column<int>(type: "int", nullable: false),
                     MinimumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -47,10 +47,10 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SenderUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceiverUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SenderUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiverUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeStamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,8 +63,8 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RequesterUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReceiverUsername = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    RequesterUsername = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReceiverUsername = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,8 +77,8 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,7 +90,7 @@ namespace HSC.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeLimitMinutes = table.Column<int>(type: "int", nullable: false),
                     Increment = table.Column<int>(type: "int", nullable: false),
                     MinimumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -108,14 +108,14 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StartTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Length = table.Column<TimeSpan>(type: "time", nullable: false),
                     GameTimeMinutes = table.Column<int>(type: "int", nullable: false),
                     GameIncrement = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    WinnerUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WinnerUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BuyIn = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PrizePool = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -129,8 +129,8 @@ namespace HSC.Dal.Migrations
                 columns: table => new
                 {
                     UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RatingBullet = table.Column<int>(type: "int", nullable: false),
                     RatingBlitz = table.Column<int>(type: "int", nullable: false),
                     RatingRapid = table.Column<int>(type: "int", nullable: false),
@@ -153,11 +153,11 @@ namespace HSC.Dal.Migrations
                     Increment = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Result = table.Column<int>(type: "int", nullable: false),
-                    Moves = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Moves = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MinimumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MaximumBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CurrentBet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TournamentId = table.Column<int>(type: "int", nullable: false)
+                    TournamentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,8 +166,7 @@ namespace HSC.Dal.Migrations
                         name: "FK_Match_Tournament",
                         column: x => x.TournamentId,
                         principalTable: "Tournament",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -176,9 +175,9 @@ namespace HSC.Dal.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SenderUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SenderUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeStamp = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TournamentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -263,8 +262,7 @@ namespace HSC.Dal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    MyProperty = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Color = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     IsWinner = table.Column<bool>(type: "bit", nullable: false),

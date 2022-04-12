@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Chessground } from 'chessground';
-import { Chess, ChessInstance, Move, Piece, Square } from 'chess.js';
-import { Color, Key, MoveMetadata, PiecesDiff, Role } from 'chessground/types';
+import { ChessInstance, Move } from 'chess.js';
+import { Color, Key, PiecesDiff, Role } from 'chessground/types';
 import { Api } from 'chessground/api';
-import * as signalR from '@microsoft/signalr';
 import { MatDialog } from '@angular/material/dialog';
 import { PromotionPickerComponent } from './promotion-picker/promotion-picker.component';
+import { SignalrService } from 'src/app/services/signalr/signalr.service';
 
 @Component({
   selector: 'app-chess-board',
@@ -17,14 +17,13 @@ export class ChessBoardComponent implements OnInit {
   private chess: ChessInstance = new this.ChessReq();
   private cg!: Api;
 
-  connection = new signalR.HubConnectionBuilder()
-    .withUrl('https://localhost:5000/hubs/chesshub', {
-      skipNegotiation: true,
-      transport: signalR.HttpTransportType.WebSockets
-    })
-    .build();
+  @Input()
+  matchId = '';
 
-  constructor(private dialog: MatDialog) {}
+  @Input()
+  color = '';
+
+  constructor(private dialog: MatDialog, private signalrService: SignalrService) {}
 
   ngOnInit(): void {
     this.cg = Chessground(document.getElementById('board')!, {
@@ -45,13 +44,10 @@ export class ChessBoardComponent implements OnInit {
         }
       }
     });
-
-    this.connection.start().then(() => {
-      console.log('SignalR connected!');
-      this.connection.send('JoinMatch', '68a3c6a1-e68a-4d1b-982f-045a157ae5e6');
+    this.signalrService.moveReceivedEvent.subscribe((move) => {
+      this.otherPlayerMoved(move.origin, move.destination, move.promotion);
     });
-
-    this.connection.on('ReceiveMove', (orig, dest, promotion) => this.otherPlayerMoved(orig, dest, promotion));
+    this.signalrService.joinMatch(this.matchId);
   }
 
   getDestinations(chess: ChessInstance): Map<Key, Key[]> {
@@ -124,7 +120,7 @@ export class ChessBoardComponent implements OnInit {
     });
     if (moveResult?.flags === 'e') this.holyHell(moveResult);
 
-    this.connection.send('SendMoveToServer', orig, dest, null);
+    this.signalrService.sendMoveToServer({ origin: orig, destination: dest, promotion: '' }, this.matchId);
   }
 
   makeAndSendPromotionMove(orig: any, dest: any, promotion: any) {
@@ -142,7 +138,7 @@ export class ChessBoardComponent implements OnInit {
     });
     if (moveResult?.flags === 'e') this.holyHell(moveResult);
 
-    this.connection.send('SendMoveToServer', orig, dest, promotion);
+    this.signalrService.sendMoveToServer({ origin: orig, destination: dest, promotion: promotion }, this.matchId);
   }
 
   makeOtherPlayersMove(orig: any, dest: any) {

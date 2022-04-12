@@ -18,6 +18,11 @@ namespace OnlineAuction.Api.RequestContext
             _httpContext = httpContext.HttpContext;
 
             UserName = _httpContext.Request.Headers.TryGetValue("UserName", out var userNameResults) ? userNameResults.First() : string.Empty;
+
+            var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, UserName) };
+            var identity = new ClaimsIdentity(claims, "asd");
+
+            _httpContext.User.AddIdentity(identity);
         }
     }
 }
