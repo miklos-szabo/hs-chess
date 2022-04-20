@@ -19,8 +19,6 @@
 
   <ItemGroup>
     <Folder Include="ChatService\" />
-    <Folder Include="FriendService\" />
-    <Folder Include="GroupService\" />
   </ItemGroup>
 
 </Project>
