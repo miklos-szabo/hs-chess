@@ -37,6 +37,11 @@ namespace HSC.Bll.GroupService
             await _dbContext.SaveChangesAsync();
         }
 
+        public Task<GroupDetailsDto> GetGroupDetailsAsync(int groupId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<GroupDto> GetGroupsAsync()
         {
             throw new NotImplementedException();

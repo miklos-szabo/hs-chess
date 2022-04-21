@@ -8,6 +8,7 @@ using HSC.Bll.Match;
 using HSC.Bll.MatchFinderService;
 using HSC.Common.Options;
 using HSC.Common.RequestContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using OnlineAuction.Api.RequestContext;
 using OnlineAuction.Dal;
 
@@ -31,6 +32,18 @@ public class Startup
         services.AddControllers(options =>
         {
             options.Filters.Add<HttpResponseExceptionFilter>();
+        });
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        {
+            options.Authority = "http://localhost:8080/auth/realms/chess";
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidIssuer = "http://localhost:8080/auth/realms/chess",
+                ValidAudience = "account",
+                AuthenticationType = JwtBearerDefaults.AuthenticationScheme,
+            };
         });
 
         services.AddLogging();
@@ -82,6 +95,7 @@ public class Startup
         app.UseCors(_debugCorsPolicy);
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>

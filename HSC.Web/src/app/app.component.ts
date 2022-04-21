@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
 import { SignalrService } from './services/signalr/signalr.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { SignalrService } from './services/signalr/signalr.service';
 export class AppComponent {
   title = 'hsc-web';
 
-  constructor(translateService: TranslateService, signalrService: SignalrService) {
+  constructor(translateService: TranslateService, signalrService: SignalrService, keycloak: KeycloakService) {
     translateService.addLangs(['en', 'hu']);
     translateService.setDefaultLang('en');
     translateService.use('en');

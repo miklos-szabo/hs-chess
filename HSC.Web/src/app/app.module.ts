@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,9 +25,26 @@ import { DefaultInterceptor } from './services/interceptors/default-interceptor'
 import { TimeBetSelectorComponent } from './pages/play-page/quick-match-page/time-bet-selector/time-bet-selector.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EndPopupComponent } from './pages/chess-board/end-popup/end-popup.component';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
+}
+
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'http://localhost:8080/auth',
+        realm: 'chess',
+        clientId: 'hsc-dev'
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html'
+      }
+    });
 }
 
 @NgModule({
@@ -44,7 +61,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FriendsPageComponent,
     ChessPageComponent,
     TimeBetSelectorComponent,
-    EndPopupComponent
+    EndPopupComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsModule,
     FormsModule,
     MatProgressSpinnerModule,
+    KeycloakAngularModule,
 
     TranslateModule.forRoot({
       loader: {
@@ -67,7 +86,15 @@ export function HttpLoaderFactory(http: HttpClient) {
       defaultLanguage: 'en'
     })
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
