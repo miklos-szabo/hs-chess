@@ -1,6 +1,7 @@
 using AutoMapper;
 using HSC.Api.ExceptionHandling;
 using HSC.Api.Extensions;
+using HSC.Bll.AccountService;
 using HSC.Bll.BettingService;
 using HSC.Bll.Hubs;
 using HSC.Bll.Mappings;
@@ -9,8 +10,10 @@ using HSC.Bll.MatchFinderService;
 using HSC.Common.Options;
 using HSC.Common.RequestContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using OnlineAuction.Api.RequestContext;
 using OnlineAuction.Dal;
+using System.Security.Claims;
 
 public class Startup
 {
@@ -44,6 +47,24 @@ public class Startup
                 ValidAudience = "account",
                 AuthenticationType = JwtBearerDefaults.AuthenticationScheme,
             };
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+
+                    // If the request is for our hub...
+                    var path = context.HttpContext.Request.Path;
+                    if (!string.IsNullOrEmpty(accessToken) &&
+                        (path.StartsWithSegments("/hubs/chessHub")))
+                    {
+                        // Read the token out of the query string
+                        context.Token = accessToken;
+                    }
+
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         services.AddLogging();
@@ -74,6 +95,8 @@ public class Startup
         services.AddScoped<IMatchFinderService, MatchFinderService>();
         services.AddScoped<IBettingService, BettingService>();
         services.AddScoped<IMatchService, MatchService>();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddSingleton<IUserIdProvider, PreferredUserNameUserIdProvider>();
         services.AddDAL(connectionStringOptions);
         
     }

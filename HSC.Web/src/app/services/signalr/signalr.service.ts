@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { KeycloakService } from 'keycloak-angular';
 import { ChatMessageDto, MoveDto } from './signalr-dtos';
 
 @Injectable({
@@ -15,9 +16,11 @@ export class SignalrService {
   @Output() friendRequestReceivedEvent: EventEmitter<string> = new EventEmitter();
   @Output() chatMessageReceivedEvent: EventEmitter<ChatMessageDto> = new EventEmitter();
 
-  connection = new signalR.HubConnectionBuilder().withUrl('https://localhost:5000/hubs/chesshub').build();
+  connection = new signalR.HubConnectionBuilder()
+    .withUrl('https://localhost:5000/hubs/chesshub', { accessTokenFactory: () => this.keyCloak.getToken() })
+    .build();
 
-  constructor() {}
+  constructor(private keyCloak: KeycloakService) {}
 
   connect() {
     this.connection.start().then(() => {

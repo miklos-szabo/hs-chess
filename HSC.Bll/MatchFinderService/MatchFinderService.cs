@@ -94,7 +94,7 @@ namespace HSC.Bll.MatchFinderService
 
                 _dbContext.Matches.Add(match);
 
-                await _chessHub.Clients.All//.Users(new List<string> { otherPlayer.UserName, _requestContext.UserName })
+                await _chessHub.Clients.Users(new List<string> { otherPlayer.UserName, _requestContext.UserName })
                     .ReceiveMatchFound(match.Id);
             }
 

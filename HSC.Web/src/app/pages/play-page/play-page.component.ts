@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TestService } from 'src/app/api/app.generated';
+import { SignalrService } from 'src/app/services/signalr/signalr.service';
 
 @Component({
   selector: 'app-play-page',
@@ -7,14 +8,14 @@ import { TestService } from 'src/app/api/app.generated';
   styleUrls: ['./play-page.component.scss']
 })
 export class PlayPageComponent implements OnInit {
-  constructor(private testService: TestService) {}
+  constructor(private testService: TestService, private signalrService: SignalrService) {}
   message = '';
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.signalrService.connect();
+  }
 
   getTest() {
-    this.testService.getHello().subscribe((msg) => {
-      this.message = msg;
-    });
+    this.signalrService.joinMatch('4ae1f29c-94ca-4055-8685-9995a766bab8');
   }
 }
