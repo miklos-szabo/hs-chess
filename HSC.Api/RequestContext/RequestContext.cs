@@ -17,6 +17,8 @@ namespace OnlineAuction.Api.RequestContext
         {
             _httpContext = httpContext.HttpContext;
 
+            Name = _httpContext.User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
+            Email = _httpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
             UserName = _httpContext.User.Claims.First(c => c.Type == "preferred_username").Value;
         }
     }
