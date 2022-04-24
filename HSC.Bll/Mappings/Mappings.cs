@@ -2,6 +2,7 @@
 using HSC.Dal.Entities;
 using HSC.Transfer.Friends;
 using HSC.Transfer.Groups;
+using HSC.Transfer.History;
 using HSC.Transfer.Match;
 using HSC.Transfer.User;
 
@@ -29,6 +30,12 @@ namespace HSC.Bll.Mappings
             CreateMap<User, FriendDto>();
             CreateMap<User, UserMenuDto>();
             CreateMap<User, UserFullDetailsDto>();
+
+            CreateMap<Dal.Entities.Match, PastGameDto>()
+                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).UserName))
+                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).Rating))
+                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).UserName))
+                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).Rating));
         }
     }
 }

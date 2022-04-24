@@ -12,5 +12,7 @@ namespace HSC.Bll.Match
     {
         Task<MatchStartDto> GetMatchStartingDataAsync(Guid matchId);
         Task MatchOver(Guid matchId, Result result, string winnerUserName);
+        Task SaveMatchPgn(Guid matchId, string pgn);
+        Task<string> GetMatchPgn(Guid matchId);
     }
 }

@@ -1,11 +1,12 @@
 ﻿using HSC.Bll.AccountService;
+using HSC.Transfer.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HSC.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
     public class AccountController : ControllerBase
@@ -21,6 +22,17 @@ namespace HSC.Api.Controllers
         public async Task CreateUserIfDoesntExistAsync()
         {
             await _accountService.CreateUserIfDoesntExistAsync();
+        }
+
+        [HttpGet]
+        public async Task<UserMenuDto> GetUserMenuData()
+        {
+            return await _accountService.GetUserMenuData();
+        }
+
+        public async Task<UserFullDetailsDto> GetFullUserData()
+        {
+            return await _accountService.GetFullUserData();
         }
     }
 }

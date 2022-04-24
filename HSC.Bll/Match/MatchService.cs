@@ -41,5 +41,19 @@ namespace HSC.Bll.Match
             match.MatchPlayers.Single(mp => mp.UserName == winnerUserName).IsWinner = true;
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task SaveMatchPgn(Guid matchId, string pgn)
+        {
+            var match = await _dbContext.Matches.SingleAsync(m => m.Id == matchId);
+
+            match.Moves = pgn;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<string> GetMatchPgn(Guid matchId)
+        {
+            return (await _dbContext.Matches.SingleAsync(m => m.Id == matchId)).Moves;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HSC.Bll.MatchFinderService;
 using HSC.Transfer.Searching;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace HSC.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class MatchFinderController : ControllerBase
     {
         private readonly IMatchFinderService _matchFinderService;

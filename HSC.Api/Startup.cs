@@ -4,6 +4,7 @@ using HSC.Api.Extensions;
 using HSC.Bll.AccountService;
 using HSC.Bll.BettingService;
 using HSC.Bll.ChatService;
+using HSC.Bll.HistoryService;
 using HSC.Bll.Hubs;
 using HSC.Bll.Mappings;
 using HSC.Bll.Match;
@@ -98,6 +99,7 @@ public class Startup
         services.AddScoped<IMatchService, MatchService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IChatService, ChatService>();
+        services.AddScoped<IHistoryService, HistoryService>();
         services.AddSingleton<IUserIdProvider, PreferredUserNameUserIdProvider>();
         services.AddDAL(connectionStringOptions);
         

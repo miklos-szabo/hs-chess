@@ -1,4 +1,5 @@
 ﻿using HSC.Bll.BettingService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace HSC.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class BettingController : ControllerBase
     {
         private readonly IBettingService _bettingService;
