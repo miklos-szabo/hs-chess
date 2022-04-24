@@ -17,8 +17,4 @@
     <ProjectReference Include="..\HSC.Transfer\HSC.Transfer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ChatService\" />
-  </ItemGroup>
-
 </Project>

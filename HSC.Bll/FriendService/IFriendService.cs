@@ -11,6 +11,9 @@ namespace HSC.Bll.FriendService
     {
         Task SendFriendRequestAsync(string toUserName);
         Task AcceptFriendRequestAsync(int requestId);
+        Task DeclineFriendRequestAsync(int requestId);
         Task<List<FriendDto>> GetFriendsAsync();
+        Task<List<FriendRequestDto>> GetFriendRequestsAsync();
+        Task<bool> IsNewNotificationShown();
     }
 }

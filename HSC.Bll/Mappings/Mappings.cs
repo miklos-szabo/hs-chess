@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using HSC.Dal.Entities;
+using HSC.Transfer.Friends;
 using HSC.Transfer.Groups;
 using HSC.Transfer.Match;
+using HSC.Transfer.User;
 
 namespace HSC.Bll.Mappings
 {
@@ -19,7 +21,14 @@ namespace HSC.Bll.Mappings
                 .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()));
 
             CreateMap<Group, GroupDetailsDto>()
-                .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()));
+                .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()))
+                .ForMember(x => x.Members, o => o.MapFrom(m => m.Users.Select(u => u.UserName).ToList()));
+
+            CreateMap<FriendRequest, FriendRequestDto>();
+
+            CreateMap<User, FriendDto>();
+            CreateMap<User, UserMenuDto>();
+            CreateMap<User, UserFullDetailsDto>();
         }
     }
 }

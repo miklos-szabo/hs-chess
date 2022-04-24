@@ -10,7 +10,7 @@ namespace HSC.Bll.GroupService
     public interface IGroupService
     {
         Task CreateGroupAsync(string groupName, string description);
-        Task<GroupDto> GetGroupsAsync();
+        Task<List<GroupDto>> GetGroupsAsync(string searchText);
         Task<GroupDetailsDto> GetGroupDetailsAsync(int groupId);
         Task JoinGroupAsync(int groupId);
     }

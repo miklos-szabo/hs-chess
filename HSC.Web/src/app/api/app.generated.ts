@@ -86,14 +86,12 @@ export class BettingService {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    check(matchId: string | undefined, userName: string | null | undefined): Observable<void> {
+    check(matchId: string | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Betting/Check?";
         if (matchId === null)
             throw new Error("The parameter 'matchId' cannot be null.");
         else if (matchId !== undefined)
             url_ += "matchId=" + encodeURIComponent("" + matchId) + "&";
-        if (userName !== undefined && userName !== null)
-            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -136,14 +134,12 @@ export class BettingService {
         return _observableOf<void>(null as any);
     }
 
-    callAsnyc(matchId: string | undefined, userName: string | null | undefined): Observable<void> {
+    callAsnyc(matchId: string | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Betting/CallAsnyc?";
         if (matchId === null)
             throw new Error("The parameter 'matchId' cannot be null.");
         else if (matchId !== undefined)
             url_ += "matchId=" + encodeURIComponent("" + matchId) + "&";
-        if (userName !== undefined && userName !== null)
-            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -186,14 +182,12 @@ export class BettingService {
         return _observableOf<void>(null as any);
     }
 
-    raise(matchId: string | undefined, userName: string | null | undefined, newAmount: number | undefined): Observable<void> {
+    raise(matchId: string | undefined, newAmount: number | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Betting/Raise?";
         if (matchId === null)
             throw new Error("The parameter 'matchId' cannot be null.");
         else if (matchId !== undefined)
             url_ += "matchId=" + encodeURIComponent("" + matchId) + "&";
-        if (userName !== undefined && userName !== null)
-            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
         if (newAmount === null)
             throw new Error("The parameter 'newAmount' cannot be null.");
         else if (newAmount !== undefined)
@@ -240,14 +234,12 @@ export class BettingService {
         return _observableOf<void>(null as any);
     }
 
-    fold(matchId: string | undefined, userName: string | null | undefined): Observable<void> {
+    fold(matchId: string | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Betting/Fold?";
         if (matchId === null)
             throw new Error("The parameter 'matchId' cannot be null.");
         else if (matchId !== undefined)
             url_ += "matchId=" + encodeURIComponent("" + matchId) + "&";
-        if (userName !== undefined && userName !== null)
-            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

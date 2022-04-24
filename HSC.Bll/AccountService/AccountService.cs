@@ -1,5 +1,8 @@
-﻿using HSC.Common.RequestContext;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HSC.Common.RequestContext;
 using HSC.Dal;
+using HSC.Transfer.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,11 +16,13 @@ namespace HSC.Bll.AccountService
     {
         private readonly HSCContext _dbContext;
         private readonly IRequestContext _requestContext;
+        private readonly IMapper _mapper;
 
-        public AccountService(HSCContext dbContext, IRequestContext requestContext)
+        public AccountService(HSCContext dbContext, IRequestContext requestContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _requestContext = requestContext;
+            _mapper = mapper;
         }
 
         public async Task CreateUserIfDoesntExistAsync()
@@ -40,6 +45,18 @@ namespace HSC.Bll.AccountService
                 });
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<UserFullDetailsDto> GetFullUserData()
+        {
+            return await _dbContext.Users.ProjectTo<UserFullDetailsDto>(_mapper.ConfigurationProvider)
+                .SingleAsync(u => u.UserName == _requestContext.UserName);
+        }
+
+        public async Task<UserMenuDto> GetUserMenuData()
+        {
+            return await _dbContext.Users.ProjectTo<UserMenuDto>(_mapper.ConfigurationProvider)
+                .SingleAsync(u => u.UserName == _requestContext.UserName);
         }
     }
 }

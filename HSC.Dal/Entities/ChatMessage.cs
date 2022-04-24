@@ -11,5 +11,6 @@ namespace HSC.Dal.Entities
         public string ReceiverUserName { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
         public string Message { get; set; }
+        public bool IsSeen { get; set; }
     }
 }

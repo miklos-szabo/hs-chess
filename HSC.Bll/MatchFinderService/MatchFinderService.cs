@@ -76,12 +76,16 @@ namespace HSC.Bll.MatchFinderService
                             UserName = otherPlayer.UserName,
                             Color = (Color)firstPlayerColor,
                             Rating = 1000,
+                            CurrentBet = 0,
+                            IsBetting = (Color)firstPlayerColor == Color.White
                         },
                         new MatchPlayer
                         {
                             UserName = _requestContext.UserName,
                             Color = (Color)(1 - firstPlayerColor),
                             Rating = 1000,
+                            CurrentBet = 0,
+                            IsBetting = (Color)(1 - firstPlayerColor) == Color.White
                         }
                     },
                     StartTime = DateTime.UtcNow,
@@ -89,7 +93,6 @@ namespace HSC.Bll.MatchFinderService
                     Increment = dto.Increment,
                     MinimumBet = dto.MinimumBet,
                     MaximumBet = dto.MaximumBet,
-                    CurrentBet = dto.MinimumBet,
                 };
 
                 _dbContext.Matches.Add(match);

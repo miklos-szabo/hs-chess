@@ -22,7 +22,6 @@ namespace HSC.Dal.Entities
         public string Moves { get; set; }
         public decimal MinimumBet { get; set; }
         public decimal MaximumBet { get; set; }
-        public decimal CurrentBet { get; set; }
 
         public int? TournamentId { get; set; }
         public Tournament Tournament { get; set; }

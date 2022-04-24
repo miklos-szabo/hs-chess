@@ -14,6 +14,8 @@ namespace HSC.Dal.Entities
         public Color Color { get; set; }
         public int Rating { get; set; }
         public bool IsWinner { get; set; }
+        public decimal CurrentBet { get; set; }
+        public bool IsBetting { get; set; }
 
         public Guid MatchId { get; set; }
         public Match Match { get; set; }

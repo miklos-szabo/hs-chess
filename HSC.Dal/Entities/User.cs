@@ -21,6 +21,7 @@ namespace HSC.Dal.Entities
         public decimal Balance { get; set; }
         public decimal PlayMoneyBalance { get; set; }
         public DateTimeOffset LastPlayMoneyRedeemDate { get; set; }
+        public bool IsUsingPlayMoney { get; set; }
 
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<User> Friends { get; set; }

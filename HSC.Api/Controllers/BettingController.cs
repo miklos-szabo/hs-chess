@@ -16,27 +16,27 @@ namespace HSC.Api.Controllers
         }
 
         [HttpPost]
-        public Task CheckAsync(Guid matchId, string userName)
+        public Task CheckAsync(Guid matchId)
         {
-            return _bettingService.CheckAsync(matchId, userName);
+            return _bettingService.CheckAsync(matchId);
         }
 
         [HttpPost]
-        public Task CallAsnyc(Guid matchId, string userName)
+        public Task CallAsnyc(Guid matchId)
         {
-            return _bettingService.CallAsnyc(matchId, userName);
+            return _bettingService.CallAsnyc(matchId);
         }
 
         [HttpPost]
-        public Task RaiseAsync(Guid matchId, string userName, decimal newAmount)
+        public Task RaiseAsync(Guid matchId, decimal newAmount)
         {
-            return _bettingService.RaiseAsync(matchId, userName, newAmount);
+            return _bettingService.RaiseAsync(matchId, newAmount);
         }
 
         [HttpPost]
-        public Task FoldAsync(Guid matchId, string userName)
+        public Task FoldAsync(Guid matchId)
         {
-            return _bettingService.FoldAsync(matchId, userName);
+            return _bettingService.FoldAsync(matchId);
         }
     }
 }

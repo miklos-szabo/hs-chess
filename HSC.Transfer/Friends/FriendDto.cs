@@ -9,5 +9,6 @@ namespace HSC.Transfer.Friends
     public class FriendDto
     {
         public string UserName { get; set; }
+        public int NewMessagesCount { get; set; }
     }
 }
