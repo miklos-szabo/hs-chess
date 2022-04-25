@@ -12,5 +12,6 @@ namespace HSC.Bll.AccountService
         Task CreateUserIfDoesntExistAsync();
         Task<UserMenuDto> GetUserMenuData();
         Task<UserFullDetailsDto> GetFullUserData();
+        Task ChangeRealMoneyAsync(bool toRealMoney);
     }
 }

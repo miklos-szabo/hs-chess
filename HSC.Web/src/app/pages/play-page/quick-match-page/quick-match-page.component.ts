@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
 import { MatchFinderService, SearchingForMatchDto } from 'src/app/api/app.generated';
-import { UserService } from 'src/app/services/auth/user.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { SelectorTwoValues } from './time-bet-selector/time-bet-selector.component';
 
@@ -16,9 +16,9 @@ export class QuickMatchPageComponent implements OnInit {
 
   constructor(
     private matchFinderService: MatchFinderService,
-    private userService: UserService,
     private router: Router,
-    private signalrService: SignalrService
+    private signalrService: SignalrService,
+    private keyCloak: KeycloakService
   ) {}
 
   ngOnInit(): void {}
@@ -27,7 +27,7 @@ export class QuickMatchPageComponent implements OnInit {
     this.signalrService.matchFoundEvent.subscribe((dto) => {
       this.matchFound(dto);
     });
-    this.searchDto.userName = this.userService.getUserName();
+    this.searchDto.userName = this.keyCloak.getUsername();
     this.matchFinderService.searchForMatch(this.searchDto).subscribe(() => {
       // todo noti?
       this.isSearching = true;

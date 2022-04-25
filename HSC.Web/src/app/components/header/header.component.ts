@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from 'src/app/services/auth/user.service';
+import { KeycloakService } from 'keycloak-angular';
+import { AccountService, UserMenuDto } from 'src/app/api/app.generated';
+import { MenuComponent } from './menu/menu.component';
 
 @Component({
   selector: 'app-header',
@@ -9,20 +12,31 @@ import { UserService } from 'src/app/services/auth/user.service';
 })
 export class HeaderComponent implements OnInit {
   userName = '';
-  constructor(private translateService: TranslateService, private userService: UserService) {}
+  isAuthed = false;
+  userdata = new UserMenuDto();
+  constructor(
+    private translateService: TranslateService,
+    private keycloak: KeycloakService,
+    private accountService: AccountService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.userName = this.userService.getUserName();
+    this.keycloak.isLoggedIn().then((res) => {
+      this.isAuthed = res;
+      if (res) this.userName = this.keycloak.getUsername();
+      this.accountService.getUserMenuData().subscribe((data) => {
+        this.userdata = data;
+      });
+    });
   }
 
-  changeLanguage() {
-    if (this.translateService.currentLang === 'en') this.translateService.use('hu');
-    else {
-      this.translateService.use('en');
-    }
-  }
-
-  setUserName() {
-    this.userService.setUserName(this.userName);
+  settingsClicked() {
+    this.dialog.open(MenuComponent, {
+      data: this.userdata,
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      width: '220px',
+      position: { right: '20px', top: '80px' }
+    });
   }
 }

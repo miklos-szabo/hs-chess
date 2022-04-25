@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Color } from 'chessground/types';
+import { KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs';
 import { MatchService, MatchStartDto } from 'src/app/api/app.generated';
-import { UserService } from 'src/app/services/auth/user.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 
 @Component({
@@ -19,8 +19,8 @@ export class ChessPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private matchService: MatchService,
-    private userService: UserService,
-    private signalrService: SignalrService
+    private signalrService: SignalrService,
+    private keycloak: KeycloakService
   ) {
     this.matchId = this.route.snapshot.params.matchId;
     this.matchData$ = this.matchService.getMatchStartingData(this.matchId);
@@ -31,7 +31,7 @@ export class ChessPageComponent implements OnInit {
   }
 
   getColorFromData(data: MatchStartDto): Color | undefined {
-    let userName = this.userService.getUserName();
+    let userName = this.keycloak.getUsername();
     if (userName === data.whiteUserName) {
       this.orientation = 'white';
       return 'white';

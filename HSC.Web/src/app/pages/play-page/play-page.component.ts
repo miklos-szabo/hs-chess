@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TestService } from 'src/app/api/app.generated';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 
 @Component({
@@ -8,7 +7,7 @@ import { SignalrService } from 'src/app/services/signalr/signalr.service';
   styleUrls: ['./play-page.component.scss']
 })
 export class PlayPageComponent implements OnInit {
-  constructor(private testService: TestService, private signalrService: SignalrService) {}
+  constructor(private signalrService: SignalrService) {}
   message = '';
 
   ngOnInit(): void {

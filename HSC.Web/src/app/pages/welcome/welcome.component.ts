@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-welcome',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent implements OnInit {
+  constructor(private keyCloak: KeycloakService, private router: Router) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    // if (await this.keyCloak.isLoggedIn) {
+    //   this.router.navigateByUrl('/play');
+    // }
   }
 
+  async login() {
+    await this.keyCloak.login({
+      redirectUri: window.location.origin + '/play'
+    });
+  }
 }

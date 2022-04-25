@@ -1,0 +1,17 @@
+.menu-row{
+  padding: 4px 0px;
+}
+
+::ng-deep .mat-select-value{
+  text-align: end;
+}
+
+a:link,
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.menu-logout-padding{
+  padding-top: 30px;
+}

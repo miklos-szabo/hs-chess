@@ -8,5 +8,14 @@
   "Play.BrowseGamesTab": "Browse games",
   "EndPopup.Victory": "Victory",
   "EndPopup.Defeat": "Defeat",
-  "EndPopup.Stalemate": "Stalemate"
+  "EndPopup.Stalemate": "Stalemate",
+  "Welcome.Message": "Welcome to High-Stakes Chess!",
+  "Welcome.LoginMessage": "Please log in below.",
+  "Welcome.ButtonText": "Log in",
+  "Menu.RealMoney": "Real Money",
+  "Menu.Cashier": "Cashier",
+  "Menu.Language": "Language",
+  "Menu.Language.en": "English",
+  "Menu.Language.hu": "Hungarian",
+  "Menu.Logout": "Log out"
 }

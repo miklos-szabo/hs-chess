@@ -30,9 +30,17 @@ namespace HSC.Api.Controllers
             return await _accountService.GetUserMenuData();
         }
 
+        [HttpGet]
+
         public async Task<UserFullDetailsDto> GetFullUserData()
         {
             return await _accountService.GetFullUserData();
+        }
+
+        [HttpPost]
+        public async Task ChangeRealMoneyAsync(bool toRealMoney)
+        {
+            await _accountService.ChangeRealMoneyAsync(toRealMoney);
         }
     }
 }

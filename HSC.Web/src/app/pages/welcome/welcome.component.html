@@ -1,1 +1,5 @@
-<p>welcome works!</p>
+<div class="d-flex flex-column welcome-container">
+  <label class="welcome-label">{{ 'Welcome.Message' | translate }}</label>
+  <label class="welcome-login-label">{{ 'Welcome.LoginMessage' | translate }}</label>
+  <button class="welcome-login-button" (click)="login()">{{ 'Welcome.ButtonText' | translate }}</button>
+</div>

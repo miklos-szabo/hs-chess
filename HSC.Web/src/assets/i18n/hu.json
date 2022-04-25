@@ -8,5 +8,14 @@
   "Play.BrowseGamesTab": "Játékok böngészése",
   "EndPopup.Victory": "Győzelem",
   "EndPopup.Defeat": "Vereség",
-  "EndPopup.Stalemate": "Patt"
+  "EndPopup.Stalemate": "Patt",
+  "Welcome.Message": "Üdvözlünk a magas tétű sakk oldalán.",
+  "Welcome.LoginMessage": "Jelentkezzen be alább.",
+  "Welcome.ButtonText": "Bejelentkezés",
+  "Menu.RealMoney": "Valódi pénz",
+  "Menu.Cashier": "Kassza",
+  "Menu.Language": "Nyelv",
+  "Menu.Language.en": "Angol",
+  "Menu.Language.hu": "Magyar",
+  "Menu.Logout": "Kijelentkezés"
 }

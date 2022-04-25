@@ -58,5 +58,14 @@ namespace HSC.Bll.AccountService
             return await _dbContext.Users.ProjectTo<UserMenuDto>(_mapper.ConfigurationProvider)
                 .SingleAsync(u => u.UserName == _requestContext.UserName);
         }
+
+        public async Task ChangeRealMoneyAsync(bool toRealMoney)
+        {
+            var user = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+
+            user.IsUsingPlayMoney = !toRealMoney;
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

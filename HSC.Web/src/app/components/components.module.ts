@@ -8,10 +8,27 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { MenuComponent } from './header/menu/menu.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  declarations: [HeaderComponent, LanguagePickerComponent],
-  imports: [CommonModule, TranslateModule, MatOptionModule, MatSelectModule, RouterModule, FormsModule, MatInputModule],
+  declarations: [HeaderComponent, LanguagePickerComponent, MenuComponent],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatOptionModule,
+    MatSelectModule,
+    RouterModule,
+    FormsModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSlideToggleModule,
+    MatIconModule,
+    MatButtonModule
+  ],
   exports: [HeaderComponent, TranslateModule]
 })
 export class ComponentsModule {}

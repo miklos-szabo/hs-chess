@@ -1,23 +1,29 @@
-<div class="d-flex flex-row header-conatiner">
-  <div class="w-15">
-    <!-- TODO logo? -->
+<div *ngIf="isAuthed" class="d-flex flex-row header-conatiner justify-between">
+  <div class="d-flex flex-row">
+    <div class="w-15">
+      <!-- TODO logo? -->
+    </div>
+    <nav>
+      <a class="nav-link" [routerLink]="['/play']" [routerLinkActive]="['selected']"
+        ><label class="nav-label">{{ 'Header.Play' | translate }}</label></a
+      >
+      <a class="nav-link" [routerLink]="['/history']" [routerLinkActive]="['selected']"
+        ><label class="nav-label">{{ 'Header.History' | translate }}</label></a
+      >
+      <a class="nav-link" [routerLink]="['/groups']" [routerLinkActive]="['selected']"
+        ><label class="nav-label">{{ 'Header.Groups' | translate }}</label></a
+      >
+      <a class="nav-link" [routerLink]="['/friends']" [routerLinkActive]="['selected']"
+        ><label class="nav-label">{{ 'Header.Friends' | translate }}</label></a
+      >
+    </nav>
   </div>
-  <nav>
-    <a class="nav-link" [routerLink]="['/play']" [routerLinkActive]="['selected']"
-      ><label class="nav-label">{{ 'Header.Play' | translate }}</label></a
-    >
-    <a class="nav-link" [routerLink]="['/history']" [routerLinkActive]="['selected']"
-      ><label class="nav-label">{{ 'Header.History' | translate }}</label></a
-    >
-    <a class="nav-link" [routerLink]="['/groups']" [routerLinkActive]="['selected']"
-      ><label class="nav-label">{{ 'Header.Groups' | translate }}</label></a
-    >
-    <a class="nav-link" [routerLink]="['/friends']" [routerLinkActive]="['selected']"
-      ><label class="nav-label">{{ 'Header.Friends' | translate }}</label></a
-    >
-  </nav>
-  <mat-form-field>
-    <input matInput [(ngModel)]="userName" (ngModelChange)="(setUserName)" />
-  </mat-form-field>
-  <button (click)="setUserName()">Set username</button>
+  <div class="d-flex flex-row align-center header-user-info-container">
+    <label class="pr-1">{{ userName }}</label>
+    <label>{{ userdata.isUsingPlayMoney ? userdata.balance : userdata.playMoneyBalance }}</label>
+    <label *ngIf="!userdata.isUsingPlayMoney" class="pr-1">$</label>
+    <button mat-icon-button (click)="settingsClicked()">
+      <mat-icon>settings</mat-icon>
+    </button>
+  </div>
 </div>
