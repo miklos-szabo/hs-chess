@@ -1,1 +1,50 @@
-<p>friends-page works!</p>
+<div class="friends-main-container d-flex flex-row">
+  <div class="friends-left-container d-flex flex-column w-35">
+    <label>{{ 'Friends.Title' | translate }}</label>
+    <div *ngIf="friendRequests.length !== 0">
+      <label>{{ 'Friends.FriendRequests' | translate }}</label>
+      <mat-list>
+        <mat-list-item *ngFor="let request of friendRequests">
+          <div class="d-flex flex-row justify-between align-center">
+            <label>{{ request.requesterUserName }}</label>
+            <div>
+              <button mat-icon-button (click)="acceptFriendRequest(request.id)">
+                <mat-icon class="green-icon">done</mat-icon>
+              </button>
+              <button mat-icon-button (click)="declineFriendRequest(request.id)">
+                <mat-icon class="red-icon">close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="friends-friends-container d-flex flex-column">
+      <div class="friends-add-friend-container d-flex flex-row">
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="addFriendField"
+          [placeholder]="'Friends.AddFriendPlaceHolder' | translate"
+        />
+        <button mat-icon-button (click)="sendFriendRequest()">
+          <mat-icon class="green-icon">add_circle</mat-icon>
+        </button>
+      </div>
+      <mat-action-list>
+        <mat-list-item *ngFor="let friend of friends" (click)="friendClicked(friend.userName!)">
+          <div class="d-flex flex-row justify-between align-center w-100">
+            <div class="d-flex flex-row align-center">
+              <div class="friends-notification-circle" *ngIf="friend.newMessagesCount > 0"></div>
+              <label class="friends-username-label">{{ friend.userName }}</label>
+            </div>
+            <button mat-icon-button (click)="challenge(friend.userName)">
+              <img class="battle-icon" src="assets/icons/battle.png" />
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-action-list>
+    </div>
+  </div>
+  <app-friends-chat class="w-65"></app-friends-chat>
+</div>

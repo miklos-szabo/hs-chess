@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
+using HSC.Common.Exceptions;
 
 namespace HSC.Bll.FriendService
 {
@@ -67,6 +68,9 @@ namespace HSC.Bll.FriendService
             var friends = await _dbContext.Users.Where(u => u.UserName == _requestContext.UserName).SelectMany(u => u.Friends)
                 .ProjectTo<FriendDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+            friends.AddRange(await _dbContext.Users.Where(u => u.UserName == _requestContext.UserName)
+                .SelectMany(u => u.FriendsOf).ProjectTo<FriendDto>(_mapper.ConfigurationProvider)
+                .ToListAsync());
 
             var newMessages = await _dbContext.ChatMessages.Where(m => m.ReceiverUserName == _requestContext.UserName && !m.IsSeen).ToListAsync();
 
@@ -91,6 +95,12 @@ namespace HSC.Bll.FriendService
 
         public async Task SendFriendRequestAsync(string toUserName)
         {
+            if (!(await _dbContext.Users.AnyAsync(u => u.UserName == toUserName)))
+                throw new BadRequestException($"User {toUserName} doesn't exist.");
+
+            if (await _dbContext.FriendRequests.AnyAsync(r => r.ReceiverUsername == toUserName && r.RequesterUsername == _requestContext.UserName))
+                throw new BadRequestException($"Friend request already sent to {toUserName}!");
+
             _dbContext.FriendRequests.Add(new Dal.Entities.FriendRequest
             {
                 ReceiverUsername = toUserName,

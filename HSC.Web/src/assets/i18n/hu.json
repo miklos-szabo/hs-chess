@@ -17,5 +17,12 @@
   "Menu.Language": "Nyelv",
   "Menu.Language.en": "Angol",
   "Menu.Language.hu": "Magyar",
-  "Menu.Logout": "Kijelentkezés"
+  "Menu.Logout": "Kijelentkezés",
+  "Notification.Dismiss": "Rendben",
+  "Friends.Title": "Barátok",
+  "Friends.FriendRequests": "Barát kérelmek",
+  "Friends.AddFriendPlaceHolder": "Felhasználó hozzáadása",
+  "Friends.RequestSent.Success": "Barát kérelem elküldve!",
+  "Friends.RequestSent.Error": "A felhasználó nem található.",
+  "Friends.Chat.SelectUser": "Válassz egy barátot üzenet írásához!"
 }

@@ -1857,7 +1857,7 @@ export interface IFriendDto {
 }
 
 export class FriendRequestDto implements IFriendRequestDto {
-    requestId!: number;
+    id!: number;
     requesterUserName?: string | undefined;
     receiverUserName?: string | undefined;
     isIncoming!: boolean;
@@ -1873,7 +1873,7 @@ export class FriendRequestDto implements IFriendRequestDto {
 
     init(_data?: any) {
         if (_data) {
-            this.requestId = _data["requestId"];
+            this.id = _data["id"];
             this.requesterUserName = _data["requesterUserName"];
             this.receiverUserName = _data["receiverUserName"];
             this.isIncoming = _data["isIncoming"];
@@ -1889,7 +1889,7 @@ export class FriendRequestDto implements IFriendRequestDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["requestId"] = this.requestId;
+        data["id"] = this.id;
         data["requesterUserName"] = this.requesterUserName;
         data["receiverUserName"] = this.receiverUserName;
         data["isIncoming"] = this.isIncoming;
@@ -1898,7 +1898,7 @@ export class FriendRequestDto implements IFriendRequestDto {
 }
 
 export interface IFriendRequestDto {
-    requestId: number;
+    id: number;
     requesterUserName?: string | undefined;
     receiverUserName?: string | undefined;
     isIncoming: boolean;

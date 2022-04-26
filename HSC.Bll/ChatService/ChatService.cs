@@ -32,7 +32,8 @@ namespace HSC.Bll.ChatService
 
         public async Task<List<ChatMessageDto>> GetChatMessages(string fromUserName, int pageSize, int page)
         {
-            return await _dbContext.ChatMessages.Where(m => m.ReceiverUserName == _requestContext.UserName && m.SenderUserName == fromUserName)
+            return await _dbContext.ChatMessages.Where(m => (m.ReceiverUserName == _requestContext.UserName && m.SenderUserName == fromUserName) ||
+            (m.ReceiverUserName == fromUserName && m.SenderUserName == _requestContext.UserName))
                 .ProjectTo<ChatMessageDto>(_mapper.ConfigurationProvider)
                 .OrderByDescending(m => m.TimeStamp)
                 .Skip(page * pageSize).Take(pageSize)

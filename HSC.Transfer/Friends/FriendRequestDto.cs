@@ -8,7 +8,7 @@ namespace HSC.Transfer.Friends
 {
     public class FriendRequestDto
     {
-        public int RequestId { get; set; }
+        public int Id { get; set; }
         public string RequesterUserName { get; set; }
         public string ReceiverUserName { get; set; }
         public bool IsIncoming { get; set; }

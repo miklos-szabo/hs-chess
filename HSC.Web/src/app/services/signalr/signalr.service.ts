@@ -32,7 +32,7 @@ export class SignalrService {
       this.connection.on('ReceiveCall', () => this.callReceivedEvent.emit());
       this.connection.on('ReceiveBet', (amount) => this.betReceivedEvent.emit(amount));
       this.connection.on('ReceiveFriendRequest', (fromUser) => this.friendRequestReceivedEvent.emit(fromUser));
-      this.connection.on('ReceiveChatMessage', (message) => this.betReceivedEvent.emit(message));
+      this.connection.on('ReceiveMessage', (message) => this.chatMessageReceivedEvent.emit(message));
     });
   }
 

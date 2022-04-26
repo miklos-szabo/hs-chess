@@ -4,6 +4,8 @@ using HSC.Api.Extensions;
 using HSC.Bll.AccountService;
 using HSC.Bll.BettingService;
 using HSC.Bll.ChatService;
+using HSC.Bll.FriendService;
+using HSC.Bll.GroupService;
 using HSC.Bll.HistoryService;
 using HSC.Bll.Hubs;
 using HSC.Bll.Mappings;
@@ -100,6 +102,8 @@ public class Startup
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IChatService, ChatService>();
         services.AddScoped<IHistoryService, HistoryService>();
+        services.AddScoped<IFriendService, FriendService>();
+        services.AddScoped<IGroupService, GroupService>();
         services.AddSingleton<IUserIdProvider, PreferredUserNameUserIdProvider>();
         services.AddDAL(connectionStringOptions);
         

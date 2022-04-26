@@ -27,6 +27,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EndPopupComponent } from './pages/chess-board/end-popup/end-popup.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FriendsChatComponent } from './pages/friends-page/friends-chat/friends-chat.component';
+import { MatButtonModule } from '@angular/material/button';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -63,7 +68,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ChessPageComponent,
     TimeBetSelectorComponent,
     EndPopupComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    FriendsChatComponent
   ],
   imports: [
     BrowserModule,
@@ -77,6 +83,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
     FormsModule,
     MatProgressSpinnerModule,
     KeycloakAngularModule,
+    MatIconModule,
+    MatListModule,
+    MatSnackBarModule,
+    MatButtonModule,
 
     TranslateModule.forRoot({
       loader: {

@@ -17,5 +17,12 @@
   "Menu.Language": "Language",
   "Menu.Language.en": "English",
   "Menu.Language.hu": "Hungarian",
-  "Menu.Logout": "Log out"
+  "Menu.Logout": "Log out",
+  "Notification.Dismiss": "Dismiss",
+  "Friends.Title": "Friends",
+  "Friends.FriendRequests": "Friend requests",
+  "Friends.AddFriendPlaceHolder": "Add a user",
+  "Friends.RequestSent.Success": "Friend request sent!",
+  "Friends.RequestSent.Error": "User could not be found.",
+  "Friends.Chat.SelectUser": "Select a user to write a message!"
 }

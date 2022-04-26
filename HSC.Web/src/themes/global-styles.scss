@@ -42,6 +42,12 @@
   }
 }
 
+@for $i from 1 through 100 {
+  .h-#{($i)} {
+    height: $i * 1%;
+  }
+}
+
 @for $i from 0 through 9 {
   .p-#{$i} {
     padding: $spacing-base * $i !important;
@@ -122,4 +128,29 @@
   .ml-half {
     margin-left: $spacing-half !important;
   }
+}
+
+// Notification styles
+.error-style {
+  color: white !important;
+  background: $color-error !important;
+  border-color: $color-error;
+}
+
+.warning-style {
+  color: white !important;
+  background: $color-warning !important;
+  border-color: $color-warning;
+}
+
+.success-style {
+  color: white !important;
+  background: $color-success !important;
+  border-color: $color-success;
+}
+
+.info-style {
+  color: white !important;
+  background: $color-info !important;
+  border-color: $color-info;
 }
