@@ -5,7 +5,12 @@
       <label>{{ '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')' }}</label>
     </div>
 
-    <app-chess-board [matchId]="matchId" [color]="getColorFromData(data)" [matchData]="data"></app-chess-board>
+    <app-chess-board
+      [matchId]="matchId"
+      [color]="getColorFromData(data)"
+      [matchData]="data"
+      (startBettingEvent)="startBetting(data)"
+    ></app-chess-board>
 
     <div class="d-flex flex-row pt-1">
       <label class="pr-half">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>

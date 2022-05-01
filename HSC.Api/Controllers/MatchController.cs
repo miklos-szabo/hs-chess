@@ -25,6 +25,12 @@ namespace HSC.Api.Controllers
             return await _matchService.GetMatchStartingDataAsync(matchId);
         }
 
+        [HttpGet("{matchId}")]
+        public async Task<MatchFullDataDto> GetMatchDataAsync(Guid matchId)
+        {
+            return await _matchService.GetMatchDataAsync(matchId);
+        }
+
         [HttpPost("{matchId}")]
         public async Task MatchOver(Guid matchId, Result result, string winnerUserName)
         {

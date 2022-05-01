@@ -37,5 +37,16 @@
   "CreateGroup.Description": "Leírás",
   "CreateGroup.CreateGroup": "Létrehozás",
   "GroupDetails.Members": "Tagok:",
-  "GroupDetails.JoinGroup": "Csatlakozás"
+  "GroupDetails.JoinGroup": "Csatlakozás",
+  "Betting.OthersTurn": "Várakozás a másik játékos tétjére",
+  "Betting.Check": "Passz",
+  "Betting.Call": "Megadás",
+  "Betting.Raise": "Emelés",
+  "Betting.Fold": "Bedobás",
+  "Betting.CurrentBet": "Jelenlegi tét: ",
+  "Betting.OtherPlayerChecked": "{{userName}} passzolt",
+  "Betting.OtherPlayerCalled": "{{userName}} megadta a {{amount}}$-os emelésedet",
+  "Betting.OtherPlayerRaised": "{{userName}} emelt {{amount}}$-al",
+  "Betting.OtherPlayerFolded": "{{userName}} bedobta, a játék tétje {{amount}}$",
+  "Betting.ClosePopup": "Bezárás"
 }

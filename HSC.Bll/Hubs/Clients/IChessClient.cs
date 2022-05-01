@@ -16,7 +16,7 @@ namespace HSC.Bll.Hubs.Clients
 
         Task ReceiveMatchFound(Guid matchId);
 
-        Task ReceiveFold();
+        Task ReceiveFold(decimal finalAmount);
         Task ReceiveCheck();
         Task ReceiveCall();
         Task ReceiveBet(decimal newAmount);

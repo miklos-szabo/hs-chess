@@ -34,6 +34,8 @@ import { FriendsChatComponent } from './pages/friends-page/friends-chat/friends-
 import { MatButtonModule } from '@angular/material/button';
 import { CreateGroupComponent } from './pages/groups-page/create-group/create-group.component';
 import { GroupDetailsPageComponent } from './pages/groups-page/group-details-page/group-details-page.component';
+import { BettingPopupComponent } from './pages/chess-board/betting-popup/betting-popup.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -73,7 +75,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     WelcomeComponent,
     FriendsChatComponent,
     CreateGroupComponent,
-    GroupDetailsPageComponent
+    GroupDetailsPageComponent,
+    BettingPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +94,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatListModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatSliderModule,
 
     TranslateModule.forRoot({
       loader: {

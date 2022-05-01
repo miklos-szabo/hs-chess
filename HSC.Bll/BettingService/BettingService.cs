@@ -79,12 +79,14 @@ namespace HSC.Bll.BettingService
 
             var otherPlayer = match.MatchPlayers.SingleOrDefault(p => !p.IsBetting);
 
-            currentPlayer.CurrentBet = Math.Clamp(Math.Max(match.MinimumBet * 1.25m, currentPlayer.CurrentBet * 1.25m), match.MinimumBet, match.MaximumBet);
+            var finalBet = Math.Clamp(Math.Max(match.MinimumBet * 1.25m, currentPlayer.CurrentBet * 1.25m), match.MinimumBet, match.MaximumBet);
+            currentPlayer.CurrentBet = finalBet;
+            otherPlayer.CurrentBet = finalBet;
             currentPlayer.IsBetting = false;
 
             await _dbContext.SaveChangesAsync();
 
-            await _chessHub.Clients.User(otherPlayer?.UserName).ReceiveFold();
+            await _chessHub.Clients.User(otherPlayer?.UserName).ReceiveFold(finalBet);
         }
 
         public async Task RaiseAsync(Guid matchId, decimal newAmount)

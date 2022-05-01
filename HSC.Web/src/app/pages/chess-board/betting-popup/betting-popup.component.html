@@ -1,0 +1,44 @@
+<div class="betting-container">
+  <div *ngIf="!isCurrentPlayersTurn && !isBettingOver" class="d-flex align-center justify-center w-100">
+    <label>{{ 'Betting.OthersTurn' | translate: { userName: data.otherUserName } }}</label>
+  </div>
+  <div *ngIf="isCurrentPlayersTurn && !isBettingOver" class="d-flex flex-column align-center w-100">
+    <label>{{ otherPlayersAction }}</label>
+    <label class="pt-1 pb-1">{{ ('Betting.CurrentBet' | translate) + currentBet + '$' }}</label>
+    <div class="d-flex flex-row justify-between align-center w-100 betting-slider-labels">
+      <label>{{ currentBet }}</label>
+      <label>{{ data.maximumBet }}</label>
+    </div>
+    <mat-slider
+      class="w-100"
+      [min]="currentBet"
+      [max]="data.maximumBet"
+      [step]="sliderStep"
+      [(ngModel)]="sliderValue"
+      thumbLabel
+    ></mat-slider>
+  </div>
+  <div *ngIf="isCurrentPlayersTurn && !isBettingOver" class="d-flex flex-row w-100 align-center">
+    <button mat-raised-button (click)="check()" *ngIf="currentBet === ownLastBet" class="betting-button">
+      {{ 'Betting.Check' | translate }}
+    </button>
+    <button mat-raised-button (click)="call()" *ngIf="currentBet > ownLastBet" class="betting-button">
+      {{ 'Betting.Call' | translate }}
+    </button>
+    <button mat-raised-button (click)="fold()" [disabled]="currentBet === ownLastBet" class="betting-button">
+      {{ 'Betting.Fold' | translate }}
+    </button>
+    <button
+      mat-raised-button
+      (click)="raise()"
+      [disabled]="currentBet === data.maximumBet || currentBet >= sliderValue"
+      class="betting-button"
+    >
+      {{ ('Betting.Raise' | translate) + ' ' + sliderValue }}
+    </button>
+  </div>
+  <div *ngIf="isBettingOver" class="d-flex flex-column align-center justify-between">
+    <label class="pb-1">{{ otherPlayersAction }}</label>
+    <button mat-raised-button (click)="closeWindow()">{{ 'Betting.ClosePopup' | translate }}</button>
+  </div>
+</div>

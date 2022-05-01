@@ -38,5 +38,16 @@
   "CreateGroup.Description": "Description",
   "CreateGroup.CreateGroup": "Create",
   "GroupDetails.Members": "Members:",
-  "GroupDetails.JoinGroup": "Join group"
+  "GroupDetails.JoinGroup": "Join group",
+  "Betting.OthersTurn": "Waiting for {{userName}} to bet...",
+  "Betting.Check": "Check",
+  "Betting.Call": "Call",
+  "Betting.Raise": "Raise",
+  "Betting.Fold": "Fold",
+  "Betting.CurrentBet": "Current bet: ",
+  "Betting.OtherPlayerChecked": "{{userName}} checked",
+  "Betting.OtherPlayerCalled": "{{userName}} called your {{amount}}$ raise",
+  "Betting.OtherPlayerRaised": "{{userName}} raised {{amount}}$",
+  "Betting.OtherPlayerFolded": "{{userName}} folded, playing for {{amount}}$",
+  "Betting.ClosePopup": "Close window"
 }

@@ -9,7 +9,7 @@ import { ChatMessageDto, MoveDto } from './signalr-dtos';
 export class SignalrService {
   @Output() moveReceivedEvent: EventEmitter<MoveDto> = new EventEmitter();
   @Output() matchFoundEvent: EventEmitter<string> = new EventEmitter();
-  @Output() foldReceivedEvent: EventEmitter<void> = new EventEmitter();
+  @Output() foldReceivedEvent: EventEmitter<number> = new EventEmitter();
   @Output() checkReceivedEvent: EventEmitter<void> = new EventEmitter();
   @Output() callReceivedEvent: EventEmitter<void> = new EventEmitter();
   @Output() betReceivedEvent: EventEmitter<number> = new EventEmitter();
@@ -27,7 +27,7 @@ export class SignalrService {
       console.log('Connected to signalr!');
       this.connection.on('ReceiveMove', (move) => this.moveReceivedEvent.emit(move));
       this.connection.on('ReceiveMatchFound', (matchId) => this.matchFoundEvent.emit(matchId));
-      this.connection.on('ReceiveFold', () => this.foldReceivedEvent.emit());
+      this.connection.on('ReceiveFold', (amount) => this.foldReceivedEvent.emit(amount));
       this.connection.on('ReceiveCheck', () => this.checkReceivedEvent.emit());
       this.connection.on('ReceiveCall', () => this.callReceivedEvent.emit());
       this.connection.on('ReceiveBet', (amount) => this.betReceivedEvent.emit(amount));

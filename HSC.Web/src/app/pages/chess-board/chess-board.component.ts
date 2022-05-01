@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Chessground } from 'chessground';
 import { ChessInstance, Move } from 'chess.js';
 import { Color, Key, PiecesDiff, Role } from 'chessground/types';
@@ -8,6 +8,8 @@ import { PromotionPickerComponent } from './promotion-picker/promotion-picker.co
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { MatchService, MatchStartDto, Result } from 'src/app/api/app.generated';
 import { EndPopupComponent } from './end-popup/end-popup.component';
+import { BettingPopupComponent } from './betting-popup/betting-popup.component';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-chess-board',
@@ -28,7 +30,14 @@ export class ChessBoardComponent implements OnInit {
   @Input()
   matchData: MatchStartDto = new MatchStartDto();
 
-  constructor(private dialog: MatDialog, private signalrService: SignalrService, private matchService: MatchService) {}
+  @Output() startBettingEvent: EventEmitter<void> = new EventEmitter();
+
+  constructor(
+    private dialog: MatDialog,
+    private signalrService: SignalrService,
+    private matchService: MatchService,
+    private eventService: EventService
+  ) {}
 
   ngOnInit(): void {
     this.cg = Chessground(document.getElementById('board')!, {
@@ -54,6 +63,9 @@ export class ChessBoardComponent implements OnInit {
     this.signalrService.moveReceivedEvent.subscribe((move) => {
       this.otherPlayerMoved(move.origin, move.destination, move.promotion);
     });
+    this.eventService.resumeGameEvent.subscribe(() => {
+      this.resumeMatch();
+    });
   }
 
   getDestinations(chess: ChessInstance): Map<Key, Key[]> {
@@ -72,6 +84,7 @@ export class ChessBoardComponent implements OnInit {
   thisPlayerMoved() {
     return (orig: any, dest: any) => {
       this.checkPromotionAndSendMove(orig, dest);
+      this.checkForBettingToOpen();
     };
   }
 
@@ -81,6 +94,7 @@ export class ChessBoardComponent implements OnInit {
     } else {
       this.makeOtherPlayersMove(orig, dest);
     }
+    this.checkForBettingToOpen();
   }
 
   holyHell(m: Move) {
@@ -239,5 +253,20 @@ export class ChessBoardComponent implements OnInit {
 
   getUserNameOfNextPlayer(): string | undefined {
     return this.chess.turn() === 'w' ? this.matchData.whiteUserName : this.matchData.blackUserName;
+  }
+
+  checkForBettingToOpen() {
+    if (this.chess.history().length === 4) {
+      this.bettingStarted();
+    }
+  }
+
+  bettingStarted() {
+    this.cg.set({ turnColor: undefined });
+    this.startBettingEvent.emit();
+  }
+
+  resumeMatch() {
+    this.cg.set({ turnColor: 'white' });
   }
 }

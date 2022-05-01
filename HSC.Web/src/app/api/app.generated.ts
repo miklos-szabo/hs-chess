@@ -1279,6 +1279,57 @@ export class MatchService {
         return _observableOf<MatchStartDto>(null as any);
     }
 
+    getMatchData(matchId: string): Observable<MatchFullDataDto> {
+        let url_ = this.baseUrl + "/api/Match/GetMatchData/{matchId}";
+        if (matchId === undefined || matchId === null)
+            throw new Error("The parameter 'matchId' must be defined.");
+        url_ = url_.replace("{matchId}", encodeURIComponent("" + matchId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMatchData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMatchData(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MatchFullDataDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MatchFullDataDto>;
+        }));
+    }
+
+    protected processGetMatchData(response: HttpResponseBase): Observable<MatchFullDataDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MatchFullDataDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MatchFullDataDto>(null as any);
+    }
+
     matchOver(matchId: string, result: Result | undefined, winnerUserName: string | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Match/MatchOver/{matchId}?";
         if (matchId === undefined || matchId === null)
@@ -2237,6 +2288,74 @@ export interface IMatchStartDto {
     blackRating?: string | undefined;
     whiteUserName?: string | undefined;
     whiteRating?: string | undefined;
+}
+
+export class MatchFullDataDto implements IMatchFullDataDto {
+    blackUserName?: string | undefined;
+    blackRating?: string | undefined;
+    whiteUserName?: string | undefined;
+    whiteRating?: string | undefined;
+    timeLimitMinutes!: number;
+    increment!: number;
+    minimumBet!: number;
+    maximumBet!: number;
+    finalPot!: number;
+
+    constructor(data?: IMatchFullDataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.blackUserName = _data["blackUserName"];
+            this.blackRating = _data["blackRating"];
+            this.whiteUserName = _data["whiteUserName"];
+            this.whiteRating = _data["whiteRating"];
+            this.timeLimitMinutes = _data["timeLimitMinutes"];
+            this.increment = _data["increment"];
+            this.minimumBet = _data["minimumBet"];
+            this.maximumBet = _data["maximumBet"];
+            this.finalPot = _data["finalPot"];
+        }
+    }
+
+    static fromJS(data: any): MatchFullDataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MatchFullDataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["blackUserName"] = this.blackUserName;
+        data["blackRating"] = this.blackRating;
+        data["whiteUserName"] = this.whiteUserName;
+        data["whiteRating"] = this.whiteRating;
+        data["timeLimitMinutes"] = this.timeLimitMinutes;
+        data["increment"] = this.increment;
+        data["minimumBet"] = this.minimumBet;
+        data["maximumBet"] = this.maximumBet;
+        data["finalPot"] = this.finalPot;
+        return data;
+    }
+}
+
+export interface IMatchFullDataDto {
+    blackUserName?: string | undefined;
+    blackRating?: string | undefined;
+    whiteUserName?: string | undefined;
+    whiteRating?: string | undefined;
+    timeLimitMinutes: number;
+    increment: number;
+    minimumBet: number;
+    maximumBet: number;
+    finalPot: number;
 }
 
 export class SearchingForMatchDto implements ISearchingForMatchDto {

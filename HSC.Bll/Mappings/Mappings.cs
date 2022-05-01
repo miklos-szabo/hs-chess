@@ -19,6 +19,13 @@ namespace HSC.Bll.Mappings
                 .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).UserName))
                 .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).Rating));
 
+            CreateMap<Dal.Entities.Match, MatchFullDataDto>()
+                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).UserName))
+                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).Rating))
+                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).UserName))
+                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).Rating))
+                .ForMember(x => x.FinalPot, o => o.MapFrom(m => m.MatchPlayers.Max(mp => mp.CurrentBet)));
+
             CreateMap<Group, GroupDto>()
                 .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()));
 

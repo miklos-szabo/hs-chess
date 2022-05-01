@@ -59,6 +59,7 @@ namespace HSC.Bll.MatchFinderService
                     MinimumBet = dto.MinimumBet,
                     MaximumBet = dto.MaximumBet,
                 });
+                await _dbContext.SaveChangesAsync();
             }
             else
             {
@@ -96,12 +97,11 @@ namespace HSC.Bll.MatchFinderService
                 };
 
                 _dbContext.Matches.Add(match);
+                await _dbContext.SaveChangesAsync();
 
                 await _chessHub.Clients.Users(new List<string> { otherPlayer.UserName, _requestContext.UserName })
                     .ReceiveMatchFound(match.Id);
             }
-
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

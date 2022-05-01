@@ -34,6 +34,14 @@ namespace HSC.Bll.Match
                 .FirstAsync();
         }
 
+        public async Task<MatchFullDataDto> GetMatchDataAsync(Guid matchId)
+        {
+            return await _dbContext.Matches
+                .Where(m => m.Id == matchId)
+                .ProjectTo<MatchFullDataDto>(_mapper.ConfigurationProvider)
+                .FirstAsync();
+        }
+
         public async Task MatchOver(Guid matchId, Result result, string winnerUserName)
         {
             var match = await _dbContext.Matches.Include(m => m.MatchPlayers).SingleAsync(m => m.Id == matchId);
