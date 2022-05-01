@@ -23,8 +23,7 @@ namespace HSC.Bll.Mappings
                 .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()));
 
             CreateMap<Group, GroupDetailsDto>()
-                .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()))
-                .ForMember(x => x.Members, o => o.MapFrom(m => m.Users.Select(u => u.UserName).ToList()));
+                .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()));
 
             CreateMap<FriendRequest, FriendRequestDto>();
 
@@ -39,6 +38,7 @@ namespace HSC.Bll.Mappings
                 .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).Rating));
 
             CreateMap<ChatMessage, ChatMessageDto>();
+            CreateMap<User, UserContextMenuDto>();
         }
     }
 }

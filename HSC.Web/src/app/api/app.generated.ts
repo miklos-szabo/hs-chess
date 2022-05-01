@@ -1956,7 +1956,7 @@ export class GroupDetailsDto implements IGroupDetailsDto {
     id!: number;
     name?: string | undefined;
     description?: string | undefined;
-    members?: string[] | undefined;
+    users?: UserContextMenuDto[] | undefined;
     isInGroup!: boolean;
     userCount!: number;
 
@@ -1974,10 +1974,10 @@ export class GroupDetailsDto implements IGroupDetailsDto {
             this.id = _data["id"];
             this.name = _data["name"];
             this.description = _data["description"];
-            if (Array.isArray(_data["members"])) {
-                this.members = [] as any;
-                for (let item of _data["members"])
-                    this.members!.push(item);
+            if (Array.isArray(_data["users"])) {
+                this.users = [] as any;
+                for (let item of _data["users"])
+                    this.users!.push(UserContextMenuDto.fromJS(item));
             }
             this.isInGroup = _data["isInGroup"];
             this.userCount = _data["userCount"];
@@ -1996,10 +1996,10 @@ export class GroupDetailsDto implements IGroupDetailsDto {
         data["id"] = this.id;
         data["name"] = this.name;
         data["description"] = this.description;
-        if (Array.isArray(this.members)) {
-            data["members"] = [];
-            for (let item of this.members)
-                data["members"].push(item);
+        if (Array.isArray(this.users)) {
+            data["users"] = [];
+            for (let item of this.users)
+                data["users"].push(item.toJSON());
         }
         data["isInGroup"] = this.isInGroup;
         data["userCount"] = this.userCount;
@@ -2011,9 +2011,49 @@ export interface IGroupDetailsDto {
     id: number;
     name?: string | undefined;
     description?: string | undefined;
-    members?: string[] | undefined;
+    users?: UserContextMenuDto[] | undefined;
     isInGroup: boolean;
     userCount: number;
+}
+
+export class UserContextMenuDto implements IUserContextMenuDto {
+    userName?: string | undefined;
+    isFriend!: boolean;
+
+    constructor(data?: IUserContextMenuDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["userName"];
+            this.isFriend = _data["isFriend"];
+        }
+    }
+
+    static fromJS(data: any): UserContextMenuDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserContextMenuDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["isFriend"] = this.isFriend;
+        return data;
+    }
+}
+
+export interface IUserContextMenuDto {
+    userName?: string | undefined;
+    isFriend: boolean;
 }
 
 export class PastGameDto implements IPastGameDto {

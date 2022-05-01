@@ -48,18 +48,34 @@ namespace HSC.Bll.GroupService
                 .ProjectTo<GroupDetailsDto>(_mapper.ConfigurationProvider)
                 .SingleAsync(g => g.Id == groupId);
 
-            group.IsInGroup = group.Members.Any(m => m == _requestContext.UserName);
+            var user = await _dbContext.Users.Include(u => u.FriendsOf).Include(u => u.Friends)
+                .SingleAsync(u => u.UserName == _requestContext.UserName);
+            var friends = user.Friends.Select(f => f.UserName).ToList();
+            friends.AddRange(user.FriendsOf.Select(f => f.UserName).ToList());
+
+            group.IsInGroup = group.Users.Any(m => m.UserName == _requestContext.UserName);
+            group.Users.ForEach(m => m.IsFriend = friends.Contains(m.UserName));
 
             return group;
         }
 
         public async Task<List<GroupDto>> GetGroupsAsync(string searchText)
         {
+            // Other groups
             var groups = await _dbContext.Groups
+                .Where(g => !g.Users.Any(u => u.UserName == _requestContext.UserName))
                 .ProjectTo<GroupDto>(_mapper.ConfigurationProvider)
                 .Where(!string.IsNullOrEmpty(searchText), g => g.Name.ToLower().Contains(searchText.ToLower()))
                 .Take(20).OrderByDescending(g => g.UserCount)
                 .ToListAsync();
+
+            // Own groups
+            groups.AddRange(await _dbContext.Groups
+                .Where(g => g.Users.Any(u => u.UserName == _requestContext.UserName))
+                .ProjectTo<GroupDto>(_mapper.ConfigurationProvider)
+                .Where(!string.IsNullOrEmpty(searchText), g => g.Name.ToLower().Contains(searchText.ToLower()))
+                .OrderByDescending(g => g.UserCount)
+                .ToListAsync());
 
             var user = await _dbContext.Users.Include(u => u.Groups).SingleAsync(u => u.UserName == _requestContext.UserName);
 

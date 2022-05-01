@@ -24,5 +24,19 @@
   "Friends.AddFriendPlaceHolder": "Add a user",
   "Friends.RequestSent.Success": "Friend request sent!",
   "Friends.RequestSent.Error": "User could not be found.",
-  "Friends.Chat.SelectUser": "Select a user to write a message!"
+  "Friends.Chat.SelectUser": "Select a user to write a message!",
+  "Groups.Title": "Groups",
+  "Groups.OwnGroups": "Own groups",
+  "Groups.OtherGroups": "Other groups",
+  "Groups.JoinGroup": "Join",
+  "Groups.Details": "Details",
+  "Groups.CreateGroup": "Create group",
+  "Groups.SearchGroups": "Search groups",
+  "Groups.Created": "Group created!",
+  "Groups.Joined": "Group joined!",
+  "CreateGroup.Name": "Name",
+  "CreateGroup.Description": "Description",
+  "CreateGroup.CreateGroup": "Create",
+  "GroupDetails.Members": "Members:",
+  "GroupDetails.JoinGroup": "Join group"
 }

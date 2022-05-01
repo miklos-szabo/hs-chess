@@ -1,1 +1,51 @@
-<p>groups-page works!</p>
+<div class="d-flex flex-row">
+  <div class="d-flex flex-column">
+    <label>{{ 'Groups.Title' | translate }}</label>
+    <button mat-raised-button (click)="createGroupClicked()">{{ 'Groups.CreateGroup' | translate }}</button>
+  </div>
+  <div class="d-flex flex-column">
+    <div>
+      <input
+        mat-input
+        [placeholder]="'Groups.SearchGroups' | translate"
+        (keydown)="searchFieldChanged()"
+        [(ngModel)]="searchField"
+      />
+    </div>
+    <label>{{ 'Groups.OwnGroups' | translate }}</label>
+    <mat-list>
+      <mat-list-item *ngFor="let group of ownGroups">
+        <div class="d-flex flex-row align-center">
+          <label>{{ group.name }}</label>
+          <div class="d-flex flex-row align-center">
+            <label>{{ group.userCount }}</label>
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="d-flex flex-row align-center">
+            <button mat-raised-button (click)="groupDetailsClicked(group.id)">
+              {{ 'Groups.Details' | translate }}
+            </button>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <label>{{ 'Groups.OtherGroups' | translate }}</label>
+    <mat-list>
+      <mat-list-item *ngFor="let group of otherGroups">
+        <div class="d-flex flex-row align-center">
+          <label>{{ group.name }}</label>
+          <div class="d-flex flex-row align-center">
+            <label>{{ group.userCount }}</label>
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="d-flex flex-row align-center">
+            <button mat-raised-button (click)="joinGroupClicked(group.id)">{{ 'Groups.JoinGroup' | translate }}</button>
+            <button mat-raised-button (click)="groupDetailsClicked(group.id)">
+              {{ 'Groups.Details' | translate }}
+            </button>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

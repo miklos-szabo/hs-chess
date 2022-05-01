@@ -24,5 +24,18 @@
   "Friends.AddFriendPlaceHolder": "Felhasználó hozzáadása",
   "Friends.RequestSent.Success": "Barát kérelem elküldve!",
   "Friends.RequestSent.Error": "A felhasználó nem található.",
-  "Friends.Chat.SelectUser": "Válassz egy barátot üzenet írásához!"
+  "Friends.Chat.SelectUser": "Válassz egy barátot üzenet írásához!",
+  "Groups.Title": "Csoportok",
+  "Groups.OwnGroups": "Saját csoportok",
+  "Groups.OtherGroups": "Egyéb csoportok",
+  "Groups.JoinGroup": "Csatlakozás",
+  "Groups.Details": "Részletek",
+  "Groups.CreateGroup": "Csoport létrehozása",
+  "Groups.SearchGroups": "Keresés csoportok között",
+  "Groups.Created": "Csoport létrehozva!",
+  "CreateGroup.Name": "Név",
+  "CreateGroup.Description": "Leírás",
+  "CreateGroup.CreateGroup": "Létrehozás",
+  "GroupDetails.Members": "Tagok:",
+  "GroupDetails.JoinGroup": "Csatlakozás"
 }

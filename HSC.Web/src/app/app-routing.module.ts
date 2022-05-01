@@ -1,8 +1,8 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChessBoardComponent } from './pages/chess-board/chess-board.component';
 import { ChessPageComponent } from './pages/chess-page/chess-page.component';
 import { FriendsPageComponent } from './pages/friends-page/friends-page.component';
+import { GroupDetailsPageComponent } from './pages/groups-page/group-details-page/group-details-page.component';
 import { GroupsPageComponent } from './pages/groups-page/groups-page.component';
 import { HistoryPageComponent } from './pages/history-page/history-page.component';
 import { PlayPageComponent } from './pages/play-page/play-page.component';
@@ -23,6 +23,11 @@ const routes: Routes = [
   {
     path: 'groups',
     component: GroupsPageComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'groups/:groupId',
+    component: GroupDetailsPageComponent,
     canActivate: [AuthGuard]
   },
   {

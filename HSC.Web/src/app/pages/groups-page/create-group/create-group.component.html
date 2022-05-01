@@ -1,0 +1,13 @@
+<form class="d-flex flex-column">
+  <mat-form-field appearance="standard">
+    <mat-label>{{ 'CreateGroup.Name' | translate }}</mat-label>
+    <input matInput [(ngModel)]="nameField" name="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="standard">
+    <mat-label>{{ 'CreateGroup.Description' | translate }}</mat-label>
+    <textarea matInput [(ngModel)]="descriptionField" name="description" [rows]="5"></textarea>
+  </mat-form-field>
+
+  <button mat-raised-button (click)="createGroup()">{{ 'CreateGroup.CreateGroup' | translate }}</button>
+</form>
