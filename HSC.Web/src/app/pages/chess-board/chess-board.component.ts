@@ -97,7 +97,9 @@ export class ChessBoardComponent implements OnInit {
       const dialogRef = this.dialog.open(PromotionPickerComponent, {
         data: {
           color: this.toGuiColor(this.chess)
-        }
+        },
+        hasBackdrop: false,
+        position: { top: '200px', left: '50%' }
       });
 
       dialogRef.afterClosed().subscribe((result) => {
@@ -230,7 +232,8 @@ export class ChessBoardComponent implements OnInit {
       data: {
         color: this.color,
         result: result
-      }
+      },
+      backdropClass: 'cdk-overlay-transparent-backdrop'
     });
   }
 
