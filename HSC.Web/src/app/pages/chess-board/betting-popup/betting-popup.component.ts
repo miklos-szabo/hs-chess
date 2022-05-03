@@ -2,6 +2,7 @@ import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { BettingService } from 'src/app/api/app.generated';
+import { EventService } from 'src/app/services/event.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 
 @Component({
@@ -29,7 +30,8 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
     },
     private signalrService: SignalrService,
     private bettingService: BettingService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private eventService: EventService
   ) {
     this.currentBet = data.startingBet;
     this.ownLastBet = data.startingBet;
@@ -70,6 +72,7 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
     this.isCurrentPlayersTurn = true;
     if (this.data.isCurrentPlayerStarting) {
       this.isBettingOver = true;
+      this.eventService.resumeGame();
     }
   }
 
@@ -80,6 +83,7 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
     });
     this.isCurrentPlayersTurn = true;
     this.isBettingOver = true;
+    this.eventService.resumeGame();
   }
 
   receiveRaise(amount: number) {
@@ -99,6 +103,7 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
     this.currentBet = amount;
     this.isCurrentPlayersTurn = true;
     this.isBettingOver = true;
+    this.eventService.resumeGame();
   }
 
   check() {
@@ -107,6 +112,7 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
     this.bettingService.check(this.data.matchId).subscribe(() => {});
     if (!this.data.isCurrentPlayerStarting) {
       // This is the second check, betting is over
+      this.eventService.resumeGame();
       this.closeWindow();
     }
   }
@@ -116,6 +122,7 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
     this.isCurrentPlayersTurn = false;
     this.ownLastBet = this.currentBet;
     this.bettingService.callAsnyc(this.data.matchId).subscribe(() => {});
+    this.eventService.resumeGame();
     this.closeWindow();
   }
 
@@ -129,6 +136,7 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
 
   fold() {
     this.bettingService.fold(this.data.matchId).subscribe(() => {});
+    this.eventService.resumeGame();
     this.closeWindow();
   }
 

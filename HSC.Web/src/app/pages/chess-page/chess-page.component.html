@@ -5,16 +5,31 @@
       <label>{{ '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')' }}</label>
     </div>
 
+    <app-countdown-timer
+      #oppCd
+      [TimeMSec]="15000"
+      [IncrementMSec]="5000"
+      (timeRanOutEvent)="opponentTimeRanOut()"
+    ></app-countdown-timer>
     <app-chess-board
       [matchId]="matchId"
       [color]="getColorFromData(data)"
       [matchData]="data"
       (startBettingEvent)="startBetting(data)"
+      [moveEvent]="moveMadeSubject.asObservable()"
+      (ownMoveMade)="ownMoveMade($event)"
+      [timeRanOutEvent]="timeRanOutSubject.asObservable()"
     ></app-chess-board>
 
     <div class="d-flex flex-row pt-1">
       <label class="pr-half">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
       <label>{{ '(' + (orientation == 'white' ? data.whiteRating : data.blackRating) + ')' }}</label>
     </div>
+    <app-countdown-timer
+      #ownCd
+      [TimeMSec]="15000"
+      [IncrementMSec]="5000"
+      (timeRanOutEvent)="ownTimeRanOut()"
+    ></app-countdown-timer>
   </div>
 </ng-container>

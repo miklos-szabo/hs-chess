@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Chessground } from 'chessground';
 import { ChessInstance, Move } from 'chess.js';
 import { Color, Key, PiecesDiff, Role } from 'chessground/types';
@@ -10,13 +10,15 @@ import { MatchService, MatchStartDto, Result } from 'src/app/api/app.generated';
 import { EndPopupComponent } from './end-popup/end-popup.component';
 import { BettingPopupComponent } from './betting-popup/betting-popup.component';
 import { EventService } from 'src/app/services/event.service';
+import { MoveDto } from 'src/app/services/signalr/signalr-dtos';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chess-board',
   templateUrl: './chess-board.component.html',
   styleUrls: ['./chess-board.component.scss']
 })
-export class ChessBoardComponent implements OnInit {
+export class ChessBoardComponent implements OnInit, OnDestroy {
   ChessReq: any = require('chess.js');
   private chess: ChessInstance = new this.ChessReq();
   private cg!: Api;
@@ -30,14 +32,16 @@ export class ChessBoardComponent implements OnInit {
   @Input()
   matchData: MatchStartDto = new MatchStartDto();
 
-  @Output() startBettingEvent: EventEmitter<void> = new EventEmitter();
+  private moveSubscription!: Subscription;
+  @Input() moveEvent!: Observable<MoveDto>;
 
-  constructor(
-    private dialog: MatDialog,
-    private signalrService: SignalrService,
-    private matchService: MatchService,
-    private eventService: EventService
-  ) {}
+  private timeRanOutSubscription!: Subscription;
+  @Input() timeRanOutEvent!: Observable<boolean>; // true if this player won
+
+  @Output() startBettingEvent: EventEmitter<void> = new EventEmitter();
+  @Output() ownMoveMade: EventEmitter<MoveDto> = new EventEmitter();
+
+  constructor(private dialog: MatDialog, private matchService: MatchService, private eventService: EventService) {}
 
   ngOnInit(): void {
     this.cg = Chessground(document.getElementById('board')!, {
@@ -60,12 +64,29 @@ export class ChessBoardComponent implements OnInit {
       }
     });
 
-    this.signalrService.moveReceivedEvent.subscribe((move) => {
+    this.moveSubscription = this.moveEvent.subscribe((move) => {
       this.otherPlayerMoved(move.origin, move.destination, move.promotion);
     });
+
+    this.timeRanOutSubscription = this.timeRanOutEvent.subscribe((weWon) => {
+      let whitesTurn = this.chess.turn() === 'w';
+      let result = whitesTurn ? Result.BlackWonByTimeOut : Result.WhiteWonByTimeout;
+      this.openEndPopup(result);
+      if (weWon) {
+        // Winner sends to server
+        this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
+      }
+      this.cg.stop();
+    });
+
     this.eventService.resumeGameEvent.subscribe(() => {
       this.resumeMatch();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.moveSubscription.unsubscribe();
+    this.timeRanOutSubscription.unsubscribe();
   }
 
   getDestinations(chess: ChessInstance): Map<Key, Key[]> {
@@ -131,7 +152,7 @@ export class ChessBoardComponent implements OnInit {
     });
     if (moveResult?.flags === 'e') this.holyHell(moveResult);
 
-    this.signalrService.sendMoveToServer({ origin: orig, destination: dest, promotion: '' }, this.matchId);
+    this.ownMoveMade.emit({ origin: orig, destination: dest, promotion: '' });
 
     if (this.chess.game_over()) {
       const result = this.getGameOverReason();
@@ -156,7 +177,7 @@ export class ChessBoardComponent implements OnInit {
     });
     if (moveResult?.flags === 'e') this.holyHell(moveResult);
 
-    this.signalrService.sendMoveToServer({ origin: orig, destination: dest, promotion: promotion }, this.matchId);
+    this.ownMoveMade.emit({ origin: orig, destination: dest, promotion: promotion });
 
     if (this.chess.game_over()) {
       const result = this.getGameOverReason();

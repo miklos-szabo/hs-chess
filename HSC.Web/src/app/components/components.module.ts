@@ -13,9 +13,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MenuComponent } from './header/menu/menu.component';
 import { MatButtonModule } from '@angular/material/button';
+import { CountdownTimerComponent } from './countdown-timer/countdown-timer.component';
 
 @NgModule({
-  declarations: [HeaderComponent, LanguagePickerComponent, MenuComponent],
+  declarations: [HeaderComponent, LanguagePickerComponent, MenuComponent, CountdownTimerComponent],
   imports: [
     CommonModule,
     TranslateModule,
@@ -29,6 +30,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatButtonModule
   ],
-  exports: [HeaderComponent, TranslateModule]
+  exports: [HeaderComponent, TranslateModule, CountdownTimerComponent]
 })
 export class ComponentsModule {}

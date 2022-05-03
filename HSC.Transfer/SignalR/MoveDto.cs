@@ -11,5 +11,6 @@ namespace HSC.Transfer.SignalR
         public string Origin { get; set; }
         public string Destination { get; set; }
         public string Promotion { get; set; }
+        public int? TimeLeft { get; set; }
     }
 }

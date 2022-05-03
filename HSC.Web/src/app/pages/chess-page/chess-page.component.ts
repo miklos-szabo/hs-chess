@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Color } from 'chessground/types';
 import { KeycloakService } from 'keycloak-angular';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatchFullDataDto, MatchService, MatchStartDto } from 'src/app/api/app.generated';
+import { CountdownTimerComponent } from 'src/app/components/countdown-timer/countdown-timer.component';
 import { EventService } from 'src/app/services/event.service';
+import { MoveDto } from 'src/app/services/signalr/signalr-dtos';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { BettingPopupComponent } from '../chess-board/betting-popup/betting-popup.component';
 
@@ -20,6 +22,17 @@ export class ChessPageComponent implements OnInit {
   orientation: Color | undefined = 'white';
   userName: string;
   matchFullData = new MatchFullDataDto();
+
+  @ViewChild('ownCd', { static: false })
+  ownCountDown!: CountdownTimerComponent;
+
+  @ViewChild('oppCd', { static: false })
+  oppCountDown!: CountdownTimerComponent;
+
+  moveMadeSubject: Subject<MoveDto> = new Subject<MoveDto>();
+  timeRanOutSubject: Subject<boolean> = new Subject<boolean>();
+
+  anyMoveMade = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +50,13 @@ export class ChessPageComponent implements OnInit {
   ngOnInit(): void {
     this.signalrService.joinMatch(this.matchId);
     this.getMatchFullData();
+    this.signalrService.moveReceivedEvent.subscribe((move) => {
+      this.opponentMoveMade(move);
+    });
+
+    this.eventService.resumeGameEvent.subscribe(() => {
+      this.bettingOver();
+    });
   }
 
   getColorFromData(data: MatchStartDto): Color | undefined {
@@ -52,6 +72,11 @@ export class ChessPageComponent implements OnInit {
 
   startBetting(data: MatchStartDto) {
     let color = this.getColorFromData(data);
+    if (color === 'white') {
+      this.ownCountDown.stop();
+    } else {
+      this.oppCountDown.stop();
+    }
     if (color === undefined) return;
     const dialogRef = this.dialog.open(BettingPopupComponent, {
       data: {
@@ -67,7 +92,6 @@ export class ChessPageComponent implements OnInit {
       position: { top: '200px', left: '50px' }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.eventService.resumeGame();
       this.getMatchFullData();
     });
   }
@@ -76,5 +100,38 @@ export class ChessPageComponent implements OnInit {
     this.matchService.getMatchData(this.matchId).subscribe((data) => {
       this.matchFullData = data;
     });
+  }
+
+  ownMoveMade(move: MoveDto) {
+    this.ownCountDown.pause();
+    this.oppCountDown.start();
+
+    move.timeLeft = this.ownCountDown.currentTime;
+    this.signalrService.sendMoveToServer(move, this.matchId);
+  }
+
+  opponentMoveMade(move: MoveDto) {
+    this.oppCountDown.pause();
+    if (move.timeLeft) {
+      this.oppCountDown.currentTime = move.timeLeft;
+    }
+    this.ownCountDown.start();
+    this.moveMadeSubject.next(move);
+  }
+
+  ownTimeRanOut() {
+    this.timeRanOutSubject.next(false);
+  }
+
+  opponentTimeRanOut() {
+    this.timeRanOutSubject.next(true);
+  }
+
+  bettingOver() {
+    if (this.userName === this.matchFullData.whiteUserName) {
+      this.ownCountDown.start();
+    } else {
+      this.oppCountDown.start();
+    }
   }
 }
