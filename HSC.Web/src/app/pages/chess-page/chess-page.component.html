@@ -1,35 +1,48 @@
 <ng-container *ngIf="matchData$ | async as data">
-  <div class="main-container d-flex flex-column justify-center">
-    <div class="d-flex flex-row pb-1">
-      <label class="pr-half">{{ orientation == 'white' ? data.blackUserName : data.whiteUserName }}</label>
-      <label>{{ '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')' }}</label>
-    </div>
+  <div class="d-flex flex-row">
+    <div class="main-container d-flex flex-column justify-center">
+      <div class="d-flex flex-row pb-1">
+        <label class="pr-half">{{ orientation == 'white' ? data.blackUserName : data.whiteUserName }}</label>
+        <label>{{ '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')' }}</label>
+      </div>
 
-    <app-countdown-timer
-      #oppCd
-      [TimeMSec]="15000"
-      [IncrementMSec]="5000"
-      (timeRanOutEvent)="opponentTimeRanOut()"
-    ></app-countdown-timer>
-    <app-chess-board
-      [matchId]="matchId"
-      [color]="getColorFromData(data)"
-      [matchData]="data"
-      (startBettingEvent)="startBetting(data)"
-      [moveEvent]="moveMadeSubject.asObservable()"
-      (ownMoveMade)="ownMoveMade($event)"
-      [timeRanOutEvent]="timeRanOutSubject.asObservable()"
-    ></app-chess-board>
+      <app-countdown-timer
+        #oppCd
+        [TimeMSec]="15000"
+        [IncrementMSec]="5000"
+        (timeRanOutEvent)="opponentTimeRanOut()"
+      ></app-countdown-timer>
+      <app-chess-board
+        [matchId]="matchId"
+        [color]="getColorFromData(data)"
+        [matchData]="data"
+        (startBettingEvent)="startBetting(data)"
+        [moveEvent]="moveMadeSubject.asObservable()"
+        (ownMoveMade)="ownMoveMade($event)"
+        [timeRanOutEvent]="timeRanOutSubject.asObservable()"
+        (historyOutput)="updateHistory($event)"
+        (gameOverEvent)="gameOver()"
+      ></app-chess-board>
 
-    <div class="d-flex flex-row pt-1">
-      <label class="pr-half">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
-      <label>{{ '(' + (orientation == 'white' ? data.whiteRating : data.blackRating) + ')' }}</label>
+      <div class="d-flex flex-row pt-1">
+        <label class="pr-half">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
+        <label>{{ '(' + (orientation == 'white' ? data.whiteRating : data.blackRating) + ')' }}</label>
+      </div>
+      <app-countdown-timer
+        #ownCd
+        [TimeMSec]="15000"
+        [IncrementMSec]="5000"
+        (timeRanOutEvent)="ownTimeRanOut()"
+      ></app-countdown-timer>
     </div>
-    <app-countdown-timer
-      #ownCd
-      [TimeMSec]="15000"
-      [IncrementMSec]="5000"
-      (timeRanOutEvent)="ownTimeRanOut()"
-    ></app-countdown-timer>
+    <div class="d-flex flex-column pl-3">
+      <div *ngFor="let move of history; let i = index; let even = even">
+        <div class="d-flex flex-row align-center" *ngIf="even">
+          <label>{{ getMoveNumberFromMove(i) + '.' }}</label>
+          <label class="pl-2 pr-2">{{ move }}</label>
+          <label *ngIf="history[i + 1]">{{ history[i + 1] }}</label>
+        </div>
+      </div>
+    </div>
   </div>
 </ng-container>

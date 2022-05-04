@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Color } from 'chessground/types';
@@ -10,6 +10,7 @@ import { EventService } from 'src/app/services/event.service';
 import { MoveDto } from 'src/app/services/signalr/signalr-dtos';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { BettingPopupComponent } from '../chess-board/betting-popup/betting-popup.component';
+import { ChessBoardComponent } from '../chess-board/chess-board.component';
 
 @Component({
   selector: 'app-chess-page',
@@ -22,6 +23,7 @@ export class ChessPageComponent implements OnInit {
   orientation: Color | undefined = 'white';
   userName: string;
   matchFullData = new MatchFullDataDto();
+  history: string[] = [];
 
   @ViewChild('ownCd', { static: false })
   ownCountDown!: CountdownTimerComponent;
@@ -133,5 +135,18 @@ export class ChessPageComponent implements OnInit {
     } else {
       this.oppCountDown.start();
     }
+  }
+
+  updateHistory(history: string[]) {
+    this.history = history;
+  }
+
+  getMoveNumberFromMove(moveNumber: number) {
+    return Math.ceil(moveNumber / 2) + 1;
+  }
+
+  gameOver() {
+    this.ownCountDown.stop();
+    this.oppCountDown.stop();
   }
 }

@@ -40,6 +40,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
 
   @Output() startBettingEvent: EventEmitter<void> = new EventEmitter();
   @Output() ownMoveMade: EventEmitter<MoveDto> = new EventEmitter();
+  @Output() historyOutput: EventEmitter<string[]> = new EventEmitter();
+  @Output() gameOverEvent: EventEmitter<void> = new EventEmitter();
 
   constructor(private dialog: MatDialog, private matchService: MatchService, private eventService: EventService) {}
 
@@ -105,6 +107,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   thisPlayerMoved() {
     return (orig: any, dest: any) => {
       this.checkPromotionAndSendMove(orig, dest);
+      this.historyOutput.emit(this.chess.history());
       this.checkForBettingToOpen();
     };
   }
@@ -115,6 +118,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
     } else {
       this.makeOtherPlayersMove(orig, dest);
     }
+    this.historyOutput.emit(this.chess.history());
     this.checkForBettingToOpen();
   }
 
@@ -159,6 +163,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
       this.openEndPopup(result);
       this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
       this.cg.stop();
+      this.gameOverEvent.emit();
     }
   }
 
@@ -184,6 +189,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
       this.openEndPopup(result);
       this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
       this.cg.stop();
+      this.gameOverEvent.emit();
     }
   }
 
@@ -202,6 +208,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
       const result = this.getGameOverReason();
       this.openEndPopup(result);
       this.cg.stop();
+      this.gameOverEvent.emit();
     }
   }
 
@@ -223,6 +230,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
       const result = this.getGameOverReason();
       this.openEndPopup(result);
       this.cg.stop();
+      this.gameOverEvent.emit();
     }
   }
 
@@ -289,5 +297,9 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
 
   resumeMatch() {
     this.cg.set({ turnColor: 'white' });
+  }
+
+  getMoves(): string[] {
+    return this.chess.history();
   }
 }
