@@ -19,10 +19,11 @@ import { ChessBoardComponent } from '../chess-board/chess-board.component';
 })
 export class ChessPageComponent implements OnInit {
   matchId = '';
-  matchData$: Observable<MatchStartDto>;
+  matchData$: Observable<MatchFullDataDto>;
+  startData = new MatchStartDto();
   orientation: Color | undefined = 'white';
   userName: string;
-  matchFullData = new MatchFullDataDto();
+  potAfterBetting: number | undefined = undefined;
   history: string[] = [];
 
   @ViewChild('ownCd', { static: false })
@@ -45,13 +46,12 @@ export class ChessPageComponent implements OnInit {
     private eventService: EventService
   ) {
     this.matchId = this.route.snapshot.params.matchId;
-    this.matchData$ = this.matchService.getMatchStartingData(this.matchId);
+    this.matchData$ = this.matchService.getMatchData(this.matchId);
     this.userName = this.keycloak.getUsername();
   }
 
   ngOnInit(): void {
     this.signalrService.joinMatch(this.matchId);
-    this.getMatchFullData();
     this.signalrService.moveReceivedEvent.subscribe((move) => {
       this.opponentMoveMade(move);
     });
@@ -59,9 +59,13 @@ export class ChessPageComponent implements OnInit {
     this.eventService.resumeGameEvent.subscribe(() => {
       this.bettingOver();
     });
+
+    this.matchService.getMatchStartingData(this.matchId).subscribe((data) => {
+      this.startData = data;
+    });
   }
 
-  getColorFromData(data: MatchStartDto): Color | undefined {
+  getColorFromData(data: MatchFullDataDto): Color | undefined {
     if (this.userName === data.whiteUserName) {
       this.orientation = 'white';
       return 'white';
@@ -72,7 +76,7 @@ export class ChessPageComponent implements OnInit {
     } else return undefined;
   }
 
-  startBetting(data: MatchStartDto) {
+  startBetting(data: MatchFullDataDto) {
     let color = this.getColorFromData(data);
     if (color === 'white') {
       this.ownCountDown.stop();
@@ -83,8 +87,8 @@ export class ChessPageComponent implements OnInit {
     const dialogRef = this.dialog.open(BettingPopupComponent, {
       data: {
         isCurrentPlayerStarting: color === 'white',
-        startingBet: this.matchFullData.minimumBet,
-        maximumBet: this.matchFullData.maximumBet,
+        startingBet: data.minimumBet,
+        maximumBet: data.maximumBet,
         otherUserName: this.userName === data.whiteUserName ? data.blackUserName : data.whiteUserName,
         matchId: this.matchId
       },
@@ -94,13 +98,9 @@ export class ChessPageComponent implements OnInit {
       position: { top: '200px', left: '50px' }
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.getMatchFullData();
-    });
-  }
-
-  getMatchFullData() {
-    this.matchService.getMatchData(this.matchId).subscribe((data) => {
-      this.matchFullData = data;
+      if (result) {
+        this.potAfterBetting = result;
+      }
     });
   }
 
@@ -130,7 +130,7 @@ export class ChessPageComponent implements OnInit {
   }
 
   bettingOver() {
-    if (this.userName === this.matchFullData.whiteUserName) {
+    if (this.userName === this.startData.whiteUserName) {
       this.ownCountDown.start();
     } else {
       this.oppCountDown.start();

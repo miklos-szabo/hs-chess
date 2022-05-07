@@ -12,6 +12,6 @@ namespace HSC.Bll.MatchFinderService
         Task SearchForMatchAsync(SearchingForMatchDto dto);
         Task<List<CustomGameDto>> GetCustomGamesAsync();
         Task CreateCustomGameAsync(CreateCustomGameDto dto);
-        Task<Guid> JoinCustomGame(int challengeId);
+        Task JoinCustomGame(int challengeId);
     }
 }

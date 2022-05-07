@@ -1,6 +1,10 @@
-﻿using HSC.Bll.Hubs;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HSC.Bll.Hubs;
 using HSC.Bll.Hubs.Clients;
+using HSC.Bll.RatingService;
 using HSC.Common.Enums;
+using HSC.Common.Extensions;
 using HSC.Common.RequestContext;
 using HSC.Dal;
 using HSC.Dal.Entities;
@@ -15,33 +19,101 @@ namespace HSC.Bll.MatchFinderService
         private readonly HSCContext _dbContext;
         private readonly IRequestContext _requestContext;
         private readonly IHubContext<ChessHub, IChessClient> _chessHub;
+        private readonly IMapper _mapper;
+        private readonly IRatingService _ratingService;
 
-        public MatchFinderService(HSCContext context, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub)
+        public MatchFinderService(HSCContext context, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub, IMapper mapper, IRatingService ratingService)
         {
             _dbContext = context;
             _requestContext = requestContext;
             _chessHub = chessHub;
+            _mapper = mapper;
+            _ratingService = ratingService;
         }
 
-        public Task CreateCustomGameAsync(CreateCustomGameDto dto)
+        public async Task CreateCustomGameAsync(CreateCustomGameDto dto)
         {
-            throw new NotImplementedException();
+            _dbContext.Challenges.Add(new Challenge
+            {
+                Increment = dto.Increment,
+                TimeLimitMinutes = dto.TimeLimitMinutes,
+                MinimumBet = dto.MinimumBet,
+                MaximumBet = dto.MaximumBet,
+                Offerer = _requestContext.UserName,
+                Receiver = dto.UserName,
+            });
+
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<List<CustomGameDto>> GetCustomGamesAsync()
+        public async Task<List<CustomGameDto>> GetCustomGamesAsync()
         {
-            throw new NotImplementedException();
+            var challenges = await _dbContext.Challenges
+                .Where(c => string.IsNullOrEmpty(c.Receiver) || c.Receiver == _requestContext.UserName)
+                .ProjectTo<CustomGameDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            challenges.ForEach(c => c.IsToMe = c.Receiver == _requestContext.UserName);
+
+            return challenges.OrderBy(c => c.IsToMe).ToList();
         }
 
-        public Task<Guid> JoinCustomGame(int challengeId)
+        public async Task JoinCustomGame(int challengeId)
         {
-            throw new NotImplementedException();
+            var challenge = await _dbContext.Challenges.SingleAsync(c => c.Id == challengeId);
+            _dbContext.Challenges.Remove(challenge);
+
+            var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            var myRating = _ratingService.GetRatingOfUserFromTimeControl(me, challenge.TimeLimitMinutes);
+
+            var otherUser = await _dbContext.Users.SingleAsync(u => u.UserName == challenge.Offerer);
+            var otherUserRating = _ratingService.GetRatingOfUserFromTimeControl(otherUser, challenge.TimeLimitMinutes);
+
+            Random rd = new Random();
+            var firstPlayerColor = rd.Next(0, 1);
+
+            var match = new Dal.Entities.Match
+            {
+                MatchPlayers = new List<MatchPlayer>
+                {
+                    new MatchPlayer
+                    {
+                        UserName = challenge.Offerer,
+                        Color = (Color)firstPlayerColor,
+                        Rating = otherUserRating,
+                        CurrentBet = 0,
+                        IsBetting = (Color)firstPlayerColor == Color.White
+                    },
+                    new MatchPlayer
+                    {
+                        UserName = _requestContext.UserName,
+                        Color = (Color)(1 - firstPlayerColor),
+                        Rating = myRating,
+                        CurrentBet = 0,
+                        IsBetting = (Color)(1 - firstPlayerColor) == Color.White
+                    }
+                },
+                StartTime = DateTime.UtcNow,
+                TimeLimitMinutes = challenge.TimeLimitMinutes,
+                Increment = challenge.Increment,
+                MinimumBet = challenge.MinimumBet,
+                MaximumBet = challenge.MaximumBet,
+            };
+
+            _dbContext.Matches.Add(match);
+            await _dbContext.SaveChangesAsync();
+
+            await _chessHub.Clients.Users(new List<string> { otherUser.UserName, _requestContext.UserName })
+                .ReceiveMatchFound(match.Id);
         }
 
         public async Task SearchForMatchAsync(SearchingForMatchDto dto)
         {
+            var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            var myRating = _ratingService.GetRatingOfUserFromTimeControl(me, dto.TimeLimitMinutes);
+
             var otherPlayer = await _dbContext.SearchingPlayers
-                .Where(sp => sp.Rating == 1000) // TODO rating
+                .Where(sp => sp.Rating <= myRating + 50 && sp.Rating >= myRating - 50)
                 .Where(sp => sp.TimeLimitMinutes == dto.TimeLimitMinutes)
                 .Where(sp => sp.Increment == dto.Increment)
                 .Where(sp => sp.MinimumBet == dto.MinimumBet)
@@ -64,6 +136,8 @@ namespace HSC.Bll.MatchFinderService
             else
             {
                 _dbContext.SearchingPlayers.Remove(otherPlayer);
+                var otherUser = await _dbContext.Users.SingleAsync(u => u.UserName == otherPlayer.UserName);
+                var otherUserRating = _ratingService.GetRatingOfUserFromTimeControl(otherUser, dto.TimeLimitMinutes);
 
                 Random rd = new Random();
                 var firstPlayerColor = rd.Next(0, 1);
@@ -76,7 +150,7 @@ namespace HSC.Bll.MatchFinderService
                         {
                             UserName = otherPlayer.UserName,
                             Color = (Color)firstPlayerColor,
-                            Rating = 1000,
+                            Rating = otherUserRating,
                             CurrentBet = 0,
                             IsBetting = (Color)firstPlayerColor == Color.White
                         },
@@ -84,7 +158,7 @@ namespace HSC.Bll.MatchFinderService
                         {
                             UserName = _requestContext.UserName,
                             Color = (Color)(1 - firstPlayerColor),
-                            Rating = 1000,
+                            Rating = myRating,
                             CurrentBet = 0,
                             IsBetting = (Color)(1 - firstPlayerColor) == Color.White
                         }

@@ -14,9 +14,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MenuComponent } from './header/menu/menu.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CountdownTimerComponent } from './countdown-timer/countdown-timer.component';
+import { CreateCustomPopupComponent } from './create-custom-popup/create-custom-popup.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
-  declarations: [HeaderComponent, LanguagePickerComponent, MenuComponent, CountdownTimerComponent],
+  declarations: [
+    HeaderComponent,
+    LanguagePickerComponent,
+    MenuComponent,
+    CountdownTimerComponent,
+    CreateCustomPopupComponent
+  ],
   imports: [
     CommonModule,
     TranslateModule,
@@ -28,7 +36,8 @@ import { CountdownTimerComponent } from './countdown-timer/countdown-timer.compo
     MatMenuModule,
     MatSlideToggleModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule
   ],
   exports: [HeaderComponent, TranslateModule, CountdownTimerComponent]
 })

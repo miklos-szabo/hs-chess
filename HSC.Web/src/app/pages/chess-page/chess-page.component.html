@@ -8,8 +8,8 @@
 
       <app-countdown-timer
         #oppCd
-        [TimeMSec]="matchFullData.timeLimitMinutes"
-        [IncrementMSec]="matchFullData.increment"
+        [TimeMSec]="data.timeLimitMinutes * 60000"
+        [IncrementMSec]="data.increment * 1000"
         (timeRanOutEvent)="opponentTimeRanOut()"
       ></app-countdown-timer>
       <app-chess-board
@@ -30,8 +30,8 @@
       </div>
       <app-countdown-timer
         #ownCd
-        [TimeMSec]="matchFullData.timeLimitMinutes"
-        [IncrementMSec]="matchFullData.increment"
+        [TimeMSec]="data.timeLimitMinutes * 60000"
+        [IncrementMSec]="data.increment * 1000"
         (timeRanOutEvent)="ownTimeRanOut()"
       ></app-countdown-timer>
     </div>

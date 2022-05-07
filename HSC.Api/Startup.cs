@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.SignalR;
 using OnlineAuction.Api.RequestContext;
 using OnlineAuction.Dal;
 using System.Security.Claims;
+using HSC.Bll.RatingService;
 
 public class Startup
 {
@@ -105,6 +106,7 @@ public class Startup
         services.AddScoped<IFriendService, FriendService>();
         services.AddScoped<IGroupService, GroupService>();
         services.AddSingleton<IUserIdProvider, PreferredUserNameUserIdProvider>();
+        services.AddSingleton<IRatingService, RatingService>();
         services.AddDAL(connectionStringOptions);
         
     }

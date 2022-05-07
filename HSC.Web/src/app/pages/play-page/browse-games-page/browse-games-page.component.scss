@@ -1,0 +1,27 @@
+@import 'src/themes/variables.scss';
+
+.main-container{
+  width: 600px;
+  align-self: center;
+}
+
+
+:host {
+  @include full-height;
+}
+
+.list-row{
+  height: 60px;
+}
+
+.odd-color{
+  background-color: lightgray;
+}
+
+.even-color{
+  background-color: lightslategray;
+}
+
+.text{
+  font-size: 16px;
+}

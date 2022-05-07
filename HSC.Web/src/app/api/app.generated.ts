@@ -1649,7 +1649,7 @@ export class MatchFinderService {
         return _observableOf<void>(null as any);
     }
 
-    joinCustomGame(challengeId: number | undefined): Observable<string> {
+    joinCustomGame(challengeId: number | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/MatchFinder/JoinCustomGame?";
         if (challengeId === null)
             throw new Error("The parameter 'challengeId' cannot be null.");
@@ -1661,7 +1661,6 @@ export class MatchFinderService {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
             })
         };
 
@@ -1672,14 +1671,14 @@ export class MatchFinderService {
                 try {
                     return this.processJoinCustomGame(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<string>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<string>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processJoinCustomGame(response: HttpResponseBase): Observable<string> {
+    protected processJoinCustomGame(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1688,18 +1687,14 @@ export class MatchFinderService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
-            return _observableOf(result200);
+            return _observableOf<void>(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<string>(null as any);
+        return _observableOf<void>(null as any);
     }
 }
 
@@ -2415,13 +2410,14 @@ export interface ISearchingForMatchDto {
 }
 
 export class CustomGameDto implements ICustomGameDto {
-    challengeId!: number;
-    userName?: string | undefined;
-    rating!: number;
+    id!: number;
+    offerer?: string | undefined;
     timeLimitMinutes!: number;
     increment!: number;
     minimumBet!: number;
     maximumBet!: number;
+    receiver?: string | undefined;
+    isToMe!: boolean;
 
     constructor(data?: ICustomGameDto) {
         if (data) {
@@ -2434,13 +2430,14 @@ export class CustomGameDto implements ICustomGameDto {
 
     init(_data?: any) {
         if (_data) {
-            this.challengeId = _data["challengeId"];
-            this.userName = _data["userName"];
-            this.rating = _data["rating"];
+            this.id = _data["id"];
+            this.offerer = _data["offerer"];
             this.timeLimitMinutes = _data["timeLimitMinutes"];
             this.increment = _data["increment"];
             this.minimumBet = _data["minimumBet"];
             this.maximumBet = _data["maximumBet"];
+            this.receiver = _data["receiver"];
+            this.isToMe = _data["isToMe"];
         }
     }
 
@@ -2453,25 +2450,27 @@ export class CustomGameDto implements ICustomGameDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["challengeId"] = this.challengeId;
-        data["userName"] = this.userName;
-        data["rating"] = this.rating;
+        data["id"] = this.id;
+        data["offerer"] = this.offerer;
         data["timeLimitMinutes"] = this.timeLimitMinutes;
         data["increment"] = this.increment;
         data["minimumBet"] = this.minimumBet;
         data["maximumBet"] = this.maximumBet;
+        data["receiver"] = this.receiver;
+        data["isToMe"] = this.isToMe;
         return data;
     }
 }
 
 export interface ICustomGameDto {
-    challengeId: number;
-    userName?: string | undefined;
-    rating: number;
+    id: number;
+    offerer?: string | undefined;
     timeLimitMinutes: number;
     increment: number;
     minimumBet: number;
     maximumBet: number;
+    receiver?: string | undefined;
+    isToMe: boolean;
 }
 
 export class CreateCustomGameDto implements ICreateCustomGameDto {

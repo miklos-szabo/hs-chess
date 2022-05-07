@@ -19,27 +19,27 @@ namespace HSC.Api.Controllers
         }
 
         [HttpPost]
-        public Task SearchForMatchAsync(SearchingForMatchDto dto)
+        public async Task SearchForMatchAsync(SearchingForMatchDto dto)
         {
-            return _matchFinderService.SearchForMatchAsync(dto);
+            await _matchFinderService.SearchForMatchAsync(dto);
         }
 
         [HttpGet]
-        public Task<List<CustomGameDto>> GetCustomGamesAsync()
+        public async Task<List<CustomGameDto>> GetCustomGamesAsync()
         {
-            return _matchFinderService.GetCustomGamesAsync();
+            return await _matchFinderService.GetCustomGamesAsync();
         }
 
         [HttpPost]
-        public Task CreateCustomGameAsync(CreateCustomGameDto dto)
+        public async Task CreateCustomGameAsync(CreateCustomGameDto dto)
         {
-            return _matchFinderService.CreateCustomGameAsync(dto);
+            await _matchFinderService.CreateCustomGameAsync(dto);
         }
 
         [HttpPost]
-        public Task<Guid> JoinCustomGame(int challengeId)
+        public async Task JoinCustomGame(int challengeId)
         {
-            return _matchFinderService.JoinCustomGame(challengeId);
+            await _matchFinderService.JoinCustomGame(challengeId);
         }
     }
 }

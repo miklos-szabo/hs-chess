@@ -53,5 +53,11 @@
   "Betting.OtherPlayerCalled": "{{userName}} megadta a {{amount}}$-os emelésedet",
   "Betting.OtherPlayerRaised": "{{userName}} emelt {{amount}}$-al",
   "Betting.OtherPlayerFolded": "{{userName}} bedobta, a játék tétje {{amount}}$",
-  "Betting.ClosePopup": "Bezárás"
+  "Betting.ClosePopup": "Bezárás",
+  "CreateCustomGame.Title": "Egyéni játék létrehozása",
+  "CreateCustomGame.TimeControl": "Idő",
+  "CreateCustomGame.Bet": "Tét",
+  "CreateCustomGame.CreateButton": "Létrehozás",
+  "CreateCustomGame.Created": "Játék létrehozva, várj amíg valaki elfogadja!",
+  "BrowseGames.Play": "Játék"
 }

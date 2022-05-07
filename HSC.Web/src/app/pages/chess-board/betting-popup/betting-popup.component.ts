@@ -141,6 +141,6 @@ export class BettingPopupComponent implements OnInit, OnDestroy {
   }
 
   closeWindow() {
-    this.dialogRef.close(true);
+    this.dialogRef.close(this.currentBet);
   }
 }

@@ -1,1 +1,16 @@
-<p>browse-games-page works!</p>
+<div class="main-container d-flex flex-column pt-2">
+  <mat-list class="w-100">
+    <mat-list-item *ngFor="let challenge of challenges; let even = even">
+      <div class="d-flex flex-row align-center list-row w-100" [ngClass]="even ? 'even-color' : 'odd-color'">
+        <label class="text pl-1 w-35">{{ challenge.offerer }}</label>
+        <label class="text w-20">{{ challenge.timeLimitMinutes + ' + ' + challenge.increment }}</label>
+        <label class="text w-25">{{ challenge.minimumBet + '$ - ' + challenge.maximumBet + '$' }}</label>
+        <div class="w-20 mr-5">
+          <button mat-raised-button class="w-100 ml-2 mr-2" (click)="joinGame(challenge.id)">
+            {{ 'BrowseGames.Play' | translate }}
+          </button>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

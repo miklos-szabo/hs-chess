@@ -4,6 +4,7 @@ using HSC.Transfer.Friends;
 using HSC.Transfer.Groups;
 using HSC.Transfer.History;
 using HSC.Transfer.Match;
+using HSC.Transfer.Searching;
 using HSC.Transfer.SignalR;
 using HSC.Transfer.User;
 
@@ -46,6 +47,9 @@ namespace HSC.Bll.Mappings
 
             CreateMap<ChatMessage, ChatMessageDto>();
             CreateMap<User, UserContextMenuDto>();
+
+            CreateMap<Challenge, CustomGameDto>();
+
         }
     }
 }

@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
 import { Subject, Subscription } from 'rxjs';
-import { MatchFinderService, SearchingForMatchDto } from 'src/app/api/app.generated';
+import { CreateCustomGameDto, MatchFinderService, SearchingForMatchDto } from 'src/app/api/app.generated';
+import { CreateCustomPopupComponent } from 'src/app/components/create-custom-popup/create-custom-popup.component';
+import { NotificationService } from 'src/app/services/notification.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { SelectorTwoValues } from './time-bet-selector/time-bet-selector.component';
 
@@ -26,7 +30,10 @@ export class QuickMatchPageComponent implements OnInit {
     private matchFinderService: MatchFinderService,
     private router: Router,
     private signalrService: SignalrService,
-    private keyCloak: KeycloakService
+    private keyCloak: KeycloakService,
+    private dialog: MatDialog,
+    private notificationService: NotificationService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {}
@@ -61,5 +68,17 @@ export class QuickMatchPageComponent implements OnInit {
     this.router.navigateByUrl(`/chess/${id}`);
   }
 
-  createCustomGame() {}
+  createCustomGame() {
+    const dialogRef = this.dialog.open(CreateCustomPopupComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.matchFinderService.createCustomGame(result).subscribe(() => {
+          this.matchFoundSubscription = this.signalrService.matchFoundEvent.subscribe((dto) => {
+            this.matchFound(dto);
+          });
+          this.notificationService.success(this.translateService.instant('CreateCustomGame.Created'));
+        });
+      }
+    });
+  }
 }
