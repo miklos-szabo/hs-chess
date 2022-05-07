@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
+import { Subject, Subscription } from 'rxjs';
 import { MatchFinderService, SearchingForMatchDto } from 'src/app/api/app.generated';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { SelectorTwoValues } from './time-bet-selector/time-bet-selector.component';
@@ -13,6 +14,13 @@ import { SelectorTwoValues } from './time-bet-selector/time-bet-selector.compone
 export class QuickMatchPageComponent implements OnInit {
   searchDto: SearchingForMatchDto = new SearchingForMatchDto();
   isSearching = false;
+  hasChosenTime = false;
+  hasChosenBet = false;
+
+  clearTimeSelectionSubject: Subject<void> = new Subject<void>();
+  clearBetSelectionSubject: Subject<void> = new Subject<void>();
+
+  private matchFoundSubscription!: Subscription;
 
   constructor(
     private matchFinderService: MatchFinderService,
@@ -24,12 +32,11 @@ export class QuickMatchPageComponent implements OnInit {
   ngOnInit(): void {}
 
   searchForMatch() {
-    this.signalrService.matchFoundEvent.subscribe((dto) => {
+    this.matchFoundSubscription = this.signalrService.matchFoundEvent.subscribe((dto) => {
       this.matchFound(dto);
     });
     this.searchDto.userName = this.keyCloak.getUsername();
     this.matchFinderService.searchForMatch(this.searchDto).subscribe(() => {
-      // todo noti?
       this.isSearching = true;
     });
   }
@@ -37,17 +44,22 @@ export class QuickMatchPageComponent implements OnInit {
   updateTimeControl(values: SelectorTwoValues) {
     this.searchDto.timeLimitMinutes = values.value1;
     this.searchDto.increment = values.value2;
-    this.signalrService.joinMatch('1');
+    this.hasChosenTime = true;
+    this.clearTimeSelectionSubject.next();
   }
 
   updateBetValue(values: SelectorTwoValues) {
     this.searchDto.minimumBet = values.value1;
     this.searchDto.maximumBet = values.value2;
+    this.hasChosenBet = true;
+    this.clearBetSelectionSubject.next();
   }
 
   matchFound(id: string) {
-    this.signalrService.matchFoundEvent.unsubscribe();
+    this.matchFoundSubscription.unsubscribe();
     this.isSearching = false;
     this.router.navigateByUrl(`/chess/${id}`);
   }
+
+  createCustomGame() {}
 }

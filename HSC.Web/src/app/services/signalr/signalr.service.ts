@@ -23,6 +23,9 @@ export class SignalrService {
   constructor(private keyCloak: KeycloakService) {}
 
   connect() {
+    if (this.connection.state === signalR.HubConnectionState.Connected) {
+      return;
+    }
     this.connection.start().then(() => {
       console.log('Connected to signalr!');
       this.connection.on('ReceiveMove', (move) => this.moveReceivedEvent.emit(move));

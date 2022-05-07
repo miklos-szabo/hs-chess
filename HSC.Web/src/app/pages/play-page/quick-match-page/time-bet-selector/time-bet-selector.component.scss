@@ -1,19 +1,41 @@
 .main-container{
-  width: 100px;
-  height: 60px;
+  width: 200px;
+  height: 140px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: lightgray;
   cursor: pointer;
-  margin: 5px 5px;
+  margin: 3px 3px;
+  border: 2px solid transparent
 }
 
 .value-label{
-  font-size: 20;
+  font-size: 20px;
   cursor: pointer;
 }
 
 .container-selected{
   border: 2px solid blue;
+}
+
+@media screen and (max-width: 1700px){
+  .main-container{
+    width: 150px;
+    height: 100px;
+  }
+  .value-label{
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .main-container {
+    width: 100px;
+    height: 60px;
+  }
+
+  .value-label {
+    font-size: 14px;
+  }
 }

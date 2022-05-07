@@ -1,4 +1,5 @@
 $header-height: 80px;
+$tabs-height: 48px;
 
 $spacing-base: 8px;
 $spacing-half: 0.5 * $spacing-base;
@@ -7,3 +8,22 @@ $color-info: #2f96b4;
 $color-warning: orange;
 $color-error: #e7342c;
 $color-success: green;
+
+
+@mixin full-page-layout {
+  flex-direction: column;
+
+  @media (min-height: 700px) {
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+    height: calc(100vh - #{$header-height});
+  }
+}
+
+@mixin full-height {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}

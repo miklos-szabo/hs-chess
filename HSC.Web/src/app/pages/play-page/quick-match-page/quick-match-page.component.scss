@@ -1,0 +1,32 @@
+@import 'src/themes/variables.scss';
+
+:host{
+  @include full-height;
+}
+
+.main-container{
+  align-self: center;
+}
+
+.time-control-label{
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.search-button{
+  width: 220px;
+  height: 100px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.margins{
+  width: 100%;
+}
+
+@media screen and (min-width: 1100px){
+  .margins{
+    width: 80%;
+  }
+}
+

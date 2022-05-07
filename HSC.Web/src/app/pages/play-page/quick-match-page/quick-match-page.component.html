@@ -1,12 +1,189 @@
-<app-time-bet-selector [value1]="10" [value2]="100" (selectedEvent)="updateTimeControl($event)"></app-time-bet-selector>
-<app-time-bet-selector
-  [value1]="10"
-  [value2]="100"
-  unit="$"
-  (selectedEvent)="updateBetValue($event)"
-></app-time-bet-selector>
-<button (click)="searchForMatch()">Search for match</button>
-<div *ngIf="isSearching" class="d-flex flex-row">
-  <label>Searching for match </label>
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+<div class="d-flex flex-row margins main-container pt-2">
+  <div class="d-flex flex-column w-85">
+    <div class="d-flex flex-row align-center flex-1 w-100">
+      <label class="time-control-label w-15">{{ 'Play.TimeControl' | translate }}</label>
+      <div class="d-flex flex-column w-100">
+        <div class="d-flex flex-row justify-between flex-1">
+          <app-time-bet-selector
+            [value1]="1"
+            [value2]="0"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="1"
+            [value2]="2"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="3"
+            [value2]="0"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="3"
+            [value2]="2"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="5"
+            [value2]="0"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+        </div>
+        <div class="d-flex flex-row justify-between flex-1">
+          <app-time-bet-selector
+            [value1]="5"
+            [value2]="3"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="10"
+            [value2]="0"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="10"
+            [value2]="5"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="15"
+            [value2]="10"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="30"
+            [value2]="15"
+            [separator]="'+'"
+            (selectedEvent)="updateTimeControl($event)"
+            [clearEvent]="clearTimeSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row align-center flex-1 pt-2">
+      <label class="time-control-label w-15">{{ 'Play.Bet' | translate }}</label>
+      <div class="d-flex flex-column w-100">
+        <div class="d-flex flex-row justify-between">
+          <app-time-bet-selector
+            [value1]="0.01"
+            [value2]="0.1"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="0.02"
+            [value2]="0.2"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="0.05"
+            [value2]="0.5"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="0.1"
+            [value2]="1"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="0.2"
+            [value2]="2"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+        </div>
+        <div class="d-flex flex-row justify-between">
+          <app-time-bet-selector
+            [value1]="0.5"
+            [value2]="5"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="1"
+            [value2]="10"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="2"
+            [value2]="20"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="5"
+            [value2]="50"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+          <app-time-bet-selector
+            [value1]="10"
+            [value2]="100"
+            [separator]="'-'"
+            unit="$"
+            (selectedEvent)="updateBetValue($event)"
+            [clearEvent]="clearBetSelectionSubject.asObservable()"
+          ></app-time-bet-selector>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column justify-center align-center self-align-center pl-2">
+    <div *ngIf="isSearching" class="d-flex flex-row pb-1">
+      <label class="pr-1">{{ 'Play.SearchingForMatch' | translate }}</label>
+      <mat-progress-spinner [diameter]="25" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <button
+      class="search-button"
+      mat-raised-button
+      (click)="searchForMatch()"
+      [disabled]="!hasChosenTime || !hasChosenBet"
+    >
+      {{ 'Play.SearchForGame' | translate }}
+    </button>
+    <button class="create-custom-button" mat-raised-button (click)="searchForMatch()">
+      {{ 'Play.CreateCustom' | translate }}
+    </button>
+  </div>
 </div>

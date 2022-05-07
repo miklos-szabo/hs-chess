@@ -28,6 +28,10 @@
   align-items: center;
 }
 
+.self-align-center{
+  align-self: center;
+}
+
 .flex-1{
   flex: 1;
 }
@@ -153,4 +157,9 @@
   color: white !important;
   background: $color-info !important;
   border-color: $color-info;
+}
+
+// Material overwrites
+.mat-tab-body-wrapper{
+  height: 100%;
 }

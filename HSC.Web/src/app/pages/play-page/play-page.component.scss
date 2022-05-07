@@ -1,0 +1,14 @@
+@import 'src/themes/variables.scss';
+
+:host{
+  @include full-page-layout;
+}
+
+::ng-deep mat-tab-header{
+  width: auto;
+  align-self: center;
+}
+
+::ng-deep .mat-tab-label-content{
+  font-size: 18px;
+}

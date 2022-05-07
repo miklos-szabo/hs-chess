@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-time-bet-selector[value1][value2]',
@@ -15,17 +16,37 @@ export class TimeBetSelectorComponent implements OnInit {
   @Input()
   unit = '';
 
+  @Input()
+  separator = '-';
+
+  private clearEventSubscription!: Subscription;
+  @Input() clearEvent!: Observable<void>;
+
   @Output()
   selectedEvent = new EventEmitter<SelectorTwoValues>();
 
   selected = false;
+  justSelected = false;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.clearEvent.subscribe(() => {
+      this.clearSelected();
+    });
+  }
 
   itemClicked() {
     this.selected = true;
+    this.justSelected = true;
     this.selectedEvent.emit({ value1: this.value1, value2: this.value2 });
+  }
+
+  clearSelected() {
+    if (this.justSelected) {
+      this.justSelected = false;
+    } else {
+      this.selected = false;
+    }
   }
 }
 

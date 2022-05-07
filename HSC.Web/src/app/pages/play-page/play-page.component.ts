@@ -8,13 +8,8 @@ import { SignalrService } from 'src/app/services/signalr/signalr.service';
 })
 export class PlayPageComponent implements OnInit {
   constructor(private signalrService: SignalrService) {}
-  message = '';
 
   ngOnInit(): void {
     this.signalrService.connect();
-  }
-
-  getTest() {
-    this.signalrService.joinMatch('4ae1f29c-94ca-4055-8685-9995a766bab8');
   }
 }
