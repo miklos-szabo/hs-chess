@@ -15,6 +15,7 @@ namespace HSC.Bll.Hubs.Clients
         public Task LeaveMatch(Guid matchId);
 
         Task ReceiveMatchFound(Guid matchId);
+        Task ReceiveChallenge(ChallengeDto challenge);
 
         Task ReceiveFold(decimal finalAmount);
         Task ReceiveCheck();

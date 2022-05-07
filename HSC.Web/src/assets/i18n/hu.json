@@ -30,6 +30,9 @@
   "Friends.RequestSent.Success": "Barát kérelem elküldve!",
   "Friends.RequestSent.Error": "A felhasználó nem található.",
   "Friends.Chat.SelectUser": "Válassz egy barátot üzenet írásához!",
+  "Friends.ChallangeSent": "Kihívás elküldve!",
+  "Friends.RequestReceived": "{{userName}} barátkérelmet küldött",
+  "Friends.RequestNotificationButton": "Megnéz",
   "Groups.Title": "Csoportok",
   "Groups.OwnGroups": "Saját csoportok",
   "Groups.OtherGroups": "Egyéb csoportok",
@@ -59,5 +62,7 @@
   "CreateCustomGame.Bet": "Tét",
   "CreateCustomGame.CreateButton": "Létrehozás",
   "CreateCustomGame.Created": "Játék létrehozva, várj amíg valaki elfogadja!",
-  "BrowseGames.Play": "Játék"
+  "BrowseGames.Play": "Játék",
+  "Challenge.Notification": "{{userName}} kihívott egy játékra.",
+  "Challenge.NotificationButton": "Elfogadás"
 }

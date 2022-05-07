@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CustomGameDto } from 'src/app/api/app.generated';
+import { CreateCustomGameDto, CustomGameDto } from 'src/app/api/app.generated';
 
 @Component({
   selector: 'app-create-custom-popup',
@@ -9,7 +9,7 @@ import { CustomGameDto } from 'src/app/api/app.generated';
   styleUrls: ['./create-custom-popup.component.scss']
 })
 export class CreateCustomPopupComponent implements OnInit {
-  customGame = new CustomGameDto();
+  customGame = new CreateCustomGameDto();
   constructor(public dialogRef: MatDialogRef<CreateCustomPopupComponent>) {}
 
   ngOnInit(): void {}

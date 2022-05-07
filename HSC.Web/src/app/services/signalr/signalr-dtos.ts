@@ -10,3 +10,8 @@ export class ChatMessageDto {
   senderUserName = '';
   message = '';
 }
+
+export class ChallengeDto {
+  id!: number;
+  userName = '';
+}

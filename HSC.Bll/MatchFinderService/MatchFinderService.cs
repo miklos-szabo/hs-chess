@@ -9,6 +9,7 @@ using HSC.Common.RequestContext;
 using HSC.Dal;
 using HSC.Dal.Entities;
 using HSC.Transfer.Searching;
+using HSC.Transfer.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +34,7 @@ namespace HSC.Bll.MatchFinderService
 
         public async Task CreateCustomGameAsync(CreateCustomGameDto dto)
         {
-            _dbContext.Challenges.Add(new Challenge
+            var challenge = new Challenge
             {
                 Increment = dto.Increment,
                 TimeLimitMinutes = dto.TimeLimitMinutes,
@@ -41,9 +42,15 @@ namespace HSC.Bll.MatchFinderService
                 MaximumBet = dto.MaximumBet,
                 Offerer = _requestContext.UserName,
                 Receiver = dto.UserName,
-            });
+            };
 
+            _dbContext.Challenges.Add(challenge);
             await _dbContext.SaveChangesAsync();
+
+            if(!string.IsNullOrEmpty(challenge.Receiver))
+            {
+                await _chessHub.Clients.User(challenge.Receiver).ReceiveChallenge(new ChallengeDto{Id = challenge.Id, UserName = challenge.Offerer});
+            }
         }
 
         public async Task<List<CustomGameDto>> GetCustomGamesAsync()

@@ -32,8 +32,7 @@ export class QuickMatchPageComponent implements OnInit {
     private signalrService: SignalrService,
     private keyCloak: KeycloakService,
     private dialog: MatDialog,
-    private notificationService: NotificationService,
-    private translateService: TranslateService
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {}
@@ -76,7 +75,7 @@ export class QuickMatchPageComponent implements OnInit {
           this.matchFoundSubscription = this.signalrService.matchFoundEvent.subscribe((dto) => {
             this.matchFound(dto);
           });
-          this.notificationService.success(this.translateService.instant('CreateCustomGame.Created'));
+          this.notificationService.success('CreateCustomGame.Created');
         });
       }
     });

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FriendDto, FriendRequestDto, FriendService } from 'src/app/api/app.generated';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { FriendDto, FriendRequestDto, FriendService, MatchFinderService } from 'src/app/api/app.generated';
+import { CreateCustomPopupComponent } from 'src/app/components/create-custom-popup/create-custom-popup.component';
 import { EventService } from 'src/app/services/event.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
@@ -14,11 +19,16 @@ export class FriendsPageComponent implements OnInit {
 
   friendRequests: FriendRequestDto[] = [];
   friends: FriendDto[] = [];
+
+  matchFoundSubscription!: Subscription;
   constructor(
     private friendService: FriendService,
     private signalrService: SignalrService,
     private notificationService: NotificationService,
-    private eventService: EventService
+    private eventService: EventService,
+    private dialog: MatDialog,
+    private matchFinderService: MatchFinderService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +74,22 @@ export class FriendsPageComponent implements OnInit {
     );
   }
 
-  challenge(otherUserName: string | undefined) {}
+  challenge(otherUserName: string | undefined) {
+    const dialogRef = this.dialog.open(CreateCustomPopupComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const dto = result;
+        dto.userName = otherUserName;
+        this.matchFinderService.createCustomGame(dto).subscribe(() => {
+          this.matchFoundSubscription = this.signalrService.matchFoundEvent.subscribe((dto) => {
+            this.matchFoundSubscription.unsubscribe();
+            this.router.navigateByUrl(`/chess/${dto}`);
+          });
+          this.notificationService.success('Friends.ChallangeSent');
+        });
+      }
+    });
+  }
 
   friendClicked(userName: string) {
     this.eventService.friendSelected(userName);
