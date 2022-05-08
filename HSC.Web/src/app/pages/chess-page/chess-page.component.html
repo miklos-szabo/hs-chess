@@ -2,8 +2,10 @@
   <div class="d-flex flex-row main-container justify-center align-center h-100">
     <div class="d-flex flex-column justify-center">
       <div class="d-flex flex-row pb-1">
-        <label class="pr-half">{{ orientation == 'white' ? data.blackUserName : data.whiteUserName }}</label>
-        <label>{{ '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')' }}</label>
+        <label class="pr-half user-label">{{ orientation == 'white' ? data.blackUserName : data.whiteUserName }}</label>
+        <label class="user-label">{{
+          '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')'
+        }}</label>
       </div>
 
       <app-chess-board
@@ -20,8 +22,10 @@
       ></app-chess-board>
 
       <div class="d-flex flex-row pt-1">
-        <label class="pr-half">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
-        <label>{{ '(' + (orientation == 'white' ? data.whiteRating : data.blackRating) + ')' }}</label>
+        <label class="pr-half user-label">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
+        <label class="user-label">{{
+          '(' + (orientation == 'white' ? data.whiteRating : data.blackRating) + ')'
+        }}</label>
       </div>
     </div>
     <div class="d-flex flex-column pl-3 data-column">

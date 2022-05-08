@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HSC.Common.Constants;
+using HSC.Common.Enums;
 
 namespace HSC.Bll.HistoryService
 {
@@ -28,8 +30,11 @@ namespace HSC.Bll.HistoryService
 
         public async Task<List<PastGameDto>> GetPastGamesAsync(HistorySearchDto searchDto, int pageSize, int page)
         {
-            // Todo search for results
-            return await _dbContext.Matches
+            var matches = await _dbContext.Matches
+                .Where(m => m.Result != Result.Ongoing)
+                .Where(searchDto.SearchSimpleResult == SearchSimpleResult.Victory, m => m.MatchPlayers.Single(mp => mp.UserName == _requestContext.UserName).IsWinner)
+                .Where(searchDto.SearchSimpleResult == SearchSimpleResult.Defeat, m => m.MatchPlayers.Single(mp => mp.UserName != _requestContext.UserName).IsWinner)
+                .Where(searchDto.SearchSimpleResult == SearchSimpleResult.Draw, m => ResultTypes.Draw.Contains(m.Result))
                 .ProjectTo<PastGameDto>(_mapper.ConfigurationProvider)
                 .Where(m => m.BlackUserName == _requestContext.UserName || m.WhiteUserName == _requestContext.UserName)
                 .OrderByDescending(m => m.StartTime)
@@ -38,9 +43,31 @@ namespace HSC.Bll.HistoryService
                     m.BlackUserName.ToLower().Contains(searchDto.Opponent.ToLower()) :
                     m.WhiteUserName.ToLower().Contains(searchDto.Opponent.ToLower()))
                 .Where(searchDto.IntervalStart.HasValue, m => m.StartTime > searchDto.IntervalStart)
-                .Where(searchDto.IntervalEnd.HasValue, m => m.StartTime > searchDto.IntervalEnd)
+                .Where(searchDto.IntervalEnd.HasValue, m => m.StartTime < searchDto.IntervalEnd)
                 .Skip(page * pageSize).Take(pageSize)
                 .ToListAsync();
+
+            matches.ForEach(m =>
+            {
+                if (ResultTypes.Draw.Contains(m.Result))
+                {
+                    m.SearchSimpleResult = SearchSimpleResult.Draw;
+                    return;
+                }
+
+                var currentUserColor = m.BlackUserName == _requestContext.UserName ? Color.Black : Color.White;
+
+                if (currentUserColor == Color.Black && ResultTypes.BlackWon.Contains(m.Result)
+                    || currentUserColor == Color.White && ResultTypes.WhiteWon.Contains(m.Result))
+                {
+                    m.SearchSimpleResult = SearchSimpleResult.Victory;
+                    return;
+                }
+
+                m.SearchSimpleResult = SearchSimpleResult.Defeat;
+            });
+
+            return matches;
         }
     }
 }

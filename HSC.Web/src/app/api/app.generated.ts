@@ -1171,7 +1171,7 @@ export class HistoryService {
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetPastGames(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -2109,6 +2109,7 @@ export class PastGameDto implements IPastGameDto {
     whiteUserName?: string | undefined;
     whiteRating?: string | undefined;
     result!: Result;
+    searchSimpleResult!: SearchSimpleResult;
     betAmount!: number;
     timeLimitMinutes!: number;
     increment!: number;
@@ -2131,6 +2132,7 @@ export class PastGameDto implements IPastGameDto {
             this.whiteUserName = _data["whiteUserName"];
             this.whiteRating = _data["whiteRating"];
             this.result = _data["result"];
+            this.searchSimpleResult = _data["searchSimpleResult"];
             this.betAmount = _data["betAmount"];
             this.timeLimitMinutes = _data["timeLimitMinutes"];
             this.increment = _data["increment"];
@@ -2153,6 +2155,7 @@ export class PastGameDto implements IPastGameDto {
         data["whiteUserName"] = this.whiteUserName;
         data["whiteRating"] = this.whiteRating;
         data["result"] = this.result;
+        data["searchSimpleResult"] = this.searchSimpleResult;
         data["betAmount"] = this.betAmount;
         data["timeLimitMinutes"] = this.timeLimitMinutes;
         data["increment"] = this.increment;
@@ -2168,6 +2171,7 @@ export interface IPastGameDto {
     whiteUserName?: string | undefined;
     whiteRating?: string | undefined;
     result: Result;
+    searchSimpleResult: SearchSimpleResult;
     betAmount: number;
     timeLimitMinutes: number;
     increment: number;
@@ -2189,9 +2193,16 @@ export enum Result {
     DrawByThreefoldRepetition = 11,
 }
 
+export enum SearchSimpleResult {
+    All = 0,
+    Victory = 1,
+    Defeat = 2,
+    Draw = 3,
+}
+
 export class HistorySearchDto implements IHistorySearchDto {
     opponent?: string | undefined;
-    result!: Result;
+    searchSimpleResult!: SearchSimpleResult;
     intervalStart?: Date | undefined;
     intervalEnd?: Date | undefined;
 
@@ -2207,7 +2218,7 @@ export class HistorySearchDto implements IHistorySearchDto {
     init(_data?: any) {
         if (_data) {
             this.opponent = _data["opponent"];
-            this.result = _data["result"];
+            this.searchSimpleResult = _data["searchSimpleResult"];
             this.intervalStart = _data["intervalStart"] ? new Date(_data["intervalStart"].toString()) : <any>undefined;
             this.intervalEnd = _data["intervalEnd"] ? new Date(_data["intervalEnd"].toString()) : <any>undefined;
         }
@@ -2223,7 +2234,7 @@ export class HistorySearchDto implements IHistorySearchDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["opponent"] = this.opponent;
-        data["result"] = this.result;
+        data["searchSimpleResult"] = this.searchSimpleResult;
         data["intervalStart"] = this.intervalStart ? this.intervalStart.toISOString() : <any>undefined;
         data["intervalEnd"] = this.intervalEnd ? this.intervalEnd.toISOString() : <any>undefined;
         return data;
@@ -2232,7 +2243,7 @@ export class HistorySearchDto implements IHistorySearchDto {
 
 export interface IHistorySearchDto {
     opponent?: string | undefined;
-    result: Result;
+    searchSimpleResult: SearchSimpleResult;
     intervalStart?: Date | undefined;
     intervalEnd?: Date | undefined;
 }

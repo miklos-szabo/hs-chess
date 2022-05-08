@@ -1,1 +1,64 @@
-<p>history-page works!</p>
+<div class="d-flex flex-column main-container h-100">
+  <div class="d-flex flex-row justify-between w-100">
+    <label class="title pl-5 pt-5">{{ 'History.Title' | translate }}</label>
+    <div class="d-flex flex-row align-center">
+      <div class="d-flex flex-column">
+        <mat-form-field appearance="standard">
+          <mat-label>{{ 'History.Opponent' | translate }}</mat-label>
+          <input matInput (keydown)="searchFieldChanged()" [(ngModel)]="searchDto.opponent" />
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>{{ 'History.Result' | translate }}</mat-label>
+          <mat-select (selectionChange)="searchFieldChanged()" [(value)]="searchDto.searchSimpleResult">
+            <mat-option *ngFor="let choice of choices" [value]="choice">
+              {{ 'SearchSimpleResult.' + choice | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="d-flex flex-column pr-5 pl-3">
+        <mat-form-field appearance="standard">
+          <mat-label>{{ 'History.StartDate' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="startpicker"
+            (dateChange)="searchFieldChanged()"
+            [(ngModel)]="searchDto.intervalStart"
+            disabled
+          />
+          <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #startpicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>{{ 'History.EndDate' | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endpicker"
+            (dateChange)="searchFieldChanged()"
+            [(ngModel)]="searchDto.intervalEnd"
+            disabled
+          />
+          <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #endpicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="games-container pt-4">
+    <mat-list>
+      <mat-list-item class="list-item" *ngFor="let match of matches; let even = even">
+        <div class="list-row d-flex flex-row align-center" [ngClass]="{ 'even-row': even }">
+          <div class="pl-2 d-flex flex-column w-25">
+            <label class="text">{{ match.whiteUserName + ' (' + match.whiteRating + ')' }}</label>
+            <label class="text">{{ match.blackUserName + ' (' + match.blackRating + ')' }}</label>
+          </div>
+          <label class="text w-10">{{ 'SearchSimpleResult.' + match.searchSimpleResult | translate }}</label>
+          <label class="text w-15">{{ match.betAmount + '$' }}</label>
+          <label class="text w-15">{{ match.timeLimitMinutes + '+' + match.increment }}</label>
+          <label class="text w-20">{{ match.startTime | date: 'yyyy-MM-dd HH:mm' }}</label>
+          <button mat-raised-button (click)="openGame(match.id)">{{ 'History.Review' | translate }}</button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

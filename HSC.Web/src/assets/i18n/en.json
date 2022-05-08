@@ -82,5 +82,15 @@
   "Result.8": "By stalemate",
   "Result.9": "By agreement",
   "Result.10": "By timeout vs. insufficient material",
-  "Result.11": "By threefold repetition"
+  "Result.11": "By threefold repetition",
+  "History.Title": "Previous games",
+  "History.Opponent": "Opponent",
+  "History.StartDate": "Start date",
+  "History.EndDate": "End date",
+  "History.Result": "Result",
+  "History.Review": "Review",
+  "SearchSimpleResult.0": "All",
+  "SearchSimpleResult.1": "Victory",
+  "SearchSimpleResult.2": "Defeat",
+  "SearchSimpleResult.3": "Draw"
 }

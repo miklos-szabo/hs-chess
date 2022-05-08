@@ -15,6 +15,7 @@ namespace HSC.Transfer.History
         public string WhiteUserName { get; set; }
         public string WhiteRating { get; set; }
         public Result Result { get; set; }
+        public SearchSimpleResult SearchSimpleResult { get; set; }
         public decimal BetAmount { get; set; }
         public int TimeLimitMinutes { get; set; }
         public int Increment { get; set; }

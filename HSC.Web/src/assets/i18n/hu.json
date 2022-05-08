@@ -78,5 +78,15 @@
   "Result.8": "Patt miatt",
   "Result.9": "Megegyezéssel",
   "Result.10": "Idő kifutása miatt elégtelen mennyiségű bábúval szemben",
-  "Result.11": "Háromszori ismétlés miatt"
+  "Result.11": "Háromszori ismétlés miatt",
+  "History.Title": "Előző játékok",
+  "History.Opponent": "Ellenfél",
+  "History.StartDate": "Idő kezdet",
+  "History.EndDate": "Idő vég",
+  "History.Result": "Eredmény",
+  "History.Review": "Megtekintés",
+  "SearchSimpleResult.0": "Mind",
+  "SearchSimpleResult.1": "Győzelem",
+  "SearchSimpleResult.2": "Vereség",
+  "SearchSimpleResult.3": "Döntetlen"
 }

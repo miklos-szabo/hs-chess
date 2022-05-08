@@ -37,6 +37,10 @@ import { GroupDetailsPageComponent } from './pages/groups-page/group-details-pag
 import { BettingPopupComponent } from './pages/chess-board/betting-popup/betting-popup.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -97,6 +101,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatButtonModule,
     MatSliderModule,
     MatTooltipModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     TranslateModule.forRoot({
       loader: {
@@ -108,6 +115,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     })
   ],
   providers: [
+    DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
     {
       provide: APP_INITIALIZER,

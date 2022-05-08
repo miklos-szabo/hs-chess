@@ -18,8 +18,8 @@ namespace HSC.Api.Controllers
             _historyService = historyService;
         }
 
-        [HttpGet]
-        public async Task<List<PastGameDto>> GetPastGamesAsync(HistorySearchDto searchDto, int pageSize, int page)
+        [HttpPost]
+        public async Task<List<PastGameDto>> GetPastGamesAsync([FromBody]HistorySearchDto searchDto, int pageSize, int page)
         {
             return await _historyService.GetPastGamesAsync(searchDto, pageSize, page);
         }
