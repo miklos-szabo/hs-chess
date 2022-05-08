@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Color } from 'chessground/types';
@@ -17,7 +17,7 @@ import { HistoryMoveDto } from '../chess-board/chess-board.component';
   templateUrl: './chess-page.component.html',
   styleUrls: ['./chess-page.component.scss']
 })
-export class ChessPageComponent implements OnInit, OnDestroy {
+export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   matchId = '';
   matchData$: Observable<MatchFullDataDto>;
   startData = new MatchStartDto();
@@ -36,8 +36,8 @@ export class ChessPageComponent implements OnInit, OnDestroy {
   moveMadeSubject: Subject<MoveDto> = new Subject<MoveDto>();
   matchEndedSubject: Subject<Result> = new Subject<Result>();
   setFenSubject: Subject<string> = new Subject<string>();
+  flipBoardSubject: Subject<void> = new Subject<void>();
 
-  initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
   currentlySelectedMove = -1;
   anyMoveMade = false;
 
@@ -52,7 +52,8 @@ export class ChessPageComponent implements OnInit, OnDestroy {
     private signalrService: SignalrService,
     private keycloak: KeycloakService,
     private dialog: MatDialog,
-    private eventService: EventService
+    private eventService: EventService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.matchId = this.route.snapshot.params.matchId;
     this.matchData$ = this.matchService.getMatchData(this.matchId);
@@ -87,6 +88,10 @@ export class ChessPageComponent implements OnInit, OnDestroy {
     this.resumeGameSubscription.unsubscribe();
     this.drawOfferReceivedSubscription.unsubscribe();
     this.matchEndedSubscription.unsubscribe();
+  }
+
+  ngAfterViewChecked(): void {
+    this.cdRef.detectChanges();
   }
 
   getColorFromData(data: MatchFullDataDto): Color | undefined {
@@ -223,14 +228,14 @@ export class ChessPageComponent implements OnInit, OnDestroy {
   moveToStart() {
     if (this.currentlySelectedMove === -1) return;
     this.currentlySelectedMove = -1;
-    this.setFenSubject.next(this.initialFen);
+    this.setFenSubject.next('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
   }
 
   moveBack() {
     if (this.currentlySelectedMove === -1) return;
     this.currentlySelectedMove--;
     if (this.currentlySelectedMove === -1) {
-      this.setFenSubject.next(this.initialFen);
+      this.setFenSubject.next('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
     } else {
       this.setFenSubject.next(this.history[this.currentlySelectedMove].fen);
     }
@@ -252,5 +257,16 @@ export class ChessPageComponent implements OnInit, OnDestroy {
     if (this.currentlySelectedMove === moveIndex) return;
     this.currentlySelectedMove = moveIndex;
     this.setFenSubject.next(this.history[moveIndex].fen);
+  }
+
+  flipBoard() {
+    this.flipBoardSubject.next();
+    this.orientation = this.orientation === 'white' ? 'black' : 'white';
+    this.cdRef.detectChanges();
+  }
+
+  loadFullHistory(history: HistoryMoveDto[]) {
+    this.history = history;
+    this.currentlySelectedMove = this.history.length - 1;
   }
 }

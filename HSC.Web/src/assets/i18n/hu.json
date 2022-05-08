@@ -68,6 +68,7 @@
   "Game.CurrentPot": "Jelenlegi tét: ",
   "Game.DrawTooltip": "Döntetlen ajánlása",
   "Game.ResignToolTip": "Feladás",
+  "Game.FlipBoardToolTip": "Tábla megfordítása",
   "Result.1" : "Idő kifutása miatt",
   "Result.2": "Matt miatt",
   "Result.3": "Feladás miatt",

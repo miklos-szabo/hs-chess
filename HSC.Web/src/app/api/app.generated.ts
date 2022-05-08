@@ -2306,6 +2306,8 @@ export class MatchFullDataDto implements IMatchFullDataDto {
     minimumBet!: number;
     maximumBet!: number;
     finalPot!: number;
+    isHistoryMode!: boolean;
+    moves?: string | undefined;
 
     constructor(data?: IMatchFullDataDto) {
         if (data) {
@@ -2327,6 +2329,8 @@ export class MatchFullDataDto implements IMatchFullDataDto {
             this.minimumBet = _data["minimumBet"];
             this.maximumBet = _data["maximumBet"];
             this.finalPot = _data["finalPot"];
+            this.isHistoryMode = _data["isHistoryMode"];
+            this.moves = _data["moves"];
         }
     }
 
@@ -2348,6 +2352,8 @@ export class MatchFullDataDto implements IMatchFullDataDto {
         data["minimumBet"] = this.minimumBet;
         data["maximumBet"] = this.maximumBet;
         data["finalPot"] = this.finalPot;
+        data["isHistoryMode"] = this.isHistoryMode;
+        data["moves"] = this.moves;
         return data;
     }
 }
@@ -2362,6 +2368,8 @@ export interface IMatchFullDataDto {
     minimumBet: number;
     maximumBet: number;
     finalPot: number;
+    isHistoryMode: boolean;
+    moves?: string | undefined;
 }
 
 export class SearchingForMatchDto implements ISearchingForMatchDto {

@@ -1,11 +1,13 @@
 <ng-container *ngIf="matchData$ | async as data">
   <div class="d-flex flex-row main-container justify-center align-center h-100">
     <div class="d-flex flex-column justify-center">
-      <div class="d-flex flex-row pb-1">
-        <label class="pr-half user-label">{{ orientation == 'white' ? data.blackUserName : data.whiteUserName }}</label>
-        <label class="user-label">{{
-          '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')'
-        }}</label>
+      <div *ngIf="orientation === 'white'" class="d-flex flex-row pb-1">
+        <label class="pr-half user-label">{{ data.blackUserName }}</label>
+        <label class="user-label">{{ '(' + data.blackRating + ')' }}</label>
+      </div>
+      <div *ngIf="orientation === 'black'" class="d-flex flex-row pb-1">
+        <label class="pr-half user-label">{{ data.whiteUserName }}</label>
+        <label class="user-label">{{ '(' + data.whiteRating + ')' }}</label>
       </div>
 
       <app-chess-board
@@ -19,17 +21,24 @@
         (historyOutput)="updateHistory($event)"
         (gameOverEvent)="gameOver()"
         [loadFenEvent]="setFenSubject.asObservable()"
+        [historyMode]="data.isHistoryMode"
+        [moves]="data.moves"
+        [flipBoardEvent]="flipBoardSubject.asObservable()"
+        (loadHistoryEvent)="loadFullHistory($event)"
       ></app-chess-board>
 
-      <div class="d-flex flex-row pt-1">
-        <label class="pr-half user-label">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
-        <label class="user-label">{{
-          '(' + (orientation == 'white' ? data.whiteRating : data.blackRating) + ')'
-        }}</label>
+      <div *ngIf="orientation === 'white'" class="d-flex flex-row pt-1">
+        <label class="pr-half user-label">{{ data.whiteUserName }}</label>
+        <label class="user-label">{{ '(' + data.whiteRating + ')' }}</label>
+      </div>
+      <div *ngIf="orientation === 'black'" class="d-flex flex-row pt-1">
+        <label class="pr-half user-label">{{ data.blackUserName }}</label>
+        <label class="user-label">{{ '(' + data.blackRating + ')' }}</label>
       </div>
     </div>
     <div class="d-flex flex-column pl-3 data-column">
       <app-countdown-timer
+        *ngIf="!data.isHistoryMode"
         #oppCd
         [TimeMSec]="data.timeLimitMinutes * 60000"
         [IncrementMSec]="data.increment * 1000"
@@ -58,7 +67,7 @@
         </div>
       </div>
       <div class="d-flex flex-row justify-between align-center actions">
-        <div class="d-flex flex-row align-center">
+        <div *ngIf="!data.isHistoryMode" class="d-flex flex-row align-center">
           <button mat-icon-button (click)="resign()" matTooltip="{{ 'Game.ResignToolTip' | translate }}">
             <mat-icon>flag</mat-icon>
           </button>
@@ -69,6 +78,11 @@
             matTooltip="{{ 'Game.DrawTooltip' | translate }}"
           >
             <mat-icon>compare_arrows</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="data.isHistoryMode" class="d-flex flex-row align-center">
+          <button mat-icon-button (click)="flipBoard()" matTooltip="{{ 'Game.FlipBoardToolTip' | translate }}">
+            <mat-icon>swap_vert</mat-icon>
           </button>
         </div>
         <div class="d-flex flex-row align-center">
@@ -82,6 +96,7 @@
       </div>
 
       <app-countdown-timer
+        *ngIf="!data.isHistoryMode"
         #ownCd
         [TimeMSec]="data.timeLimitMinutes * 60000"
         [IncrementMSec]="data.increment * 1000"

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HSC.Common.Enums;
 
 namespace HSC.Transfer.Match
 {
@@ -17,6 +18,7 @@ namespace HSC.Transfer.Match
         public decimal MinimumBet { get; set; }
         public decimal MaximumBet { get; set; }
         public decimal FinalPot { get; set; }
-
+        public bool IsHistoryMode { get; set; }
+        public string Moves { get; set; }
     }
 }

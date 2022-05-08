@@ -97,6 +97,7 @@ namespace HSC.Bll.Match
         {
             var match = await _dbContext.Matches.SingleAsync(m => m.Id == matchId);
 
+            if (!string.IsNullOrEmpty(match.Moves)) return;
             match.Moves = pgn;
 
             await _dbContext.SaveChangesAsync();

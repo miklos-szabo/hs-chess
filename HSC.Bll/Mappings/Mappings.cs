@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HSC.Common.Enums;
 using HSC.Dal.Entities;
 using HSC.Transfer.Friends;
 using HSC.Transfer.Groups;
@@ -15,17 +16,18 @@ namespace HSC.Bll.Mappings
         public Mappings()
         {
             CreateMap<Dal.Entities.Match, MatchStartDto>()
-                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).UserName))
-                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).Rating))
-                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).UserName))
-                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).Rating));
+                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).UserName))
+                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).Rating))
+                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).UserName))
+                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).Rating));
 
             CreateMap<Dal.Entities.Match, MatchFullDataDto>()
-                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).UserName))
-                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).Rating))
-                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).UserName))
-                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).Rating))
-                .ForMember(x => x.FinalPot, o => o.MapFrom(m => m.MatchPlayers.Max(mp => mp.CurrentBet)));
+                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).UserName))
+                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).Rating))
+                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).UserName))
+                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).Rating))
+                .ForMember(x => x.FinalPot, o => o.MapFrom(m => m.MatchPlayers.Max(mp => mp.CurrentBet)))
+                .ForMember(x => x.IsHistoryMode, o => o.MapFrom(m => m.Result != Result.Ongoing));
 
             CreateMap<Group, GroupDto>()
                 .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()));
@@ -40,10 +42,10 @@ namespace HSC.Bll.Mappings
             CreateMap<User, UserFullDetailsDto>();
 
             CreateMap<Dal.Entities.Match, PastGameDto>()
-                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).UserName))
-                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.White).Rating))
-                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).UserName))
-                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Common.Enums.Color.Black).Rating))
+                .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).UserName))
+                .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).Rating))
+                .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).UserName))
+                .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).Rating))
                 .ForMember(x => x.BetAmount, o => o.MapFrom(m => m.MatchPlayers.Max(mp => mp.CurrentBet)));
 
             CreateMap<ChatMessage, ChatMessageDto>();

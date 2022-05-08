@@ -72,6 +72,7 @@
   "Game.CurrentPot": "Current pot: ",
   "Game.DrawTooltip": "Offer draw",
   "Game.ResignToolTip": "Resign",
+  "Game.FlipBoardToolTip": "Flip board",
   "Result.1" : "By timeout",
   "Result.2": "By checkmate",
   "Result.3": "By resignation",

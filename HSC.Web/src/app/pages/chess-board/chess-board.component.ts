@@ -32,6 +32,12 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   @Input()
   matchData: MatchStartDto = new MatchStartDto();
 
+  @Input()
+  historyMode = false;
+
+  @Input()
+  moves: string | undefined = '';
+
   private moveSubscription!: Subscription;
   @Input() moveEvent!: Observable<MoveDto>;
 
@@ -41,56 +47,96 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   private loadFenSubscription!: Subscription;
   @Input() loadFenEvent!: Observable<string>;
 
+  private flipBoardSubscription!: Subscription;
+  @Input() flipBoardEvent!: Observable<void>;
+
   @Output() startBettingEvent: EventEmitter<void> = new EventEmitter();
   @Output() ownMoveMade: EventEmitter<MoveDto> = new EventEmitter();
   @Output() historyOutput: EventEmitter<HistoryMoveDto> = new EventEmitter();
   @Output() gameOverEvent: EventEmitter<void> = new EventEmitter();
+  @Output() loadHistoryEvent: EventEmitter<HistoryMoveDto[]> = new EventEmitter();
+
+  currentOrientation: Color | undefined;
 
   constructor(private dialog: MatDialog, private matchService: MatchService, private eventService: EventService) {}
 
   ngOnInit(): void {
-    this.cg = Chessground(document.getElementById('board')!, {
-      turnColor: 'white',
-      orientation: this.color,
-      movable: {
-        color: this.color,
-        free: false,
-        dests: this.getDestinations(this.chess)
-      },
-      draggable: {
-        showGhost: true
-      }
-    });
-    this.cg.set({
-      movable: {
-        events: {
-          after: this.thisPlayerMoved()
+    if (!this.historyMode) {
+      this.cg = Chessground(document.getElementById('board')!, {
+        turnColor: 'white',
+        orientation: this.color,
+        movable: {
+          color: this.color,
+          free: false,
+          dests: this.getDestinations(this.chess)
+        },
+        draggable: {
+          showGhost: true
         }
-      }
-    });
+      });
+      this.cg.set({
+        movable: {
+          events: {
+            after: this.thisPlayerMoved()
+          }
+        }
+      });
 
-    this.moveSubscription = this.moveEvent.subscribe((move) => {
-      this.otherPlayerMoved(move.origin, move.destination, move.promotion);
-    });
+      this.moveSubscription = this.moveEvent.subscribe((move) => {
+        this.otherPlayerMoved(move.origin, move.destination, move.promotion);
+      });
 
-    this.matchEndedSubscription = this.matchEndedEvent.subscribe((result) => {
-      this.openEndPopup(result);
-      this.cg.stop();
-    });
+      this.matchEndedSubscription = this.matchEndedEvent.subscribe((result) => {
+        this.matchService.saveMatchPgn(this.matchId, this.chess.pgn()).subscribe(() => {});
+        this.openEndPopup(result);
+        this.cg.stop();
+      });
 
-    this.eventService.resumeGameEvent.subscribe(() => {
-      this.resumeMatch();
-    });
+      this.eventService.resumeGameEvent.subscribe(() => {
+        this.resumeMatch();
+      });
 
-    this.loadFenSubscription = this.loadFenEvent.subscribe((fen) => {
-      this.loadFen(fen);
-    });
+      this.loadFenSubscription = this.loadFenEvent.subscribe((fen) => {
+        this.loadFen(fen);
+      });
+    } else {
+      this.cg = Chessground(document.getElementById('board')!, {
+        turnColor: undefined,
+        orientation: this.color,
+        movable: {
+          color: undefined,
+          free: false
+        }
+      });
+
+      this.chess.load_pgn(this.moves!);
+      this.cg.set({
+        fen: this.chess.fen()
+      });
+
+      this.flipBoardSubscription = this.flipBoardEvent.subscribe(() => {
+        this.flipBoard();
+      });
+
+      this.loadHistoryEvent.emit(this.getFullMoveHistory());
+
+      this.loadFenSubscription = this.loadFenEvent.subscribe((fen) => {
+        this.loadFen(fen);
+      });
+
+      this.currentOrientation = this.color;
+    }
   }
 
   ngOnDestroy(): void {
-    this.moveSubscription.unsubscribe();
-    this.matchEndedSubscription.unsubscribe();
-    this.loadFenSubscription.unsubscribe();
+    if (!this.historyMode) {
+      this.moveSubscription.unsubscribe();
+      this.matchEndedSubscription.unsubscribe();
+      this.loadFenSubscription.unsubscribe();
+    } else {
+      this.flipBoardSubscription.unsubscribe();
+      this.loadFenSubscription.unsubscribe();
+    }
   }
 
   getDestinations(chess: ChessInstance): Map<Key, Key[]> {
@@ -165,7 +211,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
     if (this.chess.game_over()) {
       const result = this.getGameOverReason();
       this.openEndPopup(result);
-      this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
+      this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer()).subscribe(() => {});
+      this.matchService.saveMatchPgn(this.matchId, this.chess.pgn()).subscribe(() => {});
       this.cg.stop();
       this.gameOverEvent.emit();
     }
@@ -191,7 +238,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
     if (this.chess.game_over()) {
       const result = this.getGameOverReason();
       this.openEndPopup(result);
-      this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
+      this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer()).subscribe(() => {});
+      this.matchService.saveMatchPgn(this.matchId, this.chess.pgn()).subscribe(() => {});
       this.cg.stop();
       this.gameOverEvent.emit();
     }
@@ -309,6 +357,25 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
     this.cg.set({
       fen: fen
     });
+  }
+
+  flipBoard() {
+    let newOrientation: Color = this.currentOrientation === 'black' ? 'white' : 'black';
+    this.currentOrientation = newOrientation;
+    this.cg.set({
+      orientation: newOrientation
+    });
+  }
+
+  getFullMoveHistory(): HistoryMoveDto[] {
+    let moves = this.chess.history({ verbose: true });
+    this.chess.reset();
+    let history: HistoryMoveDto[] = [];
+    moves.forEach((m) => {
+      this.chess.move(m);
+      history.push({ move: m, fen: this.chess.fen() });
+    });
+    return history;
   }
 }
 
