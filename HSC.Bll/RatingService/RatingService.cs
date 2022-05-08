@@ -16,5 +16,13 @@ namespace HSC.Bll.RatingService
             if (timeLimitMinutes < 20) return user.RatingRapid;
             return user.RatingClassical;
         }
+
+        public void ModifyRating(User user, int timeLimitMinutes, int byAmount)
+        {
+            if (timeLimitMinutes < 3) user.RatingBullet += byAmount;
+            else if (timeLimitMinutes < 10) user.RatingBlitz += byAmount;
+            else if (timeLimitMinutes < 20) user.RatingRapid += byAmount;
+            else user.RatingClassical += byAmount;
+        }
     }
 }

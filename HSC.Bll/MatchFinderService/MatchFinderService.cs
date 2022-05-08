@@ -88,7 +88,7 @@ namespace HSC.Bll.MatchFinderService
                         UserName = challenge.Offerer,
                         Color = (Color)firstPlayerColor,
                         Rating = otherUserRating,
-                        CurrentBet = 0,
+                        CurrentBet = challenge.MinimumBet,
                         IsBetting = (Color)firstPlayerColor == Color.White
                     },
                     new MatchPlayer
@@ -96,7 +96,7 @@ namespace HSC.Bll.MatchFinderService
                         UserName = _requestContext.UserName,
                         Color = (Color)(1 - firstPlayerColor),
                         Rating = myRating,
-                        CurrentBet = 0,
+                        CurrentBet = challenge.MaximumBet,
                         IsBetting = (Color)(1 - firstPlayerColor) == Color.White
                     }
                 },
@@ -158,7 +158,7 @@ namespace HSC.Bll.MatchFinderService
                             UserName = otherPlayer.UserName,
                             Color = (Color)firstPlayerColor,
                             Rating = otherUserRating,
-                            CurrentBet = 0,
+                            CurrentBet = dto.MinimumBet,
                             IsBetting = (Color)firstPlayerColor == Color.White
                         },
                         new MatchPlayer
@@ -166,7 +166,7 @@ namespace HSC.Bll.MatchFinderService
                             UserName = _requestContext.UserName,
                             Color = (Color)(1 - firstPlayerColor),
                             Rating = myRating,
-                            CurrentBet = 0,
+                            CurrentBet = dto.MinimumBet,
                             IsBetting = (Color)(1 - firstPlayerColor) == Color.White
                         }
                     },

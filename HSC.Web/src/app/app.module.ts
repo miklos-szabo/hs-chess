@@ -36,7 +36,7 @@ import { CreateGroupComponent } from './pages/groups-page/create-group/create-gr
 import { GroupDetailsPageComponent } from './pages/groups-page/group-details-page/group-details-page.component';
 import { BettingPopupComponent } from './pages/chess-board/betting-popup/betting-popup.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { CountdownTimerComponent } from './components/countdown-timer/countdown-timer.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -96,6 +96,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatSnackBarModule,
     MatButtonModule,
     MatSliderModule,
+    MatTooltipModule,
 
     TranslateModule.forRoot({
       loader: {

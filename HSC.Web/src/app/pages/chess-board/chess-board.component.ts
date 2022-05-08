@@ -35,12 +35,15 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   private moveSubscription!: Subscription;
   @Input() moveEvent!: Observable<MoveDto>;
 
-  private timeRanOutSubscription!: Subscription;
-  @Input() timeRanOutEvent!: Observable<boolean>; // true if this player won
+  private matchEndedSubscription!: Subscription;
+  @Input() matchEndedEvent!: Observable<Result>; // true if this player won
+
+  private loadFenSubscription!: Subscription;
+  @Input() loadFenEvent!: Observable<string>;
 
   @Output() startBettingEvent: EventEmitter<void> = new EventEmitter();
   @Output() ownMoveMade: EventEmitter<MoveDto> = new EventEmitter();
-  @Output() historyOutput: EventEmitter<string[]> = new EventEmitter();
+  @Output() historyOutput: EventEmitter<HistoryMoveDto> = new EventEmitter();
   @Output() gameOverEvent: EventEmitter<void> = new EventEmitter();
 
   constructor(private dialog: MatDialog, private matchService: MatchService, private eventService: EventService) {}
@@ -70,25 +73,24 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
       this.otherPlayerMoved(move.origin, move.destination, move.promotion);
     });
 
-    this.timeRanOutSubscription = this.timeRanOutEvent.subscribe((weWon) => {
-      let whitesTurn = this.chess.turn() === 'w';
-      let result = whitesTurn ? Result.BlackWonByTimeOut : Result.WhiteWonByTimeout;
+    this.matchEndedSubscription = this.matchEndedEvent.subscribe((result) => {
       this.openEndPopup(result);
-      if (weWon) {
-        // Winner sends to server
-        this.matchService.matchOver(this.matchId, result, this.getUserNameOfNextPlayer());
-      }
       this.cg.stop();
     });
 
     this.eventService.resumeGameEvent.subscribe(() => {
       this.resumeMatch();
     });
+
+    this.loadFenSubscription = this.loadFenEvent.subscribe((fen) => {
+      this.loadFen(fen);
+    });
   }
 
   ngOnDestroy(): void {
     this.moveSubscription.unsubscribe();
-    this.timeRanOutSubscription.unsubscribe();
+    this.matchEndedSubscription.unsubscribe();
+    this.loadFenSubscription.unsubscribe();
   }
 
   getDestinations(chess: ChessInstance): Map<Key, Key[]> {
@@ -107,7 +109,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   thisPlayerMoved() {
     return (orig: any, dest: any) => {
       this.checkPromotionAndSendMove(orig, dest);
-      this.historyOutput.emit(this.chess.history());
+      const history = this.chess.history({ verbose: true });
+      this.historyOutput.emit({ move: history[history.length - 1], fen: this.chess.fen() });
       this.checkForBettingToOpen();
     };
   }
@@ -118,7 +121,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
     } else {
       this.makeOtherPlayersMove(orig, dest);
     }
-    this.historyOutput.emit(this.chess.history());
+    const history = this.chess.history({ verbose: true });
+    this.historyOutput.emit({ move: history[history.length - 1], fen: this.chess.fen() });
     this.checkForBettingToOpen();
   }
 
@@ -274,8 +278,10 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
     this.dialog.open(EndPopupComponent, {
       data: {
         color: this.color,
-        result: result
+        result: result,
+        matchId: this.matchId
       },
+      width: '350px',
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
   }
@@ -299,7 +305,15 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
     this.cg.set({ turnColor: 'white' });
   }
 
-  getMoves(): string[] {
-    return this.chess.history();
+  loadFen(fen: string) {
+    this.cg.set({
+      fen: fen
+    });
   }
+}
+
+export class HistoryMoveDto {
+  move!: Move;
+  fen!: string;
+  selected?: boolean = false;
 }

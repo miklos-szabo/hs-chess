@@ -1,17 +1,11 @@
 <ng-container *ngIf="matchData$ | async as data">
-  <div class="d-flex flex-row">
-    <div class="main-container d-flex flex-column justify-center">
+  <div class="d-flex flex-row main-container justify-center align-center h-100">
+    <div class="d-flex flex-column justify-center">
       <div class="d-flex flex-row pb-1">
         <label class="pr-half">{{ orientation == 'white' ? data.blackUserName : data.whiteUserName }}</label>
         <label>{{ '(' + (orientation == 'white' ? data.blackRating : data.whiteRating) + ')' }}</label>
       </div>
 
-      <app-countdown-timer
-        #oppCd
-        [TimeMSec]="data.timeLimitMinutes * 60000"
-        [IncrementMSec]="data.increment * 1000"
-        (timeRanOutEvent)="opponentTimeRanOut()"
-      ></app-countdown-timer>
       <app-chess-board
         [matchId]="matchId"
         [color]="getColorFromData(data)"
@@ -19,30 +13,76 @@
         (startBettingEvent)="startBetting(data)"
         [moveEvent]="moveMadeSubject.asObservable()"
         (ownMoveMade)="ownMoveMade($event)"
-        [timeRanOutEvent]="timeRanOutSubject.asObservable()"
+        [matchEndedEvent]="matchEndedSubject.asObservable()"
         (historyOutput)="updateHistory($event)"
         (gameOverEvent)="gameOver()"
+        [loadFenEvent]="setFenSubject.asObservable()"
       ></app-chess-board>
 
       <div class="d-flex flex-row pt-1">
         <label class="pr-half">{{ orientation == 'white' ? data.whiteUserName : data.blackUserName }}</label>
         <label>{{ '(' + (orientation == 'white' ? data.whiteRating : data.blackRating) + ')' }}</label>
       </div>
+    </div>
+    <div class="d-flex flex-column pl-3 data-column">
+      <app-countdown-timer
+        #oppCd
+        [TimeMSec]="data.timeLimitMinutes * 60000"
+        [IncrementMSec]="data.increment * 1000"
+      ></app-countdown-timer>
+      <label class="pot-label pt-1">{{
+        ('Game.CurrentPot' | translate) + (potAfterBetting ?? data.minimumBet) + '$'
+      }}</label>
+      <div class="flex-1 pt-2 pb-2 history">
+        <div *ngFor="let move of history; let i = index; let even = even">
+          <div class="d-flex flex-row align-center" *ngIf="even">
+            <label>{{ getMoveNumberFromMove(i) + '.' }}</label>
+            <label
+              (click)="moveToSpecificPosition(i)"
+              class="move-label"
+              [ngClass]="{ 'move-selected': currentlySelectedMove === i }"
+              >{{ move.move.san }}</label
+            >
+            <label
+              (click)="moveToSpecificPosition(i + 1)"
+              *ngIf="history[i + 1]"
+              class="move-label"
+              [ngClass]="{ 'move-selected': currentlySelectedMove === i + 1 }"
+              >{{ history[i + 1].move.san }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-row justify-between align-center actions">
+        <div class="d-flex flex-row align-center">
+          <button mat-icon-button (click)="resign()" matTooltip="{{ 'Game.ResignToolTip' | translate }}">
+            <mat-icon>flag</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="draw()"
+            [ngClass]="{ 'orange-color': hasOngoingDrawOffer }"
+            matTooltip="{{ 'Game.DrawTooltip' | translate }}"
+          >
+            <mat-icon>compare_arrows</mat-icon>
+          </button>
+        </div>
+        <div class="d-flex flex-row align-center">
+          <button mat-icon-button (click)="moveToStart()">
+            <mat-icon>first_page</mat-icon>
+          </button>
+          <button mat-icon-button (click)="moveBack()"><mat-icon>navigate_before</mat-icon></button>
+          <button mat-icon-button (click)="moveForward()"><mat-icon>navigate_next</mat-icon></button>
+          <button mat-icon-button (click)="moveToLast()"><mat-icon>last_page</mat-icon></button>
+        </div>
+      </div>
+
       <app-countdown-timer
         #ownCd
         [TimeMSec]="data.timeLimitMinutes * 60000"
         [IncrementMSec]="data.increment * 1000"
         (timeRanOutEvent)="ownTimeRanOut()"
       ></app-countdown-timer>
-    </div>
-    <div class="d-flex flex-column pl-3">
-      <div *ngFor="let move of history; let i = index; let even = even">
-        <div class="d-flex flex-row align-center" *ngIf="even">
-          <label>{{ getMoveNumberFromMove(i) + '.' }}</label>
-          <label class="pl-2 pr-2">{{ move }}</label>
-          <label *ngIf="history[i + 1]">{{ history[i + 1] }}</label>
-        </div>
-      </div>
     </div>
   </div>
 </ng-container>

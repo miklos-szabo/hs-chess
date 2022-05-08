@@ -1,3 +1,13 @@
-<div class="d-flex flex-column justify-center">
-  <label>{{ getTitle() | translate }}</label>
+<div class="d-flex flex-column align-center">
+  <label class="title pb-2">{{ getTitle() | translate }}</label>
+  <label class="reason pb-3">{{ 'Result.' + data.result | translate }}</label>
+  <div [ngSwitch]="simpleResult">
+    <label class="victory-winnings-label" *ngSwitchCase="SimpleResult.Victory">{{
+      'EndPopup.VictoryLabel' | translate: { amount: matchData.finalPot }
+    }}</label>
+    <label class="defeat-winnings-label" *ngSwitchCase="SimpleResult.Defeat">{{
+      'EndPopup.DefeatLabel' | translate: { amount: matchData.finalPot }
+    }}</label>
+    <label class="draw-winnings-label" *ngSwitchCase="SimpleResult.Draw">{{ 'EndPopup.DrawLabel' | translate }}</label>
+  </div>
 </div>

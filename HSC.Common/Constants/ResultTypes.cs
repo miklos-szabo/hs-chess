@@ -28,7 +28,8 @@ namespace HSC.Common.Constants
             Result.DrawByStalemate,
             Result.DrawByInsufficientMaterial,
             Result.DrawByTimeoutVsInsufficientMaterial,
-            Result.DrawByAgreement
+            Result.DrawByAgreement,
+            Result.DrawByThreefoldRepetition
         };
     }
 }

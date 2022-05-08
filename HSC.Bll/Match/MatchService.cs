@@ -1,15 +1,21 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HSC.Bll.Hubs.Clients;
+using HSC.Bll.Hubs;
 using HSC.Common.Enums;
 using HSC.Common.RequestContext;
 using HSC.Dal;
 using HSC.Transfer.Match;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HSC.Bll.RatingService;
+using HSC.Common.Constants;
+using HSC.Dal.Entities;
 
 namespace HSC.Bll.Match
 {
@@ -18,12 +24,16 @@ namespace HSC.Bll.Match
         private readonly HSCContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IRequestContext _requestContext;
+        private readonly IHubContext<ChessHub, IChessClient> _chessHub;
+        private readonly IRatingService _ratingService;
 
-        public MatchService(HSCContext dbContext, IMapper mapper, IRequestContext requestContext)
+        public MatchService(HSCContext dbContext, IMapper mapper, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub, IRatingService ratingService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _requestContext = requestContext;
+            _chessHub = chessHub;
+            _ratingService = ratingService;
         }
 
         public async Task<MatchStartDto> GetMatchStartingDataAsync(Guid matchId)
@@ -45,9 +55,42 @@ namespace HSC.Bll.Match
         public async Task MatchOver(Guid matchId, Result result, string winnerUserName)
         {
             var match = await _dbContext.Matches.Include(m => m.MatchPlayers).SingleAsync(m => m.Id == matchId);
+            var otherUserName = match.MatchPlayers.Single(mp => mp.UserName != _requestContext.UserName).UserName;
             match.Result = result;
-            match.MatchPlayers.Single(mp => mp.UserName == winnerUserName).IsWinner = true;
+
+            var thisUser = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            var otherUser = await _dbContext.Users.SingleAsync(u => u.UserName == otherUserName);
+
+            if (!ResultTypes.Draw.Contains(result))
+            {
+                match.MatchPlayers.Single(mp => mp.UserName == winnerUserName).IsWinner = true;
+                if (winnerUserName == thisUser.UserName)
+                {
+                    _ratingService.ModifyRating(thisUser, match.TimeLimitMinutes, 8);
+                    _ratingService.ModifyRating(otherUser, match.TimeLimitMinutes, -8);
+
+                    thisUser.Balance += match.MatchPlayers.Max(mp => mp.CurrentBet);
+                    otherUser.Balance -= match.MatchPlayers.Max(mp => mp.CurrentBet);
+                }
+                else
+                {
+                    _ratingService.ModifyRating(otherUser, match.TimeLimitMinutes, 8);
+                    _ratingService.ModifyRating(thisUser, match.TimeLimitMinutes, -8);
+
+                    otherUser.Balance += match.MatchPlayers.Max(mp => mp.CurrentBet);
+                    thisUser.Balance -= match.MatchPlayers.Max(mp => mp.CurrentBet);
+                }
+            }
+
             await _dbContext.SaveChangesAsync();
+
+            // With these results, the game ended client-side, so we send the result to the other user.
+            if (result == Result.BlackWonByTimeOut || result == Result.WhiteWonByTimeout ||
+                result == Result.BlackWonByResignation || result == Result.WhiteWonByResignation ||
+                result == Result.DrawByAgreement)
+            {
+                await _chessHub.Clients.User(otherUser.UserName).ReceiveGameEnded(result);
+            }
         }
 
         public async Task SaveMatchPgn(Guid matchId, string pgn)

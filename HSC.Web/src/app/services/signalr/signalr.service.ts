@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
-import { MatchFinderService } from 'src/app/api/app.generated';
+import { MatchFinderService, Result } from 'src/app/api/app.generated';
 import { NotificationService } from '../notification.service';
 import { ChallengeDto, ChatMessageDto, MoveDto } from './signalr-dtos';
 
@@ -20,6 +20,8 @@ export class SignalrService {
   @Output() betReceivedEvent: EventEmitter<number> = new EventEmitter();
   @Output() friendRequestReceivedEvent: EventEmitter<string> = new EventEmitter();
   @Output() chatMessageReceivedEvent: EventEmitter<ChatMessageDto> = new EventEmitter();
+  @Output() drawOfferReceivedEvent: EventEmitter<void> = new EventEmitter();
+  @Output() matchEndedReceivedEvent: EventEmitter<Result> = new EventEmitter();
 
   connection = new signalR.HubConnectionBuilder()
     .withUrl('https://localhost:5000/hubs/chesshub', { accessTokenFactory: () => this.keyCloak.getToken() })
@@ -48,6 +50,8 @@ export class SignalrService {
       this.connection.on('ReceiveBet', (amount) => this.betReceivedEvent.emit(amount));
       this.connection.on('ReceiveFriendRequest', (fromUser) => this.friendRequestReceivedEvent.emit(fromUser));
       this.connection.on('ReceiveMessage', (message) => this.chatMessageReceivedEvent.emit(message));
+      this.connection.on('ReceiveDrawOffer', () => this.drawOfferReceivedEvent.emit());
+      this.connection.on('ReceiveGameEnded', (result) => this.matchEndedReceivedEvent.emit(result));
     });
 
     this.challengeFoundEvent.subscribe((challenge) => {
@@ -69,6 +73,10 @@ export class SignalrService {
 
   sendMoveToServer(move: MoveDto, matchId: string) {
     this.connection.send('SendMoveToServer', move, matchId);
+  }
+
+  sendDrawOffer(toUserName: string) {
+    this.connection.send('SendDrawOfferToUser', toUserName);
   }
 
   receiveFriendRequest(fromUser: string) {

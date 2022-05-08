@@ -26,5 +26,10 @@ namespace HSC.Bll.Hubs
         {
             return Clients.OthersInGroup(matchId.ToString()).ReceiveMove(move);
         }
+
+        public Task SendDrawOfferToUser(string toUserName)
+        {
+            return Clients.User(toUserName).ReceiveDrawOffer();
+        }
     }
 }
