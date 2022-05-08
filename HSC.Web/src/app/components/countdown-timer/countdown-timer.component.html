@@ -1,1 +1,3 @@
-<label [ngClass]="{ 'counter-counting': isCounting }" class="counter-label">{{ getReadableTime() }}</label>
+<div class="container d-flex flex-row pl-1 align-center" [ngClass]="{ 'counter-counting-container': isCounting }">
+  <label [ngClass]="{ 'counter-counting-label': isCounting }" class="counter-label">{{ getReadableTime() }}</label>
+</div>
