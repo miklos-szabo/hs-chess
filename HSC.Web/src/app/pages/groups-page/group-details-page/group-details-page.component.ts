@@ -54,4 +54,8 @@ export class GroupDetailsPageComponent implements OnInit {
       this.router.navigateByUrl('groups');
     });
   }
+
+  back() {
+    this.router.navigateByUrl('/groups');
+  }
 }

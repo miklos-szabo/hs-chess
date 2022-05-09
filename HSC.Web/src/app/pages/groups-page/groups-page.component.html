@@ -1,51 +1,55 @@
-<div class="d-flex flex-row">
-  <div class="d-flex flex-column">
-    <label>{{ 'Groups.Title' | translate }}</label>
-    <button mat-raised-button (click)="createGroupClicked()">{{ 'Groups.CreateGroup' | translate }}</button>
+<div class="d-flex flex-row main-container h-100">
+  <div class="d-flex flex-column w-20">
+    <label class="title pt-5 pl-5">{{ 'Groups.Title' | translate }}</label>
+    <button class="ml-3" mat-raised-button (click)="createGroupClicked()">
+      {{ 'Groups.CreateGroup' | translate }}
+    </button>
   </div>
-  <div class="d-flex flex-column">
+  <div class="d-flex flex-column w-80 pl-4 pr-4">
     <div>
-      <input
-        matInput
-        [placeholder]="'Groups.SearchGroups' | translate"
-        (keydown)="searchFieldChanged()"
-        [(ngModel)]="searchField"
-      />
+      <mat-form-field class="search" appearance="standard">
+        <mat-label>{{ 'Groups.SearchGroups' | translate }}</mat-label>
+        <input matInput (keydown)="searchFieldChanged()" [(ngModel)]="searchField" />
+      </mat-form-field>
     </div>
-    <label>{{ 'Groups.OwnGroups' | translate }}</label>
-    <mat-list>
-      <mat-list-item *ngFor="let group of ownGroups">
-        <div class="d-flex flex-row align-center">
-          <label>{{ group.name }}</label>
-          <div class="d-flex flex-row align-center">
-            <label>{{ group.userCount }}</label>
-            <mat-icon>person</mat-icon>
+    <div class="lists-container d-flex flex-column w-100">
+      <label class="groups-label pb-1">{{ 'Groups.OwnGroups' | translate }}</label>
+      <mat-list class="self-align-center w-100">
+        <mat-list-item class="list-item" *ngFor="let group of ownGroups; let even = even">
+          <div class="d-flex flex-row align-center w-100 list-row" [ngClass]="{ 'odd-row': even }">
+            <label class="w-40 pl-2 text">{{ group.name }}</label>
+            <div class="d-flex flex-row align-center w-20">
+              <label class="text">{{ group.userCount }}</label>
+              <mat-icon class="text-icon">person</mat-icon>
+            </div>
+            <div class="d-flex flex-row align-center justify-center w-40">
+              <button mat-raised-button (click)="groupDetailsClicked(group.id)">
+                {{ 'Groups.Details' | translate }}
+              </button>
+            </div>
           </div>
-          <div class="d-flex flex-row align-center">
-            <button mat-raised-button (click)="groupDetailsClicked(group.id)">
-              {{ 'Groups.Details' | translate }}
-            </button>
+        </mat-list-item>
+      </mat-list>
+      <label class="groups-label pt-4 pb-1">{{ 'Groups.OtherGroups' | translate }}</label>
+      <mat-list class="self-align-center w-100">
+        <mat-list-item class="list-item" *ngFor="let group of otherGroups; let even = even">
+          <div class="d-flex flex-row align-center w-100 list-row" [ngClass]="{ 'odd-row': even }">
+            <label class="w-40 pl-2 text">{{ group.name }}</label>
+            <div class="d-flex flex-row align-center w-20">
+              <label class="text">{{ group.userCount }}</label>
+              <mat-icon class="text-icon">person</mat-icon>
+            </div>
+            <div class="d-flex flex-row align-center justify-center w-40">
+              <button class="mr-1" mat-raised-button (click)="joinGroupClicked(group.id)">
+                {{ 'Groups.JoinGroup' | translate }}
+              </button>
+              <button mat-raised-button (click)="groupDetailsClicked(group.id)">
+                {{ 'Groups.Details' | translate }}
+              </button>
+            </div>
           </div>
-        </div>
-      </mat-list-item>
-    </mat-list>
-    <label>{{ 'Groups.OtherGroups' | translate }}</label>
-    <mat-list>
-      <mat-list-item *ngFor="let group of otherGroups">
-        <div class="d-flex flex-row align-center">
-          <label>{{ group.name }}</label>
-          <div class="d-flex flex-row align-center">
-            <label>{{ group.userCount }}</label>
-            <mat-icon>person</mat-icon>
-          </div>
-          <div class="d-flex flex-row align-center">
-            <button mat-raised-button (click)="joinGroupClicked(group.id)">{{ 'Groups.JoinGroup' | translate }}</button>
-            <button mat-raised-button (click)="groupDetailsClicked(group.id)">
-              {{ 'Groups.Details' | translate }}
-            </button>
-          </div>
-        </div>
-      </mat-list-item>
-    </mat-list>
+        </mat-list-item>
+      </mat-list>
+    </div>
   </div>
 </div>

@@ -1,7 +1,49 @@
+@import 'src/themes/variables.scss';
+
+:host {
+  @include full-page-layout;
+}
+
+.main-container{
+  width: 1000px;
+}
+
+.group-name{
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.group-desc{
+  font-size: 16px;
+  white-space: pre-line;
+  padding-left: 80px;
+}
+
 .color-green{
   color: green;
 }
 
 .color-blue{
-  color: lightblue;
+  color: blue;
+}
+
+.back-icon{
+  width: 64px;
+}
+
+.list-item{
+
+}
+
+.list-row{
+
+}
+
+.members-text{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.odd-row{
+  background-color: lightgray;
 }
