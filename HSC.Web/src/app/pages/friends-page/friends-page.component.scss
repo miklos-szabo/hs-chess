@@ -1,10 +1,23 @@
-.friends-main-container{
-  width: 100%;
-  height: 100%;
+@import 'src/themes/variables.scss';
+
+:host {
+  @include full-page-layout;
+}
+
+.title{
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.friend-request-title{
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .friends-left-container{
-
+  width: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .friends-friends-container{
@@ -12,30 +25,34 @@
 }
 
 .friends-add-friend-container{
-
+  margin-bottom: -20px;
 }
 
-.friends-notification-circle{
-  background-color: orangered;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  padding: 0px 5px;
-}
-
-.friends-username-label{
-  position: relative;
-  left: 26px;
-}
-
-.green-icon{
+.add-friend-icon{
   color: green;
+  padding-top: 10px;
 }
 
 .red-icon{
   color: red;
 }
 
+.green-icon{
+  color: green;
+}
+
 .battle-icon{
   width: 24px;
+}
+
+.odd-row {
+  background-color: lightgray;
+}
+
+.newmessage-text{
+  color: orangered
+}
+
+::ng-deep .mat-list-item{
+  height: 40px !important;
 }

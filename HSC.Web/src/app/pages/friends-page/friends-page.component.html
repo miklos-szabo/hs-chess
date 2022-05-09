@@ -1,12 +1,12 @@
-<div class="friends-main-container d-flex flex-row">
-  <div class="friends-left-container d-flex flex-column w-35">
-    <label>{{ 'Friends.Title' | translate }}</label>
+<div class="d-flex flex-row w-100 p-3 h-100">
+  <div class="friends-left-container d-flex flex-column">
+    <label class="title pb-4">{{ 'Friends.Title' | translate }}</label>
     <div *ngIf="friendRequests.length !== 0">
-      <label>{{ 'Friends.FriendRequests' | translate }}</label>
-      <mat-list>
-        <mat-list-item *ngFor="let request of friendRequests">
-          <div class="d-flex flex-row justify-between align-center">
-            <label>{{ request.requesterUserName }}</label>
+      <label class="friend-request-title">{{ 'Friends.FriendRequests' | translate }}</label>
+      <mat-list class="pb-2">
+        <mat-list-item *ngFor="let request of friendRequests; let even = even">
+          <div class="d-flex flex-row justify-between align-center w-100" [ngClass]="{ 'odd-row': even }">
+            <label class="pl-2">{{ request.requesterUserName }}</label>
             <div>
               <button mat-icon-button (click)="acceptFriendRequest(request.id)">
                 <mat-icon class="green-icon">done</mat-icon>
@@ -19,24 +19,24 @@
         </mat-list-item>
       </mat-list>
     </div>
-    <div class="friends-friends-container d-flex flex-column">
-      <div class="friends-add-friend-container d-flex flex-row">
-        <input
-          matInput
-          type="text"
-          [(ngModel)]="addFriendField"
-          [placeholder]="'Friends.AddFriendPlaceHolder' | translate"
-        />
+    <div class="friends-friends-container d-flex flex-column w-100">
+      <div class="friends-add-friend-container d-flex flex-row w-100 pr-2 pl-2 align-center">
+        <mat-form-field appearance="standard">
+          <mat-label>{{ 'Friends.AddFriendPlaceHolder' | translate }}</mat-label>
+          <input matInput type="text" [(ngModel)]="addFriendField" />
+        </mat-form-field>
+
         <button mat-icon-button (click)="sendFriendRequest()">
-          <mat-icon class="green-icon">add_circle</mat-icon>
+          <mat-icon class="add-friend-icon">add_circle</mat-icon>
         </button>
       </div>
       <mat-action-list>
-        <mat-list-item *ngFor="let friend of friends" (click)="friendClicked(friend.userName!)">
-          <div class="d-flex flex-row justify-between align-center w-100">
+        <mat-list-item *ngFor="let friend of friends; let even = even" (click)="friendClicked(friend.userName!)">
+          <div class="d-flex flex-row justify-between align-center w-100" [ngClass]="{ 'odd-row': even }">
             <div class="d-flex flex-row align-center">
-              <div class="friends-notification-circle" *ngIf="friend.newMessagesCount > 0"></div>
-              <label class="friends-username-label">{{ friend.userName }}</label>
+              <label class="pl-2" [ngClass]="{ 'newmessage-text': friend.newMessagesCount > 0 }">{{
+                friend.userName
+              }}</label>
             </div>
             <button mat-icon-button (click)="challenge(friend.userName)">
               <img class="battle-icon" src="assets/icons/battle.png" />
