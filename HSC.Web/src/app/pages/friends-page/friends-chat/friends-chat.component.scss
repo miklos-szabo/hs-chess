@@ -5,9 +5,41 @@
 
 .friend-chat-area{
   overflow: auto;
+  flex-direction: column-reverse;
 }
 
 :host{
   width: 100%;
   height: 100%;
+}
+
+.send-message-input{
+  width: 100%;
+}
+
+.message-container{
+  background-color: lightgray;
+  border-radius: 25px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  width: auto;
+  max-width: 80%;
+  align-self: start;
+}
+
+.message{
+  font-size: 16px;
+  padding: 16px;
+}
+
+.my-message-container{
+  background-color: blue;
+  justify-content: end;
+  align-self: end;
+}
+
+.my-message{
+  color: white;
 }

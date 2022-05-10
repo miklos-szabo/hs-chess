@@ -33,6 +33,7 @@
   "Friends.ChallangeSent": "Kihívás elküldve!",
   "Friends.RequestReceived": "{{userName}} barátkérelmet küldött",
   "Friends.RequestNotificationButton": "Megnéz",
+  "Friends.SendMessagePlaceholder": "Írj egy üzenetet",
   "Groups.Title": "Csoportok",
   "Groups.OwnGroups": "Saját csoportok",
   "Groups.OtherGroups": "Egyéb csoportok",

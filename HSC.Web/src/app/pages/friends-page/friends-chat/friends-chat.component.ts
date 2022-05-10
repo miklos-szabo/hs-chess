@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
+import { KeycloakService } from 'keycloak-angular';
 import { ChatMessageDto, ChatService } from 'src/app/api/app.generated';
 import { EventService } from 'src/app/services/event.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
@@ -13,14 +14,13 @@ export class FriendsChatComponent implements OnInit {
   selectedUserName = '';
   message = '';
   messages: ChatMessageDto[] = [];
-
-  @ViewChild('messageInput')
-  messageInput!: MatInput;
+  currentUserName = '';
 
   constructor(
     private eventService: EventService,
     private chatService: ChatService,
-    private signalrService: SignalrService
+    private signalrService: SignalrService,
+    private keycloakService: KeycloakService
   ) {}
 
   ngOnInit(): void {
@@ -37,16 +37,18 @@ export class FriendsChatComponent implements OnInit {
         messageDto.message = msg.message;
         messageDto.senderUserName = msg.senderUserName;
         messageDto.timeStamp = msg.timeStamp;
-        this.messages.push(messageDto);
+        this.messages.unshift(messageDto);
       }
     });
+
+    this.currentUserName = this.keycloakService.getUsername();
   }
 
   sendMessage() {
-    this.messageInput.value = '';
     this.chatService.sendChatMessage(this.selectedUserName, this.message).subscribe(() => {
       this.getChatMessages();
     });
+    this.message = '';
   }
 
   getChatMessages() {

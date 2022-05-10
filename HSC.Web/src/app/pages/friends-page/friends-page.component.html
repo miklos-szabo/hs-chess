@@ -1,4 +1,4 @@
-<div class="d-flex flex-row w-100 p-3 h-100">
+<div class="d-flex flex-row p-3 h-100">
   <div class="friends-left-container d-flex flex-column">
     <label class="title pb-4">{{ 'Friends.Title' | translate }}</label>
     <div *ngIf="friendRequests.length !== 0">
@@ -20,8 +20,8 @@
       </mat-list>
     </div>
     <div class="friends-friends-container d-flex flex-column w-100">
-      <div class="friends-add-friend-container d-flex flex-row w-100 pr-2 pl-2 align-center">
-        <mat-form-field appearance="standard">
+      <div class="friends-add-friend-container d-flex flex-row pr-2 pl-2 align-center">
+        <mat-form-field appearance="standard" class="add-friend-input">
           <mat-label>{{ 'Friends.AddFriendPlaceHolder' | translate }}</mat-label>
           <input matInput type="text" [(ngModel)]="addFriendField" />
         </mat-form-field>
@@ -32,7 +32,11 @@
       </div>
       <mat-action-list>
         <mat-list-item *ngFor="let friend of friends; let even = even" (click)="friendClicked(friend.userName!)">
-          <div class="d-flex flex-row justify-between align-center w-100" [ngClass]="{ 'odd-row': even }">
+          <div
+            class="d-flex flex-row justify-between align-center w-100"
+            [ngClass]="{ 'odd-row': even }"
+            [ngClass]="{ 'selected-friend-row': selectedFriend === friend.userName }"
+          >
             <div class="d-flex flex-row align-center">
               <label class="pl-2" [ngClass]="{ 'newmessage-text': friend.newMessagesCount > 0 }">{{
                 friend.userName
@@ -46,5 +50,5 @@
       </mat-action-list>
     </div>
   </div>
-  <app-friends-chat class="w-65"></app-friends-chat>
+  <app-friends-chat class="flex-1 pl-3"></app-friends-chat>
 </div>

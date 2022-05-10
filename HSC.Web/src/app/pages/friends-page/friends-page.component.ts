@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { FriendDto, FriendRequestDto, FriendService, MatchFinderService } from 'src/app/api/app.generated';
 import { CreateCustomPopupComponent } from 'src/app/components/create-custom-popup/create-custom-popup.component';
 import { EventService } from 'src/app/services/event.service';
@@ -16,6 +17,7 @@ import { SignalrService } from 'src/app/services/signalr/signalr.service';
 })
 export class FriendsPageComponent implements OnInit {
   addFriendField = '';
+  selectedFriend = '';
 
   friendRequests: FriendRequestDto[] = [];
   friends: FriendDto[] = [];
@@ -92,6 +94,11 @@ export class FriendsPageComponent implements OnInit {
   }
 
   friendClicked(userName: string) {
+    this.selectedFriend = userName;
     this.eventService.friendSelected(userName);
+    this.friendService
+      .getFriends()
+      .pipe(delay(3000))
+      .subscribe(() => {});
   }
 }

@@ -36,6 +36,7 @@
   "Friends.ChallangeSent": "Challenge sent!",
   "Friends.RequestReceived": "{{userName}} sent a friend request",
   "Friends.RequestNotificationButton": "View",
+  "Friends.SendMessagePlaceholder": "Send a message",
   "Groups.Title": "Groups",
   "Groups.OwnGroups": "Own groups",
   "Groups.OtherGroups": "Other groups",

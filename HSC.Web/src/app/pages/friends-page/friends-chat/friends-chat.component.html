@@ -1,16 +1,33 @@
-<div class="d-flex justify-center align-center w-80 h-80" *ngIf="selectedUserName === ''">
-  <label>{{ 'Friends.Chat.SelectUser' | translate }}</label>
-</div>
-<div *ngIf="selectedUserName !== ''" class="friend-chat-container d-flex flex-column">
-  <div class="friend-chat-area">
-    <div *ngFor="let msg of messages">
-      <label>{{ msg.senderUserName + ': ' + msg.message }}</label>
-    </div>
+<div class="d-flex flex-column align-center justify-center h-100">
+  <div class="d-flex justify-center align-center" *ngIf="selectedUserName === ''">
+    <label>{{ 'Friends.Chat.SelectUser' | translate }}</label>
   </div>
-  <div class="d-flex flex-row">
-    <input #messageInput matInput type="text" [(ngModel)]="message" />
-    <button mat-icon-button (click)="sendMessage()">
-      <mat-icon>send</mat-icon>
-    </button>
+  <div *ngIf="selectedUserName !== ''" class="friend-chat-container d-flex flex-column flex-1">
+    <div class="friend-chat-area flex-1 d-flex">
+      <div
+        *ngFor="let msg of messages"
+        class="message-container"
+        [ngClass]="{ 'my-message-container': msg.senderUserName === currentUserName }"
+      >
+        <label class="message" [ngClass]="{ 'my-message': msg.senderUserName === currentUserName }">{{
+          msg.message
+        }}</label>
+      </div>
+    </div>
+    <div class="d-flex flex-row align-center">
+      <mat-form-field class="send-message-input" appearance="standard">
+        <input
+          (keyup.enter)="sendMessage()"
+          matInput
+          type="text"
+          [(ngModel)]="message"
+          [placeholder]="'Friends.SendMessagePlaceholder' | translate"
+        />
+      </mat-form-field>
+
+      <button mat-icon-button (click)="sendMessage()">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
