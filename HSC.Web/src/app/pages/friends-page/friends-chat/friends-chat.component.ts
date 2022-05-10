@@ -45,6 +45,7 @@ export class FriendsChatComponent implements OnInit {
   }
 
   sendMessage() {
+    if (this.message === '') return;
     this.chatService.sendChatMessage(this.selectedUserName, this.message).subscribe(() => {
       this.getChatMessages();
     });
