@@ -67,5 +67,17 @@ namespace HSC.Bll.AccountService
 
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<bool> UsesLightThemeAsync()
+        {
+            return (await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName)).LightTheme;
+        }
+
+        public async Task SetLightTheme(bool isLightTheme)
+        {
+            var user = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            user.LightTheme = isLightTheme;
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

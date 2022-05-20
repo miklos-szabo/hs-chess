@@ -36,7 +36,8 @@
               "node_modules\\chessground\\assets\\chessground.base.css",
               "node_modules\\chessground\\assets\\chessground.brown.css",
               "node_modules\\chessground\\assets\\chessground.cburnett.css",
-              "src/themes/global-styles.scss"
+              "src/themes/global-styles.scss",
+              "src/themes/main-theme.scss"
             ],
             "scripts": [
               {

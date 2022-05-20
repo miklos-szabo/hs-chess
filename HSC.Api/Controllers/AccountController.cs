@@ -42,5 +42,17 @@ namespace HSC.Api.Controllers
         {
             await _accountService.ChangeRealMoneyAsync(toRealMoney);
         }
+
+        [HttpGet]
+        public async Task<bool> UsesLightThemeAsync()
+        {
+            return await _accountService.UsesLightThemeAsync();
+        }
+
+        [HttpPost]
+        public async Task SetLightTheme(bool isLightTheme)
+        {
+            await _accountService.SetLightTheme(isLightTheme);
+        }
     }
 }

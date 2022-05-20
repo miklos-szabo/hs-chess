@@ -1,22 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
+import { Observable } from 'rxjs';
 import { AccountService } from './api/app.generated';
 import { SignalrService } from './services/signalr/signalr.service';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'hsc-web';
+  isDarkTheme!: Observable<boolean>;
 
   constructor(
     translateService: TranslateService,
     signalrService: SignalrService,
     keycloak: KeycloakService,
-    accountService: AccountService
+    accountService: AccountService,
+    private themeService: ThemeService
   ) {
     translateService.addLangs(['en', 'hu']);
     translateService.setDefaultLang('en');
@@ -32,5 +36,9 @@ export class AppComponent {
         }
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.isDarkTheme = this.themeService.isDarkTheme;
   }
 }

@@ -13,5 +13,7 @@ namespace HSC.Bll.AccountService
         Task<UserMenuDto> GetUserMenuData();
         Task<UserFullDetailsDto> GetFullUserData();
         Task ChangeRealMoneyAsync(bool toRealMoney);
+        Task<bool> UsesLightThemeAsync();
+        Task SetLightTheme(bool isLightTheme);
     }
 }

@@ -5,7 +5,9 @@ import { MatSelect } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
+import { Observable } from 'rxjs';
 import { AccountService, UserMenuDto } from 'src/app/api/app.generated';
+import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
   selector: 'app-menu',
@@ -17,20 +19,25 @@ export class MenuComponent implements OnInit {
   languages: string[] = [];
   currentLanguage = '';
 
+  isCurrentlyDarkTheme = false;
+
   constructor(
     public dialogRef: MatDialogRef<MenuComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserMenuDto,
     private translateService: TranslateService,
     private accountService: AccountService,
     private keycloak: KeycloakService,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) {
     this.isUsingRealMoney = !data.isUsingPlayMoney;
     this.languages = this.translateService.getLangs();
     this.currentLanguage = this.translateService.currentLang;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isCurrentlyDarkTheme = this.themeService.isCurrentlyDarkTheme;
+  }
 
   realMoneySwitchChanged() {
     this.accountService.changeRealMoney(this.isUsingRealMoney).subscribe(() => {});
@@ -42,5 +49,10 @@ export class MenuComponent implements OnInit {
 
   async logout() {
     await this.keycloak.logout(window.location.origin);
+  }
+
+  toggleDarkTheme(darkTheme: boolean) {
+    this.themeService.setDarkTheme(darkTheme);
+    this.accountService.setLightTheme(!darkTheme).subscribe(() => {});
   }
 }

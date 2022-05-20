@@ -20,7 +20,7 @@
   </div>
   <div class="d-flex flex-row align-center header-user-info-container">
     <label class="pr-1">{{ userName }}</label>
-    <label>{{ userdata.isUsingPlayMoney ? userdata.balance : userdata.playMoneyBalance }}</label>
+    <label>{{ userdata.isUsingPlayMoney ? userdata.playMoneyBalance : userdata.balance }}</label>
     <label *ngIf="!userdata.isUsingPlayMoney" class="pr-1">$</label>
     <button mat-icon-button (click)="settingsClicked()">
       <mat-icon>settings</mat-icon>
