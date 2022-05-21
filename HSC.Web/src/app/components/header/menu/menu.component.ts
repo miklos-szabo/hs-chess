@@ -1,4 +1,5 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { isDataSource } from '@angular/cdk/collections';
+import { Component, HostBinding, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
@@ -21,6 +22,8 @@ export class MenuComponent implements OnInit {
 
   isCurrentlyDarkTheme = false;
 
+  @HostBinding('class.light-theme') isLightTheme: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<MenuComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserMenuDto,
@@ -37,6 +40,11 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.isCurrentlyDarkTheme = this.themeService.isCurrentlyDarkTheme;
+    this.isLightTheme = this.isCurrentlyDarkTheme;
+
+    this.themeService.isDarkTheme.subscribe((darkTheme) => {
+      this.isLightTheme = !darkTheme;
+    });
   }
 
   realMoneySwitchChanged() {
