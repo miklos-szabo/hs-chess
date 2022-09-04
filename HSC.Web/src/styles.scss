@@ -1,6 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+
+  // Firefox scrollbars
+  scrollbar-color: #8f8f8f #474747;
+  scrollbar-width: thin;
+}
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -9,6 +16,8 @@ body {
 :root {
   height: 100%;
   --bg: #303030;
+  --bg2: #4d4d4d;
+  --bg3: #636363;
   --primary: #0069e2;
   --accent: #fc9000;
   --text-color: #FFFFFF;
@@ -19,9 +28,31 @@ body {
 :root .light-theme {
   height: 100%;
   --bg: #FFFFFF;
+  --bg2: #dbdbdb;
+  --bg3: #bfbfbf;
   --primary: #0069e2;
   --accent: #fc9000;
   --text-color: #000000;
   color: var(--text-color);
   background-color: var(--bg);
+}
+
+app-root > div{
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #474747;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8f8f8f;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
 }

@@ -3,7 +3,7 @@
     <div class="d-flex flex-row align-center flex-1 w-100">
       <label class="time-control-label w-15">{{ 'Play.TimeControl' | translate }}</label>
       <div class="d-flex flex-column w-100">
-        <div class="d-flex flex-row justify-between flex-1">
+        <div class="d-flex flex-row justify-center flex-1">
           <app-time-bet-selector
             [value1]="1"
             [value2]="0"
@@ -40,7 +40,7 @@
             [clearEvent]="clearTimeSelectionSubject.asObservable()"
           ></app-time-bet-selector>
         </div>
-        <div class="d-flex flex-row justify-between flex-1">
+        <div class="d-flex flex-row justify-center flex-1">
           <app-time-bet-selector
             [value1]="5"
             [value2]="3"
@@ -82,7 +82,7 @@
     <div class="d-flex flex-row align-center flex-1 pt-2">
       <label class="time-control-label w-15">{{ 'Play.Bet' | translate }}</label>
       <div class="d-flex flex-column w-100">
-        <div class="d-flex flex-row justify-between">
+        <div class="d-flex flex-row justify-center">
           <app-time-bet-selector
             [value1]="0.01"
             [value2]="0.1"
@@ -124,7 +124,7 @@
             [clearEvent]="clearBetSelectionSubject.asObservable()"
           ></app-time-bet-selector>
         </div>
-        <div class="d-flex flex-row justify-between">
+        <div class="d-flex flex-row justify-center">
           <app-time-bet-selector
             [value1]="0.5"
             [value2]="5"

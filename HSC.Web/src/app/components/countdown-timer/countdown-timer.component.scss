@@ -1,13 +1,13 @@
 .container{
-  width: 200px;
+  width: 208px;
   height: 70px;
   border: 2px solid transparent;
-  background-color: lightgray;
+  background-color: var(--bg2);
 }
 
 .counter-counting-container {
-  border: 2px solid lightseagreen;
-  background-color: #f2f2f2;
+  border: 2px solid var(--primary);
+  background-color: var(--bg3);
 }
 
 .counter-label{

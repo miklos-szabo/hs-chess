@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakEventType, KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs';
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit {
     signalrService: SignalrService,
     keycloak: KeycloakService,
     accountService: AccountService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     translateService.addLangs(['en', 'hu']);
     translateService.setDefaultLang('en');
@@ -40,5 +42,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.isDarkTheme = this.themeService.isDarkTheme;
+    this.isDarkTheme.subscribe((darkTheme) => {
+      if (!darkTheme) {
+        this.document.body.classList.add('light-theme');
+      } else {
+        this.document.body.classList.remove('light-theme');
+      }
+    });
   }
 }

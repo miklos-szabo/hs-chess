@@ -1,6 +1,6 @@
 <div class="main-container d-flex flex-column pt-2">
   <mat-list class="w-100">
-    <mat-list-item *ngFor="let challenge of challenges; let even = even">
+    <mat-list-item class="list-item" *ngFor="let challenge of challenges; let even = even">
       <div class="d-flex flex-row align-center list-row w-100" [ngClass]="even ? 'even-color' : 'odd-color'">
         <label class="text pl-1 w-35">{{ challenge.offerer }}</label>
         <label class="text w-20">{{ challenge.timeLimitMinutes + ' + ' + challenge.increment }}</label>

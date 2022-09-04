@@ -44,10 +44,10 @@
       </div>
     </div>
   </div>
-  <div class="games-container pt-4">
+  <div class="games-container">
     <mat-list>
-      <mat-list-item class="list-item" *ngFor="let match of matches; let even = even">
-        <div class="list-row d-flex flex-row align-center" [ngClass]="{ 'even-row': even }">
+      <mat-list-item class="list-item" *ngFor="let match of matches; let even = even; let odd = odd">
+        <div class="list-row d-flex flex-row align-center" [ngClass]="{ 'even-row': even, 'odd-row': odd }">
           <div class="pl-2 d-flex flex-column w-25">
             <label class="text">{{ match.whiteUserName + ' (' + match.whiteRating + ')' }}</label>
             <label class="text">{{ match.blackUserName + ' (' + match.blackRating + ')' }}</label>

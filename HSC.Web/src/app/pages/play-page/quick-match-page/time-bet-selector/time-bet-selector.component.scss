@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: lightgray;
+  background-color: var(--bg3);
   cursor: pointer;
   margin: 3px 3px;
   border: 2px solid transparent
@@ -16,7 +16,7 @@
 }
 
 .container-selected{
-  border: 2px solid blue;
+  border: 2px solid var(--primary);
 }
 
 @media screen and (max-width: 1700px){

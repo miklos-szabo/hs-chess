@@ -5,7 +5,7 @@
 }
 
 .data-column{
-  height: 600px;
+  height: 700px;
 }
 
 .overflow-outer{
@@ -17,6 +17,12 @@
 
 .history{
   overflow-y: auto;
+  width: 200px;
+  flex-direction: column-reverse;
+}
+
+.middle-part{
+  background-color: var(--bg2);
 }
 
 .pot-label{
@@ -33,12 +39,12 @@
   border-bottom: 2px transparent;
   margin: 0px 4px;
   padding: 0px 4px;
-  width: 50px;
+  width: 42%;
 }
 
 .move-selected{
-  background-color: lightgray;
-  border-bottom: 2px solid blue;
+  background-color: var(--bg3);
+  border-bottom: 2px solid var(--primary);
 }
 
 ::ng-deep .mat-icon-button{
@@ -48,4 +54,16 @@
 .user-label{
   font-size: 16px;
   font-weight: 500;
+}
+
+.history-row{
+  height: 30px;
+}
+
+.clock-middle-height{
+  max-height: 520px;
+}
+
+.full-middle-height{
+  height: 596px;
 }

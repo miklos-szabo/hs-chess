@@ -18,7 +18,7 @@
 }
 
 .message-container{
-  background-color: lightgray;
+  background-color: var(--bg2);
   border-radius: 25px;
   margin-bottom: 8px;
   display: flex;
@@ -27,6 +27,7 @@
   width: auto;
   max-width: 80%;
   align-self: start;
+  color: var(--text-color);
 }
 
 .message{
@@ -35,7 +36,7 @@
 }
 
 .my-message-container{
-  background-color: blue;
+  background-color: var(--primary);
   justify-content: end;
   align-self: end;
 }

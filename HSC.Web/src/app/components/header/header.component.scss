@@ -2,7 +2,7 @@
 
 .header-conatiner{
   height: $header-height;
-  background-color: lightgray;
+  background-color: var(--bg2);
   font-size: 18px;
 }
 
@@ -15,7 +15,7 @@
 }
 
 a:link, a:visited{
-  color: black;
+  color: var(--text-color);
   text-decoration: none;
 }
 

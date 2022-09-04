@@ -31,10 +31,13 @@
         </button>
       </div>
       <mat-action-list>
-        <mat-list-item *ngFor="let friend of friends; let even = even" (click)="friendClicked(friend.userName!)">
+        <mat-list-item
+          *ngFor="let friend of friends; let even = even; let odd = odd"
+          (click)="friendClicked(friend.userName!)"
+        >
           <div
             class="d-flex flex-row justify-between align-center w-100"
-            [ngClass]="{ 'odd-row': even }"
+            [ngClass]="{ 'odd-row': odd, 'even-row': even }"
             [ngClass]="{ 'selected-friend-row': selectedFriend === friend.userName }"
           >
             <div class="d-flex flex-row align-center">

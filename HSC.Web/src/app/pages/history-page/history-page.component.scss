@@ -23,11 +23,15 @@
 
 .list-row{
   height: 80px;
-  width: 100%
+  width: 100%;
 }
 
 .even-row{
-  background-color: lightgray;
+  background-color: var(--bg2);
+}
+
+.odd-row{
+  background-color: var(--bg3);
 }
 
 .text{

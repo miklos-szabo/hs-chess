@@ -11,8 +11,11 @@
   <div class="d-flex flex-column w-30">
     <label class="members-text">{{ 'GroupDetails.Members' | translate }}</label>
     <mat-list>
-      <mat-list-item class="list-item" *ngFor="let member of data.users; let even = even">
-        <div class="d-flex flex-row justify-between align-center list-row w-70" [ngClass]="{ 'odd-row': even }">
+      <mat-list-item class="list-item" *ngFor="let member of data.users; let even = even; let odd = odd">
+        <div
+          class="d-flex flex-row justify-between align-center list-row w-70"
+          [ngClass]="{ 'odd-row': odd, 'even-row': even }"
+        >
           <label class="pl-2">{{ member.userName }}</label>
           <div *ngIf="member.userName !== currentUserName">
             <button mat-icon-button *ngIf="!member.isFriend" (click)="addFriendButtonClicked(member.userName!)">

@@ -26,7 +26,11 @@
 }
 
 .odd-row{
-  background-color: lightgray;
+  background-color: var(--bg2);
+}
+
+.even-row{
+  background-color: var(--bg3);
 }
 
 .list-row{

@@ -15,8 +15,8 @@
     <div class="lists-container d-flex flex-column w-100">
       <label class="groups-label pb-1">{{ 'Groups.OwnGroups' | translate }}</label>
       <mat-list class="self-align-center w-100">
-        <mat-list-item class="list-item" *ngFor="let group of ownGroups; let even = even">
-          <div class="d-flex flex-row align-center w-100 list-row" [ngClass]="{ 'odd-row': even }">
+        <mat-list-item class="list-item" *ngFor="let group of ownGroups; let even = even; let odd = odd">
+          <div class="d-flex flex-row align-center w-100 list-row" [ngClass]="{ 'odd-row': odd, 'even-row': even }">
             <label class="w-40 pl-2 text">{{ group.name }}</label>
             <div class="d-flex flex-row align-center w-20">
               <label class="text">{{ group.userCount }}</label>

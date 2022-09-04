@@ -46,7 +46,11 @@
 }
 
 .odd-row {
-  background-color: lightgray;
+  background-color: var(--bg2);
+}
+
+.even-row {
+  background-color: var(--bg3);
 }
 
 .newmessage-text{
@@ -62,6 +66,6 @@
 }
 
 .selected-friend-row{
-  background-color: blue;
+  background-color: var(--primary);
   color: white;
 }
