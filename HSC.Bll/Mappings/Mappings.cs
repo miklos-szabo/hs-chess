@@ -7,6 +7,7 @@ using HSC.Transfer.History;
 using HSC.Transfer.Match;
 using HSC.Transfer.Searching;
 using HSC.Transfer.SignalR;
+using HSC.Transfer.Tournament;
 using HSC.Transfer.User;
 
 namespace HSC.Bll.Mappings
@@ -27,7 +28,8 @@ namespace HSC.Bll.Mappings
                 .ForMember(x => x.BlackUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).UserName))
                 .ForMember(x => x.BlackRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.Black).Rating))
                 .ForMember(x => x.FinalPot, o => o.MapFrom(m => m.MatchPlayers.Max(mp => mp.CurrentBet)))
-                .ForMember(x => x.IsHistoryMode, o => o.MapFrom(m => m.Result != Result.Ongoing));
+                .ForMember(x => x.IsHistoryMode, o => o.MapFrom(m => m.Result != Result.Ongoing))
+                .ForMember(x => x.IsTournament, o => o.MapFrom(m => m.Tournament != null));
 
             CreateMap<Group, GroupDto>()
                 .ForMember(x => x.UserCount, o => o.MapFrom(m => m.Users.Count()));
@@ -52,6 +54,13 @@ namespace HSC.Bll.Mappings
             CreateMap<User, UserContextMenuDto>();
 
             CreateMap<Challenge, CustomGameDto>();
+
+            CreateMap<TournamentPlayer, TournamentPlayerDto>();
+            CreateMap<Tournament, TournamentDetailsDto>();
+            CreateMap<Tournament, TournamentListDto>()
+                .ForMember(x => x.PlayerCount, o => o.MapFrom(m => m.Players.Count));
+            CreateMap<Tournament, TournamentMessageDto>();
+
 
         }
     }

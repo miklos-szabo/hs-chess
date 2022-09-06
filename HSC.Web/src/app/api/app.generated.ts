@@ -1795,6 +1795,379 @@ export class MatchFinderService {
     }
 }
 
+@Injectable({
+    providedIn: 'root'
+})
+export class TournamentService {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    createTournament(dto: CreateTournamentDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/Tournament/CreateTournament";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateTournament(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateTournament(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateTournament(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    getTournaments(dto: SearchTournamentDto): Observable<TournamentListDto[]> {
+        let url_ = this.baseUrl + "/api/Tournament/GetTournaments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTournaments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTournaments(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TournamentListDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TournamentListDto[]>;
+        }));
+    }
+
+    protected processGetTournaments(response: HttpResponseBase): Observable<TournamentListDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TournamentListDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TournamentListDto[]>(null as any);
+    }
+
+    getTournamentDetails(id: number): Observable<TournamentDetailsDto> {
+        let url_ = this.baseUrl + "/api/Tournament/GetTournamentDetails/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTournamentDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTournamentDetails(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TournamentDetailsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TournamentDetailsDto>;
+        }));
+    }
+
+    protected processGetTournamentDetails(response: HttpResponseBase): Observable<TournamentDetailsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TournamentDetailsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TournamentDetailsDto>(null as any);
+    }
+
+    joinTournament(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Tournament/JoinTournament/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processJoinTournament(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processJoinTournament(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processJoinTournament(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    getMessages(id: number): Observable<TournamentMessageDto[]> {
+        let url_ = this.baseUrl + "/api/Tournament/GetMessages/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMessages(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMessages(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TournamentMessageDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TournamentMessageDto[]>;
+        }));
+    }
+
+    protected processGetMessages(response: HttpResponseBase): Observable<TournamentMessageDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TournamentMessageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TournamentMessageDto[]>(null as any);
+    }
+
+    sendMessage(id: number, message: string | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Tournament/SendMessage/{id}?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (message !== undefined && message !== null)
+            url_ += "message=" + encodeURIComponent("" + message) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSendMessage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSendMessage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSendMessage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    searchForNextMatch(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Tournament/SearchForNextMatch/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchForNextMatch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchForNextMatch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processSearchForNextMatch(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+}
+
 export class UserMenuDto implements IUserMenuDto {
     userName?: string | undefined;
     playMoneyBalance!: number;
@@ -2405,6 +2778,7 @@ export class MatchFullDataDto implements IMatchFullDataDto {
     finalPot!: number;
     isHistoryMode!: boolean;
     moves?: string | undefined;
+    isTournament!: boolean;
 
     constructor(data?: IMatchFullDataDto) {
         if (data) {
@@ -2428,6 +2802,7 @@ export class MatchFullDataDto implements IMatchFullDataDto {
             this.finalPot = _data["finalPot"];
             this.isHistoryMode = _data["isHistoryMode"];
             this.moves = _data["moves"];
+            this.isTournament = _data["isTournament"];
         }
     }
 
@@ -2451,6 +2826,7 @@ export class MatchFullDataDto implements IMatchFullDataDto {
         data["finalPot"] = this.finalPot;
         data["isHistoryMode"] = this.isHistoryMode;
         data["moves"] = this.moves;
+        data["isTournament"] = this.isTournament;
         return data;
     }
 }
@@ -2467,6 +2843,7 @@ export interface IMatchFullDataDto {
     finalPot: number;
     isHistoryMode: boolean;
     moves?: string | undefined;
+    isTournament: boolean;
 }
 
 export class SearchingForMatchDto implements ISearchingForMatchDto {
@@ -2639,6 +3016,385 @@ export interface ICreateCustomGameDto {
     increment: number;
     minimumBet: number;
     maximumBet: number;
+}
+
+export class CreateTournamentDto implements ICreateTournamentDto {
+    description?: string | undefined;
+    title?: string | undefined;
+    startTime!: Date;
+    length!: string;
+    gameTimeMinutes!: number;
+    gameIncrement!: number;
+    type!: TournamentType;
+    buyIn!: number;
+    prizePoolMinimum!: number;
+
+    constructor(data?: ICreateTournamentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.description = _data["description"];
+            this.title = _data["title"];
+            this.startTime = _data["startTime"] ? new Date(_data["startTime"].toString()) : <any>undefined;
+            this.length = _data["length"];
+            this.gameTimeMinutes = _data["gameTimeMinutes"];
+            this.gameIncrement = _data["gameIncrement"];
+            this.type = _data["type"];
+            this.buyIn = _data["buyIn"];
+            this.prizePoolMinimum = _data["prizePoolMinimum"];
+        }
+    }
+
+    static fromJS(data: any): CreateTournamentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateTournamentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["description"] = this.description;
+        data["title"] = this.title;
+        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["length"] = this.length;
+        data["gameTimeMinutes"] = this.gameTimeMinutes;
+        data["gameIncrement"] = this.gameIncrement;
+        data["type"] = this.type;
+        data["buyIn"] = this.buyIn;
+        data["prizePoolMinimum"] = this.prizePoolMinimum;
+        return data;
+    }
+}
+
+export interface ICreateTournamentDto {
+    description?: string | undefined;
+    title?: string | undefined;
+    startTime: Date;
+    length: string;
+    gameTimeMinutes: number;
+    gameIncrement: number;
+    type: TournamentType;
+    buyIn: number;
+    prizePoolMinimum: number;
+}
+
+export enum TournamentType {
+    Tournament = 0,
+    Arena = 1,
+}
+
+export class TournamentListDto implements ITournamentListDto {
+    id!: number;
+    title?: string | undefined;
+    startTime!: Date;
+    length!: string;
+    gameTimeMinutes!: number;
+    gameIncrement!: number;
+    type!: TournamentType;
+    buyIn!: number;
+    prizePool!: number;
+    tournamentStatus!: TournamentStatus;
+    playerCount!: number;
+
+    constructor(data?: ITournamentListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.startTime = _data["startTime"] ? new Date(_data["startTime"].toString()) : <any>undefined;
+            this.length = _data["length"];
+            this.gameTimeMinutes = _data["gameTimeMinutes"];
+            this.gameIncrement = _data["gameIncrement"];
+            this.type = _data["type"];
+            this.buyIn = _data["buyIn"];
+            this.prizePool = _data["prizePool"];
+            this.tournamentStatus = _data["tournamentStatus"];
+            this.playerCount = _data["playerCount"];
+        }
+    }
+
+    static fromJS(data: any): TournamentListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TournamentListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["length"] = this.length;
+        data["gameTimeMinutes"] = this.gameTimeMinutes;
+        data["gameIncrement"] = this.gameIncrement;
+        data["type"] = this.type;
+        data["buyIn"] = this.buyIn;
+        data["prizePool"] = this.prizePool;
+        data["tournamentStatus"] = this.tournamentStatus;
+        data["playerCount"] = this.playerCount;
+        return data;
+    }
+}
+
+export interface ITournamentListDto {
+    id: number;
+    title?: string | undefined;
+    startTime: Date;
+    length: string;
+    gameTimeMinutes: number;
+    gameIncrement: number;
+    type: TournamentType;
+    buyIn: number;
+    prizePool: number;
+    tournamentStatus: TournamentStatus;
+    playerCount: number;
+}
+
+export enum TournamentStatus {
+    NotStarted = 0,
+    Ongoing = 1,
+    Finished = 2,
+}
+
+export class SearchTournamentDto implements ISearchTournamentDto {
+    pastTournaments!: boolean;
+    title?: string | undefined;
+    startDateIntervalStart?: Date | undefined;
+    startDateIntervalEnd?: Date | undefined;
+
+    constructor(data?: ISearchTournamentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pastTournaments = _data["pastTournaments"];
+            this.title = _data["title"];
+            this.startDateIntervalStart = _data["startDateIntervalStart"] ? new Date(_data["startDateIntervalStart"].toString()) : <any>undefined;
+            this.startDateIntervalEnd = _data["startDateIntervalEnd"] ? new Date(_data["startDateIntervalEnd"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SearchTournamentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchTournamentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pastTournaments"] = this.pastTournaments;
+        data["title"] = this.title;
+        data["startDateIntervalStart"] = this.startDateIntervalStart ? this.startDateIntervalStart.toISOString() : <any>undefined;
+        data["startDateIntervalEnd"] = this.startDateIntervalEnd ? this.startDateIntervalEnd.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface ISearchTournamentDto {
+    pastTournaments: boolean;
+    title?: string | undefined;
+    startDateIntervalStart?: Date | undefined;
+    startDateIntervalEnd?: Date | undefined;
+}
+
+export class TournamentDetailsDto implements ITournamentDetailsDto {
+    id!: number;
+    description?: string | undefined;
+    title?: string | undefined;
+    startTime!: Date;
+    length!: string;
+    gameTimeMinutes!: number;
+    gameIncrement!: number;
+    type!: TournamentType;
+    winnerUserName?: string | undefined;
+    buyIn!: number;
+    prizePool!: number;
+    tournamentStatus!: TournamentStatus;
+    players?: TournamentPlayerDto[] | undefined;
+
+    constructor(data?: ITournamentDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.description = _data["description"];
+            this.title = _data["title"];
+            this.startTime = _data["startTime"] ? new Date(_data["startTime"].toString()) : <any>undefined;
+            this.length = _data["length"];
+            this.gameTimeMinutes = _data["gameTimeMinutes"];
+            this.gameIncrement = _data["gameIncrement"];
+            this.type = _data["type"];
+            this.winnerUserName = _data["winnerUserName"];
+            this.buyIn = _data["buyIn"];
+            this.prizePool = _data["prizePool"];
+            this.tournamentStatus = _data["tournamentStatus"];
+            if (Array.isArray(_data["players"])) {
+                this.players = [] as any;
+                for (let item of _data["players"])
+                    this.players!.push(TournamentPlayerDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): TournamentDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TournamentDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["description"] = this.description;
+        data["title"] = this.title;
+        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["length"] = this.length;
+        data["gameTimeMinutes"] = this.gameTimeMinutes;
+        data["gameIncrement"] = this.gameIncrement;
+        data["type"] = this.type;
+        data["winnerUserName"] = this.winnerUserName;
+        data["buyIn"] = this.buyIn;
+        data["prizePool"] = this.prizePool;
+        data["tournamentStatus"] = this.tournamentStatus;
+        if (Array.isArray(this.players)) {
+            data["players"] = [];
+            for (let item of this.players)
+                data["players"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface ITournamentDetailsDto {
+    id: number;
+    description?: string | undefined;
+    title?: string | undefined;
+    startTime: Date;
+    length: string;
+    gameTimeMinutes: number;
+    gameIncrement: number;
+    type: TournamentType;
+    winnerUserName?: string | undefined;
+    buyIn: number;
+    prizePool: number;
+    tournamentStatus: TournamentStatus;
+    players?: TournamentPlayerDto[] | undefined;
+}
+
+export class TournamentPlayerDto implements ITournamentPlayerDto {
+    userName?: string | undefined;
+    points?: number | undefined;
+
+    constructor(data?: ITournamentPlayerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["userName"];
+            this.points = _data["points"];
+        }
+    }
+
+    static fromJS(data: any): TournamentPlayerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TournamentPlayerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["points"] = this.points;
+        return data;
+    }
+}
+
+export interface ITournamentPlayerDto {
+    userName?: string | undefined;
+    points?: number | undefined;
+}
+
+export class TournamentMessageDto implements ITournamentMessageDto {
+    senderUserName?: string | undefined;
+    timeStamp!: Date;
+    message?: string | undefined;
+
+    constructor(data?: ITournamentMessageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.senderUserName = _data["senderUserName"];
+            this.timeStamp = _data["timeStamp"] ? new Date(_data["timeStamp"].toString()) : <any>undefined;
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): TournamentMessageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TournamentMessageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["senderUserName"] = this.senderUserName;
+        data["timeStamp"] = this.timeStamp ? this.timeStamp.toISOString() : <any>undefined;
+        data["message"] = this.message;
+        return data;
+    }
+}
+
+export interface ITournamentMessageDto {
+    senderUserName?: string | undefined;
+    timeStamp: Date;
+    message?: string | undefined;
 }
 
 export class ApiException extends Error {

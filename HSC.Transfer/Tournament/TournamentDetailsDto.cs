@@ -5,17 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSC.Dal.Entities
+namespace HSC.Transfer.Tournament
 {
-    public class Tournament
+    public class TournamentDetailsDto
     {
-        public Tournament()
-        {
-            Matches = new HashSet<Match>();
-            Players = new HashSet<TournamentPlayer>();
-            Messages = new HashSet<TournamentMessage>();
-        }
-
         public int Id { get; set; }
         public string Description { get; set; }
         public string Title { get; set; }
@@ -28,9 +21,6 @@ namespace HSC.Dal.Entities
         public decimal BuyIn { get; set; }
         public decimal PrizePool { get; set; }
         public TournamentStatus TournamentStatus { get; set; }
-
-        public virtual ICollection<Match> Matches { get; set; }
-        public virtual ICollection<TournamentPlayer> Players { get; set; }
-        public virtual ICollection<TournamentMessage> Messages { get; set; }
+        public List<TournamentPlayerDto> Players { get; set; }
     }
 }

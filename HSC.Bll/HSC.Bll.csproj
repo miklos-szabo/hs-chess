@@ -9,12 +9,17 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Quartz" Version="3.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HSC.Common\HSC.Common.csproj" />
     <ProjectReference Include="..\HSC.Dal\HSC.Dal.csproj" />
     <ProjectReference Include="..\HSC.Transfer\HSC.Transfer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scheduling\" />
   </ItemGroup>
 
 </Project>

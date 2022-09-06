@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSC.Dal.Entities
+namespace HSC.Transfer.Tournament
 {
-    public class TournamentPlayer
+    public class TournamentPlayerDto
     {
-        public int TournamentId { get; set; }
         public string UserName { get; set; }
         public decimal? Points { get; set; }
-        public bool IsSearching { get; set; }
-
-        public Tournament Tournament { get; set; }
     }
 }
