@@ -18,7 +18,9 @@ using Microsoft.AspNetCore.SignalR;
 using OnlineAuction.Api.RequestContext;
 using OnlineAuction.Dal;
 using HSC.Bll.RatingService;
+using HSC.Bll.Scheduling;
 using HSC.Bll.TournamentService;
+using Quartz;
 
 public class Startup
 {
@@ -72,6 +74,20 @@ public class Startup
             };
         });
 
+        services.AddQuartz(q =>
+        {
+            q.UseMicrosoftDependencyInjectionJobFactory();
+
+            var startTournamentJobKey = new JobKey("StartTournamentJob");
+            var endTournamentJobKey = new JobKey("EndTournamentJob");
+
+            q.AddJob<StartTournamentJob>(opts => opts.WithIdentity(startTournamentJobKey).StoreDurably(true));
+            q.AddJob<StartTournamentJob>(opts => opts.WithIdentity(endTournamentJobKey).StoreDurably(true));
+        });
+
+        services.AddQuartzHostedService(
+            q => q.WaitForJobsToComplete = true);
+
         services.AddLogging();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerDocument();
@@ -107,7 +123,7 @@ public class Startup
         services.AddScoped<IGroupService, GroupService>();
         services.AddSingleton<IUserIdProvider, PreferredUserNameUserIdProvider>();
         services.AddSingleton<IRatingService, RatingService>();
-        services.AddSingleton<ITournamentService, TournamentService>();
+        services.AddScoped<ITournamentService, TournamentService>();
         services.AddDAL(connectionStringOptions);
         
     }

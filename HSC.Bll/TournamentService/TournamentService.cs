@@ -18,6 +18,7 @@ using HSC.Transfer.Tournament;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Quartz;
 
 namespace HSC.Bll.TournamentService
 {
@@ -28,14 +29,16 @@ namespace HSC.Bll.TournamentService
         private readonly IRequestContext _requestContext;
         private readonly IMapper _mapper;
         private readonly IHubContext<ChessHub, IChessClient> _chessHub;
+        private readonly ISchedulerFactory _schedulerFactory;
 
-        public TournamentService(HSCContext dbContext, ILogger<TournamentService> logger, IRequestContext requestContext, IMapper mapper, IHubContext<ChessHub, IChessClient> chessHub)
+        public TournamentService(HSCContext dbContext, ILogger<TournamentService> logger, IRequestContext requestContext, IMapper mapper, IHubContext<ChessHub, IChessClient> chessHub, ISchedulerFactory schedulerFactory)
         {
             _dbContext = dbContext;
             _logger = logger;
             _requestContext = requestContext;
             _mapper = mapper;
             _chessHub = chessHub;
+            _schedulerFactory = schedulerFactory;
         }
 
         public async Task CreateTournamentAsync(CreateTournamentDto dto)
@@ -56,6 +59,22 @@ namespace HSC.Bll.TournamentService
 
             await _dbContext.Tournaments.AddAsync(tournament);
             await _dbContext.SaveChangesAsync();
+
+            var startTrigger = TriggerBuilder.Create()
+                .ForJob("StartTournamentJob")
+                .UsingJobData("TournamentId", tournament.Id)
+                .StartAt(tournament.StartTime)
+                .Build();
+
+            await (await _schedulerFactory.GetScheduler()).ScheduleJob(startTrigger);
+
+            var endTrigger = TriggerBuilder.Create()
+                .ForJob("EndTournamentJob")
+                .UsingJobData("TournamentId", tournament.Id)
+                .StartAt(tournament.StartTime)
+                .Build();
+
+            await (await _schedulerFactory.GetScheduler()).ScheduleJob(endTrigger);
 
             _logger.LogDebug("Created new tournament: {name}, id: {id}", tournament.Title, tournament.Id);
         }
