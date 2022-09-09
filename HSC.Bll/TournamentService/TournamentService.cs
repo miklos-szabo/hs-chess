@@ -86,10 +86,21 @@ namespace HSC.Bll.TournamentService
                 .Where(!dto.PastTournaments, t => t.TournamentStatus != TournamentStatus.Finished)
                 .Where(!string.IsNullOrEmpty(dto.Title), t => t.Title.Contains(dto.Title))
                 .Where(dto.StartDateIntervalStart.HasValue, t => t.StartTime >= dto.StartDateIntervalStart.Value)
-                .Where(dto.StartDateIntervalEnd.HasValue, t => t.StartTime >= dto.StartDateIntervalEnd.Value)
+                .Where(dto.StartDateIntervalEnd.HasValue, t => t.StartTime >= dto.StartDateIntervalEnd.Value)                
+                .Where(dto.BuyInMin.HasValue, t => t.BuyIn >= dto.BuyInMin.Value)
+                .Where(dto.BuyInMax.HasValue, t => t.BuyIn >= dto.BuyInMax.Value)
                 .Take(50)
                 .ProjectTo<TournamentListDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+
+            if (dto.PastTournaments)
+            {
+                tournaments = tournaments.OrderByDescending(t => t.StartTime).ToList();
+            }
+            else
+            {
+                tournaments = tournaments.OrderBy(t => t.StartTime).ToList();
+            }
 
             _logger.LogDebug("Found {count} tournaments.", tournaments.Count);
 

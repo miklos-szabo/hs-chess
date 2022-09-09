@@ -95,5 +95,22 @@
   "SearchSimpleResult.0": "All",
   "SearchSimpleResult.1": "Victory",
   "SearchSimpleResult.2": "Defeat",
-  "SearchSimpleResult.3": "Draw"
+  "SearchSimpleResult.3": "Draw",
+  "Tournaments.BuyIn": "Buy in",
+  "Tournaments.BuyInMin": "Buy in minimum",
+  "Tournaments.BuyInMax": "Buy in maximum",
+  "Tournaments.PrizePool": "Prize pool",
+  "Tournaments.Create": "Create tournament",
+  "Tournaments.Title": "Title",
+  "Tournaments.Description": "Description",
+  "Tournaments.Length": "Tournament length",
+  "Tournaments.StartTime": "Start time",
+  "Tournaments.StartTimeStart": "Start time interval start",
+  "Tournaments.StartTimeEnd": "Start time interval end",
+  "Tournaments.GameTimeMinutes": "Minutes",
+  "Tournaments.GameIncrement": "Increment",
+  "Tournaments.PrizePoolMinimum": "Minimum prize pool",
+  "Tournaments.PastTournaments": "Finished tournaments",
+  "Tournaments.Search": "Search",
+  "Tournaments.Created": "Tournament created!"
 }

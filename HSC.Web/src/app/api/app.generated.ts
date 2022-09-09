@@ -1872,7 +1872,7 @@ export class TournamentService {
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetTournaments(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -3178,6 +3178,8 @@ export class SearchTournamentDto implements ISearchTournamentDto {
     title?: string | undefined;
     startDateIntervalStart?: Date | undefined;
     startDateIntervalEnd?: Date | undefined;
+    buyInMin?: number | undefined;
+    buyInMax?: number | undefined;
 
     constructor(data?: ISearchTournamentDto) {
         if (data) {
@@ -3194,6 +3196,8 @@ export class SearchTournamentDto implements ISearchTournamentDto {
             this.title = _data["title"];
             this.startDateIntervalStart = _data["startDateIntervalStart"] ? new Date(_data["startDateIntervalStart"].toString()) : <any>undefined;
             this.startDateIntervalEnd = _data["startDateIntervalEnd"] ? new Date(_data["startDateIntervalEnd"].toString()) : <any>undefined;
+            this.buyInMin = _data["buyInMin"];
+            this.buyInMax = _data["buyInMax"];
         }
     }
 
@@ -3210,6 +3214,8 @@ export class SearchTournamentDto implements ISearchTournamentDto {
         data["title"] = this.title;
         data["startDateIntervalStart"] = this.startDateIntervalStart ? this.startDateIntervalStart.toISOString() : <any>undefined;
         data["startDateIntervalEnd"] = this.startDateIntervalEnd ? this.startDateIntervalEnd.toISOString() : <any>undefined;
+        data["buyInMin"] = this.buyInMin;
+        data["buyInMax"] = this.buyInMax;
         return data;
     }
 }
@@ -3219,6 +3225,8 @@ export interface ISearchTournamentDto {
     title?: string | undefined;
     startDateIntervalStart?: Date | undefined;
     startDateIntervalEnd?: Date | undefined;
+    buyInMin?: number | undefined;
+    buyInMax?: number | undefined;
 }
 
 export class TournamentDetailsDto implements ITournamentDetailsDto {

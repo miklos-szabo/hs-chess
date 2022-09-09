@@ -41,6 +41,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CreateTournamentPopupComponent } from './pages/play-page/tournaments-page/create-tournament-popup/create-tournament-popup.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -81,7 +83,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     FriendsChatComponent,
     CreateGroupComponent,
     GroupDetailsPageComponent,
-    BettingPopupComponent
+    BettingPopupComponent,
+    CreateTournamentPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -104,6 +107,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCheckboxModule,
 
     TranslateModule.forRoot({
       loader: {

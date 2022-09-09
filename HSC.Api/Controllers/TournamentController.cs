@@ -17,13 +17,13 @@ namespace HSC.Api.Controllers
         }
 
         [HttpPost]
-        public async Task CreateTournamentAsync([FromBody] CreateTournamentDto dto)
+        public async Task CreateTournamentAsync(CreateTournamentDto dto)
         {
             await _tournamentService.CreateTournamentAsync(dto);
         }
 
-        [HttpGet]
-        public async Task<List<TournamentListDto>> GetTournamentsAsync([FromBody] SearchTournamentDto dto)
+        [HttpPost]
+        public async Task<List<TournamentListDto>> GetTournamentsAsync(SearchTournamentDto dto)
         {
             return await _tournamentService.GetTournamentsAsync(dto);
         }

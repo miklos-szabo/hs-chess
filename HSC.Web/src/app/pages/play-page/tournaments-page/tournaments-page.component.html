@@ -1,1 +1,55 @@
-<p>tournaments-page works!</p>
+<div class="container d-flex flex-row mt-3 h-100">
+  <div class="table w-70 h-100">
+    <mat-list class="w-100 h-100 pt-0">
+      <mat-list-item class="list-item" *ngFor="let tournament of tournaments; let even = even">
+        <div class="d-flex flex-row align-center list-row w-100" [ngClass]="even ? 'even-color' : 'odd-color'">
+          <label class="pl-1 w-15">{{ tournament.title }}</label>
+          <label class="w-10">{{ tournament.gameTimeMinutes + ' + ' + tournament.gameIncrement }}</label>
+          <label class="w-20">{{ tournament.startTime | date }}</label>
+          <label class="w-20">{{ ('Tournaments.BuyIn' | translate) + ': ' + tournament.buyIn + '$' }}</label>
+          <label class="w-20">{{ ('Tournaments.PrizePool' | translate) + ': ' + tournament.prizePool + '$' }}</label>
+          <div class="w-15 d-flex flex-row align-center">
+            <label>{{ tournament.playerCount + '$' }}</label>
+            <mat-icon class="text-icon">person</mat-icon>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div class="search w-30 d-flex flex-column align-center pl-3">
+    <button class="self-align-start mb-5" mat-raised-button (click)="createTournament()">
+      {{ 'Tournaments.Create' | translate }}
+    </button>
+    <form class="w-100 d-flex flex-column" #SearchTournamentsForm="ngForm">
+      <mat-checkbox [(ngModel)]="searchDto.pastTournaments" name="pastGamesInput">{{
+        'Tournaments.PastTournaments' | translate
+      }}</mat-checkbox>
+      <mat-form-field appearance="standard">
+        <mat-label>{{ 'Tournaments.Title' | translate }}</mat-label>
+        <input name="titleInput" matInput [(ngModel)]="searchDto.title" />
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{ 'Tournaments.StartTimeStart' | translate }}</mat-label>
+        <input
+          name="StartTimeStartInput"
+          matInput
+          type="datetime-local"
+          [(ngModel)]="searchDto.startDateIntervalStart"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{ 'Tournaments.StartTimeEnd' | translate }}</mat-label>
+        <input name="StartTimeEndInput" matInput type="datetime-local" [(ngModel)]="searchDto.startDateIntervalEnd" />
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{ 'Tournaments.BuyInMin' | translate }}</mat-label>
+        <input name="buyInMinInput" matInput type="number" [(ngModel)]="searchDto.buyInMin" />
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{ 'Tournaments.BuyInMax' | translate }}</mat-label>
+        <input name="buyInMaxInput" matInput type="number" [(ngModel)]="searchDto.buyInMax" />
+      </mat-form-field>
+      <button type="submit" mat-raised-button (click)="getTournaments()">{{ 'Tournaments.Search' | translate }}</button>
+    </form>
+  </div>
+</div>

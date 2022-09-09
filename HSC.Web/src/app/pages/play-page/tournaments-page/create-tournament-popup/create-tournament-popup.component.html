@@ -1,0 +1,66 @@
+<div class="d-flex flex-column">
+  <h3 class="self-align-center">{{ 'Tournaments.Create' | translate }}</h3>
+  <form #createTournamentForm="ngForm" (submit)="finish(createTournamentForm)" class="d-flex flex-column">
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>{{ 'Tournaments.Title' | translate }}</mat-label>
+      <input name="titleInput" matInput [(ngModel)]="createTournamentDto.title" required />
+    </mat-form-field>
+    <mat-form-field appearance="standard" class="w-100">
+      <mat-label>{{ 'Tournaments.Description' | translate }}</mat-label>
+      <textarea name="descriptionInput" matInput [(ngModel)]="createTournamentDto.description" rows="5"></textarea>
+    </mat-form-field>
+    <div class="w-100 d-flex flex-column">
+      <div class="d-flex flex-row">
+        <mat-form-field class="w-50 pr-3" appearance="standard">
+          <mat-label>{{ 'Tournaments.StartTime' | translate }}</mat-label>
+          <input
+            name="startTimeInput"
+            matInput
+            type="datetime-local"
+            [(ngModel)]="createTournamentDto.startTime"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field class="w-50" appearance="standard">
+          <mat-label>{{ 'Tournaments.Length' | translate }}</mat-label>
+          <input name="lengthInput" matInput type="time" [(ngModel)]="createTournamentDto.length" required />
+        </mat-form-field>
+      </div>
+      <div class="d-flex flex-row">
+        <mat-form-field class="w-50 pr-3" appearance="standard">
+          <mat-label>{{ 'Tournaments.GameTimeMinutes' | translate }}</mat-label>
+          <input
+            name="minutesInput"
+            matInput
+            type="number"
+            [(ngModel)]="createTournamentDto.gameTimeMinutes"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field class="w-50" appearance="standard">
+          <mat-label>{{ 'Tournaments.GameIncrement' | translate }}</mat-label>
+          <input
+            name="incrementInput"
+            matInput
+            type="number"
+            [(ngModel)]="createTournamentDto.gameIncrement"
+            required
+          />
+        </mat-form-field>
+      </div>
+      <div class="d-flex flex-row">
+        <mat-form-field class="w-50 pr-3" appearance="standard">
+          <mat-label>{{ 'Tournaments.BuyIn' | translate }}</mat-label>
+          <input name="buyinInput" matInput type="number" [(ngModel)]="createTournamentDto.buyIn" required />
+        </mat-form-field>
+        <mat-form-field class="w-50" appearance="standard">
+          <mat-label>{{ 'Tournaments.PrizePoolMinimum' | translate }}</mat-label>
+          <input name="prizePoolInput" matInput type="number" [(ngModel)]="createTournamentDto.prizePoolMinimum" />
+        </mat-form-field>
+      </div>
+    </div>
+    <button class="self-align-center pt-3" type="submit" mat-raised-button>
+      {{ 'Tournaments.Create' | translate }}
+    </button>
+  </form>
+</div>

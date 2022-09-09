@@ -12,5 +12,7 @@ namespace HSC.Transfer.Tournament
         public string Title { get; set; }
         public DateTimeOffset? StartDateIntervalStart { get; set; }
         public DateTimeOffset? StartDateIntervalEnd { get; set; }
+        public decimal? BuyInMin { get; set; }
+        public decimal? BuyInMax { get; set; }
     }
 }

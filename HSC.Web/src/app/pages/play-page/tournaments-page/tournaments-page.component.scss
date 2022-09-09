@@ -1,0 +1,36 @@
+@import 'src/themes/variables.scss';
+
+.container{
+  width: 1300px;
+}
+
+.table{
+  overflow-y: auto;
+}
+
+:host {
+  @include full-height;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-row {
+  height: 60px;
+}
+
+.odd-color {
+  background-color: var(--bg2);
+}
+
+.even-color {
+  background-color: var(--bg3);
+}
+
+.list-item {
+  height: 60px !important;
+}
+
+.text-icon {
+  width: 24px;
+}
