@@ -1,22 +1,27 @@
 <div class="container d-flex flex-row mt-3 h-100">
-  <div class="table w-70 h-100">
+  <div class="table w-80 h-100">
     <mat-list class="w-100 h-100 pt-0">
       <mat-list-item class="list-item" *ngFor="let tournament of tournaments; let even = even">
         <div class="d-flex flex-row align-center list-row w-100" [ngClass]="even ? 'even-color' : 'odd-color'">
-          <label class="pl-1 w-15">{{ tournament.title }}</label>
+          <label class="pl-1 w-25">{{ tournament.title }}</label>
           <label class="w-10">{{ tournament.gameTimeMinutes + ' + ' + tournament.gameIncrement }}</label>
-          <label class="w-20">{{ tournament.startTime | date }}</label>
-          <label class="w-20">{{ ('Tournaments.BuyIn' | translate) + ': ' + tournament.buyIn + '$' }}</label>
-          <label class="w-20">{{ ('Tournaments.PrizePool' | translate) + ': ' + tournament.prizePool + '$' }}</label>
-          <div class="w-15 d-flex flex-row align-center">
-            <label>{{ tournament.playerCount + '$' }}</label>
+          <label class="w-20">{{ tournament.startTime | date: 'yyyy. MM. dd HH:mm' }}</label>
+          <label class="w-15">{{ ('Tournaments.BuyIn' | translate) + ': ' + tournament.buyIn + '$' }}</label>
+          <label class="w-15">{{ ('Tournaments.PrizePool' | translate) + ': ' + tournament.prizePool + '$' }}</label>
+          <div class="w-5 d-flex flex-row align-center">
+            <label>{{ tournament.playerCount }}</label>
             <mat-icon class="text-icon">person</mat-icon>
+          </div>
+          <div class="w-10">
+            <button mat-raised-button (click)="openDetails(tournament.id)">
+              {{ 'Tournaments.Details' | translate }}
+            </button>
           </div>
         </div>
       </mat-list-item>
     </mat-list>
   </div>
-  <div class="search w-30 d-flex flex-column align-center pl-3">
+  <div class="search w-20 d-flex flex-column align-center pl-3">
     <button class="self-align-start mb-5" mat-raised-button (click)="createTournament()">
       {{ 'Tournaments.Create' | translate }}
     </button>

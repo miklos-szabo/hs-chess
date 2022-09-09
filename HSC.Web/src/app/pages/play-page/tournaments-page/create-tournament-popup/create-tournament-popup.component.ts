@@ -22,6 +22,8 @@ export class CreateTournamentPopupComponent implements OnInit {
   }
 
   closeWindow() {
+    this.createTournamentDto.startTime = new Date(this.createTournamentDto.startTime);
+    this.createTournamentDto.length += ':00';
     this.dialogRef.close(this.createTournamentDto);
   }
 }

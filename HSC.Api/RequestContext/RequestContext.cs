@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using HSC.Common.RequestContext;
-using Microsoft.AspNetCore.Http;
 
-namespace OnlineAuction.Api.RequestContext
+namespace HSC.Api.RequestContext
 {
     public class RequestContext : IRequestContext
     {

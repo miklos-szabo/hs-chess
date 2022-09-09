@@ -1,6 +1,7 @@
 using AutoMapper;
 using HSC.Api.ExceptionHandling;
 using HSC.Api.Extensions;
+using HSC.Api.RequestContext;
 using HSC.Bll.AccountService;
 using HSC.Bll.BettingService;
 using HSC.Bll.ChatService;
@@ -15,12 +16,13 @@ using HSC.Common.Options;
 using HSC.Common.RequestContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
-using OnlineAuction.Api.RequestContext;
 using OnlineAuction.Dal;
 using HSC.Bll.RatingService;
 using HSC.Bll.Scheduling;
 using HSC.Bll.TournamentService;
 using Quartz;
+using HSC.Bll.TournamentJobService;
+using HSC.Bll.Scheduling.Jobs;
 
 public class Startup
 {
@@ -77,12 +79,7 @@ public class Startup
         services.AddQuartz(q =>
         {
             q.UseMicrosoftDependencyInjectionJobFactory();
-
-            var startTournamentJobKey = new JobKey("StartTournamentJob");
-            var endTournamentJobKey = new JobKey("EndTournamentJob");
-
-            q.AddJob<StartTournamentJob>(opts => opts.WithIdentity(startTournamentJobKey).StoreDurably(true));
-            q.AddJob<StartTournamentJob>(opts => opts.WithIdentity(endTournamentJobKey).StoreDurably(true));
+            q.SchedulerId = "HSC-Scheduler";
         });
 
         services.AddQuartzHostedService(
@@ -123,7 +120,9 @@ public class Startup
         services.AddScoped<IGroupService, GroupService>();
         services.AddSingleton<IUserIdProvider, PreferredUserNameUserIdProvider>();
         services.AddSingleton<IRatingService, RatingService>();
+        services.AddSingleton<HSCJobScheduler>();
         services.AddScoped<ITournamentService, TournamentService>();
+        services.AddScoped<ITournamentJobService, TournamentJobService>();
         services.AddDAL(connectionStringOptions);
         
     }

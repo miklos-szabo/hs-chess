@@ -8,6 +8,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HSC.Bll.Hubs.Clients;
 using HSC.Bll.Hubs;
+using HSC.Bll.Scheduling;
 using HSC.Common.Enums;
 using HSC.Common.Exceptions;
 using HSC.Common.Extensions;
@@ -29,16 +30,16 @@ namespace HSC.Bll.TournamentService
         private readonly IRequestContext _requestContext;
         private readonly IMapper _mapper;
         private readonly IHubContext<ChessHub, IChessClient> _chessHub;
-        private readonly ISchedulerFactory _schedulerFactory;
+        private readonly HSCJobScheduler _scheduler;
 
-        public TournamentService(HSCContext dbContext, ILogger<TournamentService> logger, IRequestContext requestContext, IMapper mapper, IHubContext<ChessHub, IChessClient> chessHub, ISchedulerFactory schedulerFactory)
+        public TournamentService(HSCContext dbContext, ILogger<TournamentService> logger, IRequestContext requestContext, IMapper mapper, IHubContext<ChessHub, IChessClient> chessHub, HSCJobScheduler scheduler)
         {
             _dbContext = dbContext;
             _logger = logger;
             _requestContext = requestContext;
             _mapper = mapper;
             _chessHub = chessHub;
-            _schedulerFactory = schedulerFactory;
+            _scheduler = scheduler;
         }
 
         public async Task CreateTournamentAsync(CreateTournamentDto dto)
@@ -60,21 +61,8 @@ namespace HSC.Bll.TournamentService
             await _dbContext.Tournaments.AddAsync(tournament);
             await _dbContext.SaveChangesAsync();
 
-            var startTrigger = TriggerBuilder.Create()
-                .ForJob("StartTournamentJob")
-                .UsingJobData("TournamentId", tournament.Id)
-                .StartAt(tournament.StartTime)
-                .Build();
-
-            await (await _schedulerFactory.GetScheduler()).ScheduleJob(startTrigger);
-
-            var endTrigger = TriggerBuilder.Create()
-                .ForJob("EndTournamentJob")
-                .UsingJobData("TournamentId", tournament.Id)
-                .StartAt(tournament.StartTime)
-                .Build();
-
-            await (await _schedulerFactory.GetScheduler()).ScheduleJob(endTrigger);
+            await _scheduler.RegisterTournamentStartJobAsync(tournament.Id, tournament.StartTime);
+            await _scheduler.RegisterTournamentEndJobAsync(tournament.Id, tournament.StartTime.Add(tournament.Length));
 
             _logger.LogDebug("Created new tournament: {name}, id: {id}", tournament.Title, tournament.Id);
         }
@@ -131,36 +119,6 @@ namespace HSC.Bll.TournamentService
             });
 
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task TournamentOver(int id)
-        {
-            var tournament = await _dbContext.Tournaments.Include(t => t.Players).Include(t => t.Matches)
-                .SingleAsync(t => t.Id == id);
-
-            var ongoingMatches = tournament.Matches.Where(m => m.Result == Result.Ongoing).ToList();
-
-            foreach (var match in ongoingMatches)
-            {
-                match.Result = Result.DrawByAgreement;
-            }
-
-            //TODO send signalr stuff that tournament is over
-
-            tournament.WinnerUserName = tournament.Players.OrderBy(p => p.Points).First().UserName;
-            await _dbContext.SaveChangesAsync();
-
-            _logger.LogDebug("Tournament {name}, id: {id} is over.", tournament.Title, tournament.Id);
-        }
-
-        public async Task TournamentStart(int id)
-        {
-            var tournament = await _dbContext.Tournaments.SingleAsync(t => t.Id == id);
-
-            tournament.TournamentStatus = TournamentStatus.Ongoing;
-            await _dbContext.SaveChangesAsync();
-
-            _logger.LogDebug("Tournament {name}, id: {id} has started.}", tournament.Title, id);
         }
 
         public async Task<List<TournamentMessageDto>> GetMessages(int id)

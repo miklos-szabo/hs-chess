@@ -112,5 +112,6 @@
   "Tournaments.PrizePoolMinimum": "Minimum prize pool",
   "Tournaments.PastTournaments": "Finished tournaments",
   "Tournaments.Search": "Search",
-  "Tournaments.Created": "Tournament created!"
+  "Tournaments.Created": "Tournament created!",
+  "Tournaments.Details": "Details"
 }

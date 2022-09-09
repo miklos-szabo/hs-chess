@@ -13,8 +13,6 @@ namespace HSC.Bll.TournamentService
         Task<List<TournamentListDto>> GetTournamentsAsync(SearchTournamentDto dto);
         Task<TournamentDetailsDto> GetTournamentDetailsAsync(int id);
         Task JoinTournamentAsync(int id);
-        Task TournamentOver(int id);
-        Task TournamentStart(int id);
         Task<List<TournamentMessageDto>> GetMessages(int id);
         Task SendMessage(int id, string message);
         Task SearchForNextMatch(int id);

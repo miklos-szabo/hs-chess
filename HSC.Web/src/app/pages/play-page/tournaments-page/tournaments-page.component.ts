@@ -25,7 +25,19 @@ export class TournamentsPageComponent implements OnInit {
   }
 
   getTournaments() {
-    this.tournamentService.getTournaments(this.searchDto).subscribe((res) => {
+    var newDto = new SearchTournamentDto();
+    newDto.title = this.searchDto.title;
+    newDto.buyInMin = this.searchDto.buyInMin;
+    newDto.buyInMax = this.searchDto.buyInMax;
+    newDto.pastTournaments = this.searchDto.pastTournaments;
+    newDto.startDateIntervalStart = this.searchDto.startDateIntervalStart
+      ? new Date(this.searchDto.startDateIntervalStart)
+      : undefined;
+    newDto.startDateIntervalEnd = this.searchDto.startDateIntervalEnd
+      ? new Date(this.searchDto.startDateIntervalEnd)
+      : undefined;
+
+    this.tournamentService.getTournaments(newDto).subscribe((res) => {
       this.tournaments = res;
     });
   }
@@ -38,8 +50,11 @@ export class TournamentsPageComponent implements OnInit {
       if (result) {
         this.tournamentService.createTournament(result).subscribe(() => {
           this.notificationService.success('Tournaments.Created');
+          this.getTournaments();
         });
       }
     });
   }
+
+  openDetails(tournamentId: number) {}
 }
