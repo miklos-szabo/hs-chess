@@ -165,7 +165,7 @@
     "uuid" "8.3.2"
     "yargs" "17.5.1"
 
-"@angular/common@^10 || ^11 || ^12", "@angular/common@^14.0.0 || ^15.0.0", "@angular/common@^14.2.1", "@angular/common@>=10.0.0", "@angular/common@14.2.1":
+"@angular/common@^14", "@angular/common@^14.0.0 || ^15.0.0", "@angular/common@^14.2.1", "@angular/common@>=10.0.0", "@angular/common@14.2.1":
   "integrity" "sha512-7FvYOBrgM9owmJvckC/tyJ9reI3BKXChm7Y2iu0WI94XIrI+FSQ7QYNwahDpcizyYAboVwe5lYXgDRrbzRfkKg=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-14.2.1.tgz"
   "version" "14.2.1"
@@ -195,7 +195,7 @@
   dependencies:
     "tslib" "^2.3.0"
 
-"@angular/core@^10 || ^11 || ^12", "@angular/core@^14.0.0 || ^15.0.0", "@angular/core@^14.2.1", "@angular/core@>=10.0.0", "@angular/core@14.2.1":
+"@angular/core@^14", "@angular/core@^14.0.0 || ^15.0.0", "@angular/core@^14.2.1", "@angular/core@>=10.0.0", "@angular/core@14.2.1":
   "integrity" "sha512-TTMfunZ6TWaXA7SeWHbJBmJZIW4x48SjXrUIxMQ/PSgq9E/JXgarYDmfn00yyVRJDEGfjqzUW09Wtzc1mOkWLQ=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-14.2.1.tgz"
   "version" "14.2.1"
@@ -230,7 +230,7 @@
   dependencies:
     "tslib" "^2.3.0"
 
-"@angular/router@^10 || ^11 || ^12", "@angular/router@^14.2.1":
+"@angular/router@^14", "@angular/router@^14.2.1":
   "integrity" "sha512-qq/TIltAm0h3EO++AoOKWAu+va4gBZa+UB8ajCmeBahRaRAykNgpl0EIblZsnDq2eedSz0ucCn95HV3g6XUXlg=="
   "resolved" "https://registry.npmjs.org/@angular/router/-/router-14.2.1.tgz"
   "version" "14.2.1"
@@ -3949,14 +3949,14 @@
     "ua-parser-js" "^0.7.30"
     "yargs" "^16.1.1"
 
-"keycloak-angular@^8.4.0":
-  "integrity" "sha512-3zBKzPf+ZG+16EfOdp1uxa/XTGElTOQSq5UkfFJzFcJe1D6p696hKIUJHNJECcYNUtt4XhYwUEolMIR+VySqgA=="
-  "resolved" "https://registry.npmjs.org/keycloak-angular/-/keycloak-angular-8.4.0.tgz"
-  "version" "8.4.0"
+"keycloak-angular@^11.0.0":
+  "integrity" "sha512-26nnnDJLBFMrXcLU6DDjikmi3nmzglDeiJbdTq6UMLVJ+CNr/8GvfcMNcsA764jSxMBQ1hjdLOmLfq5jjd+HXA=="
+  "resolved" "https://registry.npmjs.org/keycloak-angular/-/keycloak-angular-11.0.0.tgz"
+  "version" "11.0.0"
   dependencies:
-    "tslib" "^2.0.0"
+    "tslib" "^2.3.0"
 
-"keycloak-js@^10 || ^11 || ^12 || ^13 || ^14 || ^15", "keycloak-js@^15.1.1":
+"keycloak-js@^10 || ^11 || ^12 || ^13 || ^14 || ^15 || ^16 || ^17", "keycloak-js@^15.1.1":
   "integrity" "sha512-PPu70WfSI2CWX7GoF5AQ4HkqYJLTAOV/25wDG//9S5SUOhqIDxKjAv6P54hy8nKt2+rIZF2kqpv7FNEmBN2W4g=="
   "resolved" "https://registry.npmjs.org/keycloak-js/-/keycloak-js-15.1.1.tgz"
   "version" "15.1.1"
