@@ -2166,6 +2166,64 @@ export class TournamentService {
         }
         return _observableOf<void>(null as any);
     }
+
+    getStandings(id: number): Observable<TournamentPlayerDto[]> {
+        let url_ = this.baseUrl + "/api/Tournament/GetStandings/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStandings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStandings(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TournamentPlayerDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TournamentPlayerDto[]>;
+        }));
+    }
+
+    protected processGetStandings(response: HttpResponseBase): Observable<TournamentPlayerDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TournamentPlayerDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TournamentPlayerDto[]>(null as any);
+    }
 }
 
 export class UserMenuDto implements IUserMenuDto {
@@ -3234,6 +3292,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
     description?: string | undefined;
     title?: string | undefined;
     startTime!: Date;
+    startsInEndsAt!: number;
     length!: string;
     gameTimeMinutes!: number;
     gameIncrement!: number;
@@ -3242,7 +3301,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
     buyIn!: number;
     prizePool!: number;
     tournamentStatus!: TournamentStatus;
-    players?: TournamentPlayerDto[] | undefined;
+    hasJoined!: boolean;
 
     constructor(data?: ITournamentDetailsDto) {
         if (data) {
@@ -3259,6 +3318,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
             this.description = _data["description"];
             this.title = _data["title"];
             this.startTime = _data["startTime"] ? new Date(_data["startTime"].toString()) : <any>undefined;
+            this.startsInEndsAt = _data["startsInEndsAt"];
             this.length = _data["length"];
             this.gameTimeMinutes = _data["gameTimeMinutes"];
             this.gameIncrement = _data["gameIncrement"];
@@ -3267,11 +3327,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
             this.buyIn = _data["buyIn"];
             this.prizePool = _data["prizePool"];
             this.tournamentStatus = _data["tournamentStatus"];
-            if (Array.isArray(_data["players"])) {
-                this.players = [] as any;
-                for (let item of _data["players"])
-                    this.players!.push(TournamentPlayerDto.fromJS(item));
-            }
+            this.hasJoined = _data["hasJoined"];
         }
     }
 
@@ -3288,6 +3344,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
         data["description"] = this.description;
         data["title"] = this.title;
         data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["startsInEndsAt"] = this.startsInEndsAt;
         data["length"] = this.length;
         data["gameTimeMinutes"] = this.gameTimeMinutes;
         data["gameIncrement"] = this.gameIncrement;
@@ -3296,11 +3353,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
         data["buyIn"] = this.buyIn;
         data["prizePool"] = this.prizePool;
         data["tournamentStatus"] = this.tournamentStatus;
-        if (Array.isArray(this.players)) {
-            data["players"] = [];
-            for (let item of this.players)
-                data["players"].push(item.toJSON());
-        }
+        data["hasJoined"] = this.hasJoined;
         return data;
     }
 }
@@ -3310,6 +3363,7 @@ export interface ITournamentDetailsDto {
     description?: string | undefined;
     title?: string | undefined;
     startTime: Date;
+    startsInEndsAt: number;
     length: string;
     gameTimeMinutes: number;
     gameIncrement: number;
@@ -3318,47 +3372,7 @@ export interface ITournamentDetailsDto {
     buyIn: number;
     prizePool: number;
     tournamentStatus: TournamentStatus;
-    players?: TournamentPlayerDto[] | undefined;
-}
-
-export class TournamentPlayerDto implements ITournamentPlayerDto {
-    userName?: string | undefined;
-    points?: number | undefined;
-
-    constructor(data?: ITournamentPlayerDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userName = _data["userName"];
-            this.points = _data["points"];
-        }
-    }
-
-    static fromJS(data: any): TournamentPlayerDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TournamentPlayerDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userName"] = this.userName;
-        data["points"] = this.points;
-        return data;
-    }
-}
-
-export interface ITournamentPlayerDto {
-    userName?: string | undefined;
-    points?: number | undefined;
+    hasJoined: boolean;
 }
 
 export class TournamentMessageDto implements ITournamentMessageDto {
@@ -3403,6 +3417,46 @@ export interface ITournamentMessageDto {
     senderUserName?: string | undefined;
     timeStamp: Date;
     message?: string | undefined;
+}
+
+export class TournamentPlayerDto implements ITournamentPlayerDto {
+    userName?: string | undefined;
+    points?: number | undefined;
+
+    constructor(data?: ITournamentPlayerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["userName"];
+            this.points = _data["points"];
+        }
+    }
+
+    static fromJS(data: any): TournamentPlayerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TournamentPlayerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["points"] = this.points;
+        return data;
+    }
+}
+
+export interface ITournamentPlayerDto {
+    userName?: string | undefined;
+    points?: number | undefined;
 }
 
 export class ApiException extends Error {

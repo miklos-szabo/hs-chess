@@ -44,6 +44,10 @@
   font-weight: bold;
 }
 
+.white-space-pre{
+  white-space: pre-line;
+}
+
 @for $i from 1 through 100 {
   .w-#{($i)} {
     width: $i * 1%;

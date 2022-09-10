@@ -13,6 +13,7 @@ namespace HSC.Transfer.Tournament
         public string Description { get; set; }
         public string Title { get; set; }
         public DateTimeOffset StartTime { get; set; }
+        public double StartsInEndsAt { get; set; }
         public TimeSpan Length { get; set; }
         public int GameTimeMinutes { get; set; }
         public int GameIncrement { get; set; }
@@ -21,6 +22,6 @@ namespace HSC.Transfer.Tournament
         public decimal BuyIn { get; set; }
         public decimal PrizePool { get; set; }
         public TournamentStatus TournamentStatus { get; set; }
-        public List<TournamentPlayerDto> Players { get; set; }
+        public bool HasJoined { get; set; }
     }
 }

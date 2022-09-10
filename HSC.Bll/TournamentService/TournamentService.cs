@@ -97,9 +97,16 @@ namespace HSC.Bll.TournamentService
 
         public async Task<TournamentDetailsDto> GetTournamentDetailsAsync(int id)
         {
-            return await _dbContext.Tournaments
-                .ProjectTo<TournamentDetailsDto>(_mapper.ConfigurationProvider)
+            var details = await _dbContext.Tournaments
+                .ProjectTo<TournamentDetailsDto>(_mapper.ConfigurationProvider, new {currentUserName = _requestContext.UserName})
                 .SingleAsync(t => t.Id == id);
+
+            if (details.TournamentStatus == TournamentStatus.NotStarted)
+                details.StartsInEndsAt = details.StartTime.Subtract(DateTimeOffset.Now).TotalSeconds;
+            else if (details.TournamentStatus == TournamentStatus.Ongoing)
+                details.StartsInEndsAt = details.StartTime.Add(details.Length).Subtract(DateTimeOffset.Now).TotalSeconds;
+
+            return details;
         }
 
         public async Task JoinTournamentAsync(int id)
@@ -141,6 +148,9 @@ namespace HSC.Bll.TournamentService
             });
 
             await _dbContext.SaveChangesAsync();
+
+            var players = await _dbContext.TournamentPlayers.Where(tp => tp.TournamentId == id).Select(tp => tp.UserName).ToListAsync();
+            await _chessHub.Clients.Users(players).ReceiveTournamentMessage();
         }
 
         public async Task SearchForNextMatch(int id)
@@ -192,6 +202,13 @@ namespace HSC.Bll.TournamentService
                 user.IsSearching = true;
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<List<TournamentPlayerDto>> GetStandingsAsync(int tournamentId)
+        {
+            return await _dbContext.TournamentPlayers.Where(tp => tp.TournamentId == tournamentId)
+                .ProjectTo<TournamentPlayerDto>(_mapper.ConfigurationProvider)
+                .OrderByDescending(tp => tp.Points).ToListAsync();
         }
     }
 }

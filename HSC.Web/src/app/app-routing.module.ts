@@ -6,6 +6,7 @@ import { GroupDetailsPageComponent } from './pages/groups-page/group-details-pag
 import { GroupsPageComponent } from './pages/groups-page/groups-page.component';
 import { HistoryPageComponent } from './pages/history-page/history-page.component';
 import { PlayPageComponent } from './pages/play-page/play-page.component';
+import { TournamentDetailsComponent } from './pages/play-page/tournaments-page/tournament-details/tournament-details.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { AuthGuard } from './services/auth/auth-guard';
 
@@ -38,6 +39,11 @@ const routes: Routes = [
   {
     path: 'chess/:matchId',
     component: ChessPageComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'tournaments/:tournamentId',
+    component: TournamentDetailsComponent,
     canActivate: [AuthGuard]
   },
   {

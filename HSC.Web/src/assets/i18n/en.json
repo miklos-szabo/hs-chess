@@ -113,5 +113,12 @@
   "Tournaments.PastTournaments": "Finished tournaments",
   "Tournaments.Search": "Search",
   "Tournaments.Created": "Tournament created!",
-  "Tournaments.Details": "Details"
+  "Tournaments.Details": "Details",
+  "Tournaments.Join": "Join Tournament",
+  "Tournaments.StartsIn": "Starts in: ",
+  "Tournaments.EndsIn": "Ends in: ",
+  "Tournaments.Winner": "Winner: ",
+  "Tournaments.TimeControl": "Time control: ",
+  "Tournaments.Joined": "Joined the tournament!",
+  "Tournaments.FindMatch": "Find match"
 }

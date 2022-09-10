@@ -30,5 +30,7 @@ namespace HSC.Bll.Hubs.Clients
         Task ReceiveFriendRequest(string fromUserName);
 
         Task ReceiveMessage(ChatMessageDto message);
+        Task ReceiveTournamentMessage();
+        Task ReceiveTournamentOver(TournamentOverDto dto);
     }
 }

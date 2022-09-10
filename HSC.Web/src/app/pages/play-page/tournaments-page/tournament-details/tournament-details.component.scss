@@ -1,0 +1,31 @@
+@import 'src/themes/variables.scss';
+
+:host {
+  @include full-height;
+}
+
+.main-container{
+  width: 1500px;
+}
+
+.chat-area{
+  border-radius: 2px;
+  background-color: var(--bg2);
+}
+
+.messages{
+  flex-direction: row-reverse;
+}
+
+.odd-row {
+  background-color: var(--bg2);
+}
+
+.even-row {
+  background-color: var(--bg3);
+}
+
+.big-button{
+  width: 150px;
+  height: 60px;
+}

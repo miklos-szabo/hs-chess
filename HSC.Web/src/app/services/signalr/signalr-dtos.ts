@@ -15,3 +15,8 @@ export class ChallengeDto {
   id!: number;
   userName = '';
 }
+
+export class TournamentOverDto {
+  winner = '';
+  winnings = 0;
+}

@@ -16,6 +16,8 @@ namespace HSC.Bll.Mappings
     {
         public Mappings()
         {
+            var currentUserName = string.Empty;
+
             CreateMap<Dal.Entities.Match, MatchStartDto>()
                 .ForMember(x => x.WhiteUserName, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).UserName))
                 .ForMember(x => x.WhiteRating, o => o.MapFrom(m => m.MatchPlayers.Single(mp => mp.Color == Color.White).Rating))
@@ -56,7 +58,8 @@ namespace HSC.Bll.Mappings
             CreateMap<Challenge, CustomGameDto>();
 
             CreateMap<TournamentPlayer, TournamentPlayerDto>();
-            CreateMap<Tournament, TournamentDetailsDto>();
+            CreateMap<Tournament, TournamentDetailsDto>()
+                .ForMember(x => x.HasJoined, o => o.MapFrom(m => m.Players.Any(p => p.UserName == currentUserName)));
             CreateMap<Tournament, TournamentListDto>()
                 .ForMember(x => x.PlayerCount, o => o.MapFrom(m => m.Players.Count));
             CreateMap<Tournament, TournamentMessageDto>();

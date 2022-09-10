@@ -5038,6 +5038,13 @@
   "resolved" "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   "version" "2.6.2"
 
+"ngx-countdown@^14.0.0":
+  "integrity" "sha512-XZyRQM7lT174phm15WiqnenYShZ9+RkaSYNsFvM5GREPgAnWE9Yl7tjC6aH4tijdnYPsbAqSIyqhzg/TERiKjQ=="
+  "resolved" "https://registry.npmjs.org/ngx-countdown/-/ngx-countdown-14.0.0.tgz"
+  "version" "14.0.0"
+  dependencies:
+    "tslib" "^2.3.0"
+
 "nice-try@^1.0.4":
   "integrity" "sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ=="
   "resolved" "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz"

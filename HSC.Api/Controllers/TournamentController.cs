@@ -1,5 +1,6 @@
 ﻿using HSC.Bll.TournamentService;
 using HSC.Transfer.Tournament;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace HSC.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class TournamentController : ControllerBase
     {
         private readonly ITournamentService _tournamentService;
@@ -56,6 +58,12 @@ namespace HSC.Api.Controllers
         public async Task SearchForNextMatch(int id)
         {
             await _tournamentService.SearchForNextMatch(id);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<List<TournamentPlayerDto>> GetStandingsAsync(int id)
+        {
+            return await _tournamentService.GetStandingsAsync(id);
         }
     }
 }

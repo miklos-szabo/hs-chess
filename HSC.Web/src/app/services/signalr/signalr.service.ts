@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
 import { MatchFinderService, Result } from 'src/app/api/app.generated';
 import { NotificationService } from '../notification.service';
-import { ChallengeDto, ChatMessageDto, MoveDto } from './signalr-dtos';
+import { ChallengeDto, ChatMessageDto, MoveDto, TournamentOverDto } from './signalr-dtos';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,8 @@ export class SignalrService {
   @Output() chatMessageReceivedEvent: EventEmitter<ChatMessageDto> = new EventEmitter();
   @Output() drawOfferReceivedEvent: EventEmitter<void> = new EventEmitter();
   @Output() matchEndedReceivedEvent: EventEmitter<Result> = new EventEmitter();
+  @Output() tournamentOverEvent: EventEmitter<TournamentOverDto> = new EventEmitter();
+  @Output() tournamentMessageReceivedEvent: EventEmitter<void> = new EventEmitter();
 
   connection = new signalR.HubConnectionBuilder()
     .withUrl('https://localhost:5000/hubs/chesshub', { accessTokenFactory: () => this.keyCloak.getToken() })
@@ -52,6 +54,8 @@ export class SignalrService {
       this.connection.on('ReceiveMessage', (message) => this.chatMessageReceivedEvent.emit(message));
       this.connection.on('ReceiveDrawOffer', () => this.drawOfferReceivedEvent.emit());
       this.connection.on('ReceiveGameEnded', (result) => this.matchEndedReceivedEvent.emit(result));
+      this.connection.on('ReceiveTournamentOver', (result) => this.tournamentOverEvent.emit(result));
+      this.connection.on('ReceiveTournamentMessage', () => this.tournamentMessageReceivedEvent.emit());
     });
 
     this.challengeFoundEvent.subscribe((challenge) => {

@@ -16,5 +16,6 @@ namespace HSC.Bll.TournamentService
         Task<List<TournamentMessageDto>> GetMessages(int id);
         Task SendMessage(int id, string message);
         Task SearchForNextMatch(int id);
+        Task<List<TournamentPlayerDto>> GetStandingsAsync(int tournamentId);
     }
 }
