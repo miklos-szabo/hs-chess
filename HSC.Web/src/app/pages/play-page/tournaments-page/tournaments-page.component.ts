@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { SearchTournamentDto, TournamentListDto, TournamentService } from 'src/app/api/app.generated';
 import { NotificationService } from 'src/app/services/notification.service';
 import { CreateTournamentPopupComponent } from './create-tournament-popup/create-tournament-popup.component';
@@ -16,7 +17,8 @@ export class TournamentsPageComponent implements OnInit {
   constructor(
     private tournamentService: TournamentService,
     private dialog: MatDialog,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -56,5 +58,7 @@ export class TournamentsPageComponent implements OnInit {
     });
   }
 
-  openDetails(tournamentId: number) {}
+  openDetails(tournamentId: number) {
+    this.router.navigateByUrl(`/tournaments/${tournamentId}`);
+  }
 }

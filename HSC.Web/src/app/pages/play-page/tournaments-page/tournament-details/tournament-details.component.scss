@@ -2,10 +2,11 @@
 
 :host {
   @include full-height;
+  height: calc(100% - $header-height) !important
 }
 
 .main-container{
-  width: 1500px;
+  width: 1000px;
 }
 
 .chat-area{
@@ -14,7 +15,8 @@
 }
 
 .messages{
-  flex-direction: row-reverse;
+  flex-direction: column-reverse;
+  overflow: auto;
 }
 
 .odd-row {
@@ -25,7 +27,22 @@
   background-color: var(--bg3);
 }
 
-.big-button{
-  width: 150px;
-  height: 60px;
+.main-label{
+  font-size: 22px;
 }
+
+.big-button{
+  width: 185px;
+  height: 60px;
+  font-size: 20px;
+}
+
+.info-panel{
+  background-color: var(--bg2);
+  height: fit-content;
+}
+
+.main-part{
+  padding-top: 80px;
+}
+

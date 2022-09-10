@@ -4,13 +4,23 @@ import { ActivatedRoute } from '@angular/router';
 import { Color } from 'chessground/types';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { MatchFullDataDto, MatchService, MatchStartDto, Result } from 'src/app/api/app.generated';
+import {
+  ChatMessageDto,
+  ChatService,
+  MatchFullDataDto,
+  MatchService,
+  MatchStartDto,
+  Result,
+  TournamentPlayerDto,
+  TournamentService
+} from 'src/app/api/app.generated';
 import { CountdownTimerComponent } from 'src/app/components/countdown-timer/countdown-timer.component';
 import { EventService } from 'src/app/services/event.service';
-import { MoveDto } from 'src/app/services/signalr/signalr-dtos';
+import { MoveDto, TournamentOverDto } from 'src/app/services/signalr/signalr-dtos';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { BettingPopupComponent } from '../chess-board/betting-popup/betting-popup.component';
 import { HistoryMoveDto } from '../chess-board/chess-board.component';
+import { TournamentOverPopupComponent } from '../chess-board/tournament-over-popup/tournament-over-popup.component';
 
 @Component({
   selector: 'app-chess-page',
@@ -26,6 +36,10 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   potAfterBetting: number | undefined = undefined;
   history: HistoryMoveDto[] = [];
   hasOngoingDrawOffer = false;
+  writtenMessage = '';
+  messages: ChatMessageDto[] = [];
+  tournamentPlayers: TournamentPlayerDto[] = [];
+  tournamentId: number | undefined = undefined;
 
   @ViewChild('ownCd', { static: false })
   ownCountDown!: CountdownTimerComponent;
@@ -45,6 +59,9 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   resumeGameSubscription!: Subscription;
   drawOfferReceivedSubscription!: Subscription;
   matchEndedSubscription!: Subscription;
+  chatMessageSubscription!: Subscription;
+  tournamentStandingsSubscription!: Subscription;
+  tournamentOverSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,7 +70,9 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     private keycloak: KeycloakService,
     private dialog: MatDialog,
     private eventService: EventService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private tournamentService: TournamentService,
+    private chatService: ChatService
   ) {
     this.matchId = this.route.snapshot.params.matchId;
     this.matchData$ = this.matchService.getMatchData(this.matchId);
@@ -81,6 +100,29 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matchEndedSubscription = this.signalrService.matchEndedReceivedEvent.subscribe((result) => {
       this.matchEnded(result);
     });
+
+    this.chatMessageSubscription = this.signalrService.chatMessageReceivedEvent.subscribe(() => {
+      this.getChatMessages();
+    });
+
+    this.tournamentStandingsSubscription = this.signalrService.updateStandingsEvent.subscribe(() => {
+      this.getStandings();
+    });
+
+    this.tournamentOverSubscription = this.signalrService.tournamentOverEvent.subscribe((dto) => {
+      this.gameOver;
+      this.openTournamentOverPopup(dto);
+      this.moveReceivedSubscription.unsubscribe();
+    });
+
+    this.matchData$.subscribe((data) => {
+      this.tournamentId = data.tournamentId;
+
+      this.getChatMessages();
+      if (this.tournamentId) {
+        this.getStandings();
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -88,6 +130,9 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.resumeGameSubscription.unsubscribe();
     this.drawOfferReceivedSubscription.unsubscribe();
     this.matchEndedSubscription.unsubscribe();
+    this.tournamentOverSubscription.unsubscribe();
+    this.chatMessageSubscription.unsubscribe();
+    this.tournamentStandingsSubscription.unsubscribe();
   }
 
   ngAfterViewChecked(): void {
@@ -268,5 +313,46 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   loadFullHistory(history: HistoryMoveDto[]) {
     this.history = history;
     this.currentlySelectedMove = this.history.length - 1;
+  }
+
+  getStandings() {
+    this.tournamentService.getStandings(this.tournamentId!).subscribe((st) => {
+      this.tournamentPlayers = st;
+    });
+  }
+
+  getChatMessages() {
+    this.chatService
+      .getChatMessages(
+        this.userName === this.startData.whiteUserName ? this.startData.blackUserName : this.startData.whiteUserName,
+        50,
+        0
+      )
+      .subscribe((res) => {
+        this.messages = res;
+      });
+  }
+
+  sendChatMessage() {
+    this.chatService
+      .sendChatMessage(
+        this.userName === this.startData.whiteUserName ? this.startData.blackUserName : this.startData.whiteUserName,
+        this.writtenMessage
+      )
+      .subscribe(() => {
+        this.getChatMessages();
+        this.writtenMessage = '';
+      });
+  }
+
+  openTournamentOverPopup(dto: TournamentOverDto) {
+    this.dialog.open(TournamentOverPopupComponent, {
+      data: {
+        dto: dto,
+        tournamentId: this.tournamentId
+      },
+      width: '350px',
+      backdropClass: 'cdk-overlay-transparent-backdrop'
+    });
   }
 }

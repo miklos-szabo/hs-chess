@@ -119,6 +119,16 @@ namespace HSC.Bll.TournamentService
                 throw new BadRequestException("Already in tournament.");
             }
 
+            var user = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            user.Balance -= tournament.BuyIn;
+
+            if (user.Balance < 0)
+            {
+                throw new BadRequestException("Not enough money in the account.");
+            }
+
+            tournament.PrizePool += tournament.BuyIn;
+
             tournament.Players.Add(new TournamentPlayer
             {
                 Points = 0,
@@ -156,7 +166,7 @@ namespace HSC.Bll.TournamentService
         public async Task SearchForNextMatch(int id)
         {
             var tournament = await _dbContext.Tournaments.SingleAsync(t => t.Id == id);
-            var user = await _dbContext.TournamentPlayers.SingleAsync(tp => tp.UserName == _requestContext.UserName);
+            var user = await _dbContext.TournamentPlayers.SingleAsync(tp => tp.UserName == _requestContext.UserName && tp.TournamentId == id);
             var searchingPlayers = _dbContext.TournamentPlayers.Where(tp => tp.TournamentId == id && tp.IsSearching);
             if (searchingPlayers.Any())
             {

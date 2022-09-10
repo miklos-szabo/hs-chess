@@ -82,6 +82,31 @@ namespace HSC.Bll.Match
                 }
             }
 
+            if (match.TournamentId.HasValue)
+            {
+                var thisTPlayer = await _dbContext.TournamentPlayers.SingleAsync(tp =>
+                    tp.TournamentId == match.TournamentId.Value && tp.UserName == _requestContext.UserName);
+                var otherTPlayer = await _dbContext.TournamentPlayers.SingleAsync(tp =>
+                    tp.TournamentId == match.TournamentId.Value && tp.UserName == otherUserName);
+
+                if (ResultTypes.Draw.Contains(result))
+                {
+                    thisTPlayer.Points += 0.5m;
+                    otherTPlayer.Points += 0.5m;
+                }
+                else
+                {
+                    if (winnerUserName == thisTPlayer.UserName)
+                    {
+                        thisTPlayer.Points += 1;
+                    }
+                    else
+                    {
+                        otherTPlayer.Points += 1;
+                    }
+                }
+            }
+
             await _dbContext.SaveChangesAsync();
 
             // With these results, the game ended client-side, so we send the result to the other user.
@@ -90,6 +115,13 @@ namespace HSC.Bll.Match
                 result == Result.DrawByAgreement)
             {
                 await _chessHub.Clients.User(otherUser.UserName).ReceiveGameEnded(result);
+            }
+
+            if (match.TournamentId.HasValue)
+            {
+                var tournamentPlayers = await _dbContext.TournamentPlayers.Where(tp => tp.TournamentId == match.TournamentId)
+                    .Select(tp => tp.UserName).ToListAsync();
+                await _chessHub.Clients.Users(tournamentPlayers).ReceiveUpdateStandings();
             }
         }
 

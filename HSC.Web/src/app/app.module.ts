@@ -45,6 +45,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CreateTournamentPopupComponent } from './pages/play-page/tournaments-page/create-tournament-popup/create-tournament-popup.component';
 import { TournamentDetailsComponent } from './pages/play-page/tournaments-page/tournament-details/tournament-details.component';
 import { CountdownModule } from 'ngx-countdown';
+import { TournamentOverPopupComponent } from './pages/chess-board/tournament-over-popup/tournament-over-popup.component';
+import { ConfirmJoinComponent } from './pages/play-page/tournaments-page/tournament-details/confirm-join/confirm-join.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -87,7 +89,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     GroupDetailsPageComponent,
     BettingPopupComponent,
     CreateTournamentPopupComponent,
-    TournamentDetailsComponent
+    TournamentDetailsComponent,
+    TournamentOverPopupComponent,
+    ConfirmJoinComponent
   ],
   imports: [
     BrowserModule,

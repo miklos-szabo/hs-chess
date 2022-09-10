@@ -32,5 +32,7 @@ namespace HSC.Bll.Hubs.Clients
         Task ReceiveMessage(ChatMessageDto message);
         Task ReceiveTournamentMessage();
         Task ReceiveTournamentOver(TournamentOverDto dto);
+        Task ReceiveUpdateStandings();
+        Task ReceiveTournamentStarted();
     }
 }

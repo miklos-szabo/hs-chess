@@ -1,68 +1,58 @@
 <ng-container *ngIf="details$ | async as data">
-  <div class="main-container d-flex flex-column h-100">
-    <div class="d-flex flex-row justify-between align-center">
-      <h2>{{ data.title }}</h2>
-      <button class="big-button" *ngIf="!data.hasJoined" mat-raised-button (click)="joinTournament()">
-        {{ 'Tournaments.Join' | translate }}
-      </button>
-      <button
-        class="big-button"
-        *ngIf="data.hasJoined"
-        mat-raised-button
-        (click)="findMatch()"
-        [disabled]="data.tournamentStatus !== TournamentStatus.Ongoing"
-      >
-        {{ 'Tournaments.FindMatch' | translate }}
-      </button>
-    </div>
-    <div class="d-flex flex-row">
-      <div class="w-50 pr-2">
-        <label class="white-space-pre">{{ data.description }}</label>
+  <div class="main-container d-flex flex-column self-align-center pt-3 h-100">
+    <div class="d-flex flex-row justify-between h-40">
+      <div class="w-50">
+        <h2>{{ data.title }}</h2>
+        <div class="w-50 pr-2">
+          <label class="white-space-pre">{{ data.description }}</label>
+        </div>
       </div>
-      <div class="w-50 d-flex flex-column pb-3">
-        <div class="d-flex flex-row">
-          <div class="w-50 d-flex flex-row" *ngIf="data.tournamentStatus === TournamentStatus.NotStarted">
-            <label>{{ 'Tournaments.StartsIn' | translate }}</label>
-            <countdown [config]="{ leftTime: data.startsInEndsAt }"></countdown>
-          </div>
-          <div class="w-50 d-flex flex-row" *ngIf="data.tournamentStatus === TournamentStatus.Ongoing">
-            <label>{{ 'Tournaments.EndsIn' | translate }}</label>
-            <countdown [config]="{ leftTime: data.startsInEndsAt }"></countdown>
-          </div>
-          <div class="w-50 d-flex flex-row" *ngIf="data.tournamentStatus === TournamentStatus.Finished">
-            <label>{{ 'Tournaments.Winner' | translate }}</label>
-            <label>{{ data.winnerUserName }}</label>
-          </div>
-          <div class="w-50 d-flex flex-row">
-            <label class="pl-1">{{ ('Tournaments.BuyIn' | translate) + ': ' }}</label>
-            <label>{{ data.buyIn }}</label>
-          </div>
+      <div class="d-flex flex-column w-50 main-part align-center">
+        <div class="d-flex flex-row main-label pb-4" *ngIf="data.tournamentStatus === TournamentStatus.NotStarted">
+          <label class="pr-1">{{ 'Tournaments.StartsIn' | translate }}</label>
+          <countdown [config]="{ leftTime: data.startsInEndsAt }"></countdown>
         </div>
-        <div class="d-flex flex-row">
-          <div class="w-50 d-flex flex-row">
-            <label class="pl-1">{{ ('Tournaments.Length' | translate) + ': ' }}</label>
-            <label>{{ data.length }}</label>
-          </div>
-          <div class="w-50 d-flex flex-row">
-            <label class="pl-1">{{ ('Tournaments.PrizePool' | translate) + ': ' }}</label>
-            <label>{{ data.prizePool }}</label>
-          </div>
+        <div class="d-flex flex-row main-label pb-4" *ngIf="data.tournamentStatus === TournamentStatus.Ongoing">
+          <label class="pr-1">{{ 'Tournaments.EndsIn' | translate }}</label>
+          <countdown [config]="{ leftTime: data.startsInEndsAt }"></countdown>
         </div>
-        <div>
-          <label>{{ 'Tournaments.TimeControl' | translate }}</label>
-          <label>{{ data.gameTimeMinutes + '+' + data.gameIncrement }}</label>
+        <div class="d-flex flex-row main-label pb-4" *ngIf="data.tournamentStatus === TournamentStatus.Finished">
+          <label class="pr-1">{{ 'Tournaments.Winner' | translate }}</label>
+          <label>{{ data.winnerUserName }}</label>
+        </div>
+        <button
+          class="big-button"
+          *ngIf="!data.hasJoined"
+          mat-raised-button
+          (click)="joinTournament(data)"
+          [disabled]="data.hasJoined || data.tournamentStatus === TournamentStatus.Finished"
+        >
+          {{ 'Tournaments.Join' | translate }}
+        </button>
+        <button
+          class="big-button"
+          *ngIf="data.hasJoined"
+          mat-raised-button
+          (click)="findMatch()"
+          [disabled]="data.tournamentStatus !== TournamentStatus.Ongoing"
+        >
+          {{ 'Tournaments.FindMatch' | translate }}
+        </button>
+        <div *ngIf="isSearching" class="d-flex flex-row pb-1 pt-2">
+          <label class="pr-1">{{ 'Play.SearchingForMatch' | translate }}</label>
+          <mat-progress-spinner [diameter]="25" mode="indeterminate"></mat-progress-spinner>
         </div>
       </div>
     </div>
-    <div class="d-flex flex-row">
-      <div class="d-flex flex-column chat-area mat-elevation-z3 w-50">
-        <div class="messages d-flex">
+    <div class="d-flex flex-row h-60">
+      <div class="d-flex flex-column chat-area mat-elevation-z3 w-40 h-95 mt-1">
+        <div class="messages d-flex h-100">
           <div *ngFor="let msg of messages">
-            <label class="message">{{ msg.message }}</label>
+            <label class="message pl-1 pr-1">{{ msg.senderUserName + ': ' + msg.message }}</label>
           </div>
         </div>
         <div class="d-flex flex-row align-center">
-          <mat-form-field class="send-message-input" appearance="standard">
+          <mat-form-field class="w-100 pl-1" appearance="standard">
             <input
               (keyup.enter)="sendMessage()"
               matInput
@@ -77,22 +67,41 @@
           </button>
         </div>
       </div>
-      <div class="w-50 d-flex flex-column">
+      <div class="w-30 d-flex flex-column">
         <mat-list>
           <mat-list-item
             class="list-item"
             *ngFor="let player of standings; let even = even; let odd = odd; let i = index"
           >
             <div
-              class="d-flex flex-row justify-between align-center list-row"
+              class="d-flex flex-row align-center list-row w-100 h-100"
               [ngClass]="{ 'odd-row': odd, 'even-row': even }"
             >
-              <label>{{ '#' + i }}</label>
-              <label class="pl-2">{{ player.userName }}</label>
-              <label>{{ player.points }}</label>
+              <label class="pl-1 w-15">{{ '#' + (i + 1) }}</label>
+              <label class="w-70">{{ player.userName }}</label>
+              <label class="pr-1 w-15">{{ player.points }}</label>
             </div>
           </mat-list-item>
         </mat-list>
+      </div>
+      <div class="d-flex flex-column pl-2 info-panel mat-elevation-z3 mt-1 w-20">
+        <div class="d-flex flex-row pt-1">
+          <label class="pr-1">{{ ('Tournaments.PrizePool' | translate) + ': ' }}</label>
+          <label>{{ data.prizePool + '$' }}</label>
+        </div>
+        <div class="d-flex flex-row">
+          <label class="pr-1">{{ ('Tournaments.BuyIn' | translate) + ': ' }}</label>
+          <label>{{ data.buyIn + '$' }}</label>
+        </div>
+        <div class="d-flex flex-row">
+          <label class="pr-1">{{ ('Tournaments.Length' | translate) + ': ' }}</label>
+          <label>{{ data.length }}</label>
+        </div>
+
+        <div class="pb-1">
+          <label>{{ 'Tournaments.TimeControl' | translate }}</label>
+          <label>{{ data.gameTimeMinutes + '+' + data.gameIncrement }}</label>
+        </div>
       </div>
     </div>
   </div>

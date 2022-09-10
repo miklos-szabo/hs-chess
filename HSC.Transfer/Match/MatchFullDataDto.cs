@@ -20,6 +20,6 @@ namespace HSC.Transfer.Match
         public decimal FinalPot { get; set; }
         public bool IsHistoryMode { get; set; }
         public string Moves { get; set; }
-        public bool IsTournament { get; set; }
+        public int? TournamentId { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 <div class="d-flex flex-column align-center">
   <label class="title pb-2">{{ getTitle() | translate }}</label>
   <label class="reason pb-3">{{ 'Result.' + data.result | translate }}</label>
-  <div [ngSwitch]="simpleResult">
+  <div *ngIf="!matchData.tournamentId" [ngSwitch]="simpleResult">
     <label class="victory-winnings-label" *ngSwitchCase="SimpleResult.Victory">{{
       'EndPopup.VictoryLabel' | translate: { amount: matchData.finalPot }
     }}</label>
@@ -9,5 +9,10 @@
       'EndPopup.DefeatLabel' | translate: { amount: matchData.finalPot }
     }}</label>
     <label class="draw-winnings-label" *ngSwitchCase="SimpleResult.Draw">{{ 'EndPopup.DrawLabel' | translate }}</label>
+  </div>
+  <div *ngIf="matchData.tournamentId">
+    <button mat-raised-button (click)="backToTournament()">
+      {{ 'Tournaments.BackToTournament' | translate }}
+    </button>
   </div>
 </div>

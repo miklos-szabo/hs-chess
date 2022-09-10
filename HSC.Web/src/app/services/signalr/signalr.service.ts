@@ -24,6 +24,8 @@ export class SignalrService {
   @Output() matchEndedReceivedEvent: EventEmitter<Result> = new EventEmitter();
   @Output() tournamentOverEvent: EventEmitter<TournamentOverDto> = new EventEmitter();
   @Output() tournamentMessageReceivedEvent: EventEmitter<void> = new EventEmitter();
+  @Output() updateStandingsEvent: EventEmitter<void> = new EventEmitter();
+  @Output() tournamentStartedEvent: EventEmitter<void> = new EventEmitter();
 
   connection = new signalR.HubConnectionBuilder()
     .withUrl('https://localhost:5000/hubs/chesshub', { accessTokenFactory: () => this.keyCloak.getToken() })
@@ -56,6 +58,8 @@ export class SignalrService {
       this.connection.on('ReceiveGameEnded', (result) => this.matchEndedReceivedEvent.emit(result));
       this.connection.on('ReceiveTournamentOver', (result) => this.tournamentOverEvent.emit(result));
       this.connection.on('ReceiveTournamentMessage', () => this.tournamentMessageReceivedEvent.emit());
+      this.connection.on('ReceiveUpdateStandings', () => this.updateStandingsEvent.emit());
+      this.connection.on('ReceiveTournamentStarted', () => this.tournamentStartedEvent.emit());
     });
 
     this.challengeFoundEvent.subscribe((challenge) => {
@@ -64,6 +68,12 @@ export class SignalrService {
 
     this.friendRequestReceivedEvent.subscribe((user) => {
       this.receiveFriendRequest(user);
+    });
+
+    this.tournamentOverEvent.subscribe((res) => {
+      this.notificationService.info(
+        this.translateService.instant('TournamentOverPopup.NotificationText') + ' ' + res.winnings + '$'
+      );
     });
   }
 

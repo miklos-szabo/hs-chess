@@ -67,3 +67,39 @@
 .full-middle-height{
   height: 596px;
 }
+
+.chat-tournament-container{
+  height: 700px;
+  background-color: var(--bg2);
+  width: 320px;
+}
+
+.odd-row {
+  background-color: var(--bg2);
+}
+
+.even-row {
+  background-color: var(--bg3);
+}
+
+::ng-deep .chess-tab .mat-tab-labels > div{
+  height: 28px !important;
+}
+
+.fulll{
+    display: flex;
+      flex-direction: column;
+      min-height: 0;
+      height: 100%;
+}
+
+@media screen and (max-width: 1320px) {
+  .chat-tournament-container {
+    display: none;
+  }
+}
+
+.messages {
+  flex-direction: column-reverse;
+  overflow: auto;
+}

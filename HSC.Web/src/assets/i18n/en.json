@@ -120,5 +120,15 @@
   "Tournaments.Winner": "Winner: ",
   "Tournaments.TimeControl": "Time control: ",
   "Tournaments.Joined": "Joined the tournament!",
-  "Tournaments.FindMatch": "Find match"
+  "Tournaments.FindMatch": "Find match",
+  "Tournaments.BackToTournament": "Back to the tournament",
+  "ChessTabs.Chat": "Chat",
+  "ChessTabs.Tournament": "Tournament",
+  "TournamentOverPopup.Title": "Tournament over",
+  "TournamentOverPopup.Winner": "Winner:",
+  "TournamentOverPopup.YouWon": "You won:",
+  "TournamentOverPopup.NotificationText": "Tournament over, you won:",
+  "Tournaments.ConfirmJoin": "Are you sure you want to join? It will cost you {{buyIn}}$.",
+  "Tournaments.ConfirmJoin.Cancel": "Cancel",
+  "Tournaments.ConfirmJoin.Join": "Join"
 }

@@ -1,0 +1,8 @@
+<div class="d-flex flex-column justify-center">
+  <h3>{{ 'TournamentOverPopup.Title' | translate }}</h3>
+  <label class="pb-1">{{ ('TournamentOverPopup.Winner' | translate) + ' ' + data.dto.winner }}</label>
+  <label class="pb-3">{{ ('TournamentOverPopup.YouWon' | translate) + ' ' + data.dto.winnings + '$' }}</label>
+  <button mat-raised-button (click)="backToTournament()">
+    {{ 'Tournaments.BackToTournament' | translate }}
+  </button>
+</div>

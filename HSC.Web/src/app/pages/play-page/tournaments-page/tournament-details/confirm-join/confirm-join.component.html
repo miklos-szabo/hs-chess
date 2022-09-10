@@ -1,0 +1,9 @@
+<div class="d-flex flex-column align-center">
+  <label class="pb-3">{{ 'Tournaments.ConfirmJoin' | translate: { buyIn: data.buyIn } }}</label>
+  <div class="d-flex flex-row justify-center">
+    <button class="mr-2" mat-raised-button (click)="cancel()">
+      {{ 'Tournaments.ConfirmJoin.Cancel' | translate }}
+    </button>
+    <button mat-raised-button color="warning" (click)="yes()">{{ 'Tournaments.ConfirmJoin.Join' | translate }}</button>
+  </div>
+</div>

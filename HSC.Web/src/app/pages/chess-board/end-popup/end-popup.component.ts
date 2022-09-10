@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Color } from 'chessground/types';
 import { MatchFullDataDto, MatchService, Result } from 'src/app/api/app.generated';
 
@@ -16,8 +17,10 @@ export class EndPopupComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EndPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { result: Result; color: Color | undefined; matchId: string },
-    private matchService: MatchService
+    @Inject(MAT_DIALOG_DATA)
+    public data: { result: Result; color: Color | undefined; matchId: string; tournamentId: number | undefined },
+    private matchService: MatchService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +55,10 @@ export class EndPopupComponent implements OnInit {
       case SimpleResult.Draw:
         return 'EndPopup.Stalemate';
     }
+  }
+
+  backToTournament() {
+    this.router.navigateByUrl(`/tournaments/${this.data.tournamentId}`);
   }
 }
 

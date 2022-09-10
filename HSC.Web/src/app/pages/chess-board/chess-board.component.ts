@@ -50,6 +50,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   private flipBoardSubscription!: Subscription;
   @Input() flipBoardEvent!: Observable<void>;
 
+  @Input() tournamentId: number | undefined;
+
   @Output() startBettingEvent: EventEmitter<void> = new EventEmitter();
   @Output() ownMoveMade: EventEmitter<MoveDto> = new EventEmitter();
   @Output() historyOutput: EventEmitter<HistoryMoveDto> = new EventEmitter();
@@ -327,7 +329,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
       data: {
         color: this.color,
         result: result,
-        matchId: this.matchId
+        matchId: this.matchId,
+        tournamentId: this.tournamentId
       },
       width: '350px',
       backdropClass: 'cdk-overlay-transparent-backdrop'
