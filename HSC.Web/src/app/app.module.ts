@@ -56,9 +56,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/auth',
+        url: 'http://hsckeycloak10.c5dzcec2bngmbcds.eastus.azurecontainer.io:8080/auth',
         realm: 'chess',
-        clientId: 'hsc-dev'
+        clientId: 'hsc-web-local'
       },
       initOptions: {
         onLoad: 'check-sso',

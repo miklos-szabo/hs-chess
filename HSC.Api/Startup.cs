@@ -48,11 +48,11 @@ public class Startup
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
         {
-            options.Authority = "http://localhost:8080/auth/realms/chess";
+            options.Authority = "http://hsckeycloak10.c5dzcec2bngmbcds.eastus.azurecontainer.io:8080/auth/realms/chess";
             options.RequireHttpsMetadata = false;
             options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
-                ValidIssuer = "http://localhost:8080/auth/realms/chess",
+                ValidIssuer = "http://hsckeycloak10.c5dzcec2bngmbcds.eastus.azurecontainer.ioy:8080/auth/realms/chess",
                 ValidAudience = "account",
                 AuthenticationType = JwtBearerDefaults.AuthenticationScheme,
             };
@@ -94,7 +94,7 @@ public class Startup
         {
             options.AddPolicy(_debugCorsPolicy, builder =>
             {
-                builder.WithOrigins("https://localhost:5000/")
+                builder.WithOrigins("http://localhost:5212")
                 .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
@@ -140,7 +140,7 @@ public class Startup
                     .AllowCredentials());
         }
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.UseCors(_debugCorsPolicy);
         app.UseRouting();
 
