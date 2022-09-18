@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
 import { AccountService, UserMenuDto } from 'src/app/api/app.generated';
+import { SignalrService } from 'src/app/services/signalr/signalr.service';
+import { ThemeService } from 'src/app/services/theme.service';
 import { MenuComponent } from './menu/menu.component';
 
 @Component({
@@ -18,16 +20,26 @@ export class HeaderComponent implements OnInit {
     private translateService: TranslateService,
     private keycloak: KeycloakService,
     private accountService: AccountService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private signalrService: SignalrService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
     this.keycloak.isLoggedIn().then((res) => {
       this.isAuthed = res;
-      if (res) this.userName = this.keycloak.getUsername();
-      this.accountService.getUserMenuData().subscribe((data) => {
-        this.userdata = data;
-      });
+      if (res) {
+        this.userName = this.keycloak.getUsername();
+        this.accountService.createUserIfDoesntExist().subscribe(() => {
+          this.signalrService.connect();
+          this.accountService.getUserMenuData().subscribe((data) => {
+            this.userdata = data;
+          });
+          this.accountService.usesLightTheme().subscribe((lightTheme) => {
+            this.themeService.setDarkTheme(!lightTheme);
+          });
+        });
+      }
     });
   }
 

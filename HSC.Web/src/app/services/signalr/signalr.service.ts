@@ -4,6 +4,7 @@ import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
 import { MatchFinderService, Result } from 'src/app/api/app.generated';
+import { environment } from 'src/environments/environment';
 import { NotificationService } from '../notification.service';
 import { ChallengeDto, ChatMessageDto, MoveDto, TournamentOverDto } from './signalr-dtos';
 
@@ -28,7 +29,7 @@ export class SignalrService {
   @Output() tournamentStartedEvent: EventEmitter<void> = new EventEmitter();
 
   connection = new signalR.HubConnectionBuilder()
-    .withUrl('https://localhost:5000/hubs/chesshub', { accessTokenFactory: () => this.keyCloak.getToken() })
+    .withUrl(environment.serverUrl + '/hubs/chesshub', { accessTokenFactory: () => this.keyCloak.getToken() })
     .build();
 
   constructor(
@@ -43,6 +44,7 @@ export class SignalrService {
     if (this.connection.state === signalR.HubConnectionState.Connected) {
       return;
     }
+    console.log('Connecting to SignalR on ' + environment.serverUrl);
     this.connection.start().then(() => {
       console.log('Connected to signalr!');
       this.connection.on('ReceiveMove', (move) => this.moveReceivedEvent.emit(move));

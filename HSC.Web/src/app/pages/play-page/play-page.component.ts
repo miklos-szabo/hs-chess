@@ -9,17 +9,7 @@ import { ThemeService } from 'src/app/services/theme.service';
   styleUrls: ['./play-page.component.scss']
 })
 export class PlayPageComponent implements OnInit {
-  constructor(
-    private signalrService: SignalrService,
-    private accountService: AccountService,
-    private themeService: ThemeService
-  ) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.signalrService.connect();
-    this.accountService.usesLightTheme().subscribe((lightTheme) => {
-      this.themeService.setDarkTheme(!lightTheme);
-    });
-    this.accountService.createUserIfDoesntExist().subscribe(() => {});
-  }
+  ngOnInit(): void {}
 }
