@@ -47,6 +47,7 @@ import { TournamentDetailsComponent } from './pages/play-page/tournaments-page/t
 import { CountdownModule } from 'ngx-countdown';
 import { TournamentOverPopupComponent } from './pages/chess-board/tournament-over-popup/tournament-over-popup.component';
 import { ConfirmJoinComponent } from './pages/play-page/tournaments-page/tournament-details/confirm-join/confirm-join.component';
+import { environment } from 'src/environments/environment';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -58,7 +59,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'http://hsckeycloak10.c5dzcec2bngmbcds.eastus.azurecontainer.io:8080/auth',
         realm: 'chess',
-        clientId: 'hsc-web-local'
+        clientId: environment.keyCloakClientName
       },
       initOptions: {
         onLoad: 'check-sso',

@@ -98,6 +98,16 @@ public class Startup
                 .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
+
+                builder.WithOrigins("http://hschess.azurewebsites.net")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+
+                builder.WithOrigins("https://hschess.azurewebsites.net")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
             });
         });
 
@@ -152,6 +162,18 @@ public class Startup
             endpoints.MapControllers();
             endpoints.MapHub<ChessHub>("/hubs/chessHub");
         });
+
+        if (!env.IsDevelopment())
+        {
+            app.UseSpaStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    // Cache static files for 1 year
+                    ctx.Context.Response.Headers.Add("Cache-Control", "private,max-age=31536000");
+                },
+            });
+        }
 
         app.UseSpa(spa =>
         {

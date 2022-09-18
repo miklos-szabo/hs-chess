@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'http://localhost:5212'
+  serverUrl: 'http://localhost:5212',
+  keyCloakClientName: 'hsc-web-local'
 };
 
 /*
