@@ -1,0 +1,20 @@
+- name: Chess Library
+  href: chesslib_overview.md
+  items:
+  - name: Communicating with an UCI Chess Engine
+    href: uciengine.md
+  - name: UCI Engine Communication - Advanced Topics
+    href: uciengine_Advanced.md
+
+- name: Tutorial Blazor Components
+  items:
+  - name: Step 1 - Preparations
+    href: tutorial_1_1.md
+  - name: Step 2 - Simple Board with Automatic Engine Enalysis
+    href: tutorial_1_2.md
+  - name: Step 3 - Adding an Evaluation Bar
+    href: tutorial_1_3.md
+  - name: Step 4 - Adding a Scoresheet
+    href: tutorial_1_4.md
+  - name: Step 5 - Make the Scoresheet Interactive
+    href: tutorial_1_5.md

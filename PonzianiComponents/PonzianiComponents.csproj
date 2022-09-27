@@ -1,0 +1,90 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>0.5.1</Version>
+    <Copyright>Copyright (c) Christian Günther 2022</Copyright>
+    <Authors>Christian Günther</Authors>
+    <Company />
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/guentherc/Ponziani</RepositoryUrl>
+    <PackageLicenseFile></PackageLicenseFile>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageTags>blazor blazor-component chess</PackageTags>
+    <Description>.Net 6 based library offering chess-related blazor components and functions for chess programming.</Description>
+    <PackageProjectUrl>https://guentherc.github.io/Ponziani/</PackageProjectUrl>
+    <PackageId>PonzianiComponents</PackageId>
+    <Product>Ponziani</Product>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>0.5.1</AssemblyVersion>
+    <FileVersion>0.5.1</FileVersion>
+    <PackageReleaseNotes>Minor Improvements and Bug fixes</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>3</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="docfx.console" Version="2.58.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\bB.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\bK.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\bN.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\bP.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\bQ.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\bR.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\wB.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\wK.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\wN.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\wP.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\wQ.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\img\chesspieces\wikipedia\wR.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\ponziani.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\stockfish.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\stockfish.wasm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

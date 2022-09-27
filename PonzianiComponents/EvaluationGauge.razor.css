@@ -1,0 +1,64 @@
+.pzEvaluationGauge {
+    margin: 5px auto;
+    margin-bottom: 0px;
+    padding: 2px;
+    width: 100%;
+    border: 1px solid black;
+    height: 30px;
+    background-color: black;
+}
+
+.pzEvaluationBar {
+    height: 100%;
+    background-color: white;
+}
+
+.pzEvaluationGaugeScore {
+    text-align: center;
+    font-weight: bold;
+}
+
+.pzTickbar {
+    margin: 5px auto;
+    margin-top: 0px;
+    padding: 2px;
+    padding-top: 0px;
+    width: 100%;
+    height: 20px;
+    vertical-align: middle;
+}
+
+.pzVTickbar {
+    float: left;
+    margin: 5px auto;
+    margin-right: 0px;
+    width: 30px;
+    height: 100%;
+}
+
+.pzVEvaluationGauge {
+    float: left;
+    margin: 5px auto;
+    height: 100%;
+    border: 1px solid black;
+    width: 30px;
+    background-color: white;
+}
+
+.pzVEvaluationBar {
+    height: 100%;
+    background-color: black;
+}
+
+.pzVEvaluationGaugeScore {
+    float: left;
+    margin-left: 5px;
+    text-align: center;
+    font-weight: bold;
+    background-color: white;
+    vertical-align: middle;
+    height: 100%;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+}

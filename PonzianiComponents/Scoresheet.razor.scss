@@ -1,0 +1,65 @@
+﻿@import 'style.scss';
+
+div, img, span, p, tr, td {
+    --move_text_comment_color: #{$MoveTextCommentColor};
+    --comment_background_color: #{$CommentBackgroundColor};
+    --variation_background_color: #{$VariationBackgroundColor};
+}
+
+table.pzNotTable > tbody > tr > td:not(:last-child) {
+    border-right: 1px solid black;
+}
+
+::deep span.pzMoveText {
+    white-space: pre-wrap;
+}
+
+.pzNotTable {
+    border: 1px solid black;
+    overflow: auto;
+}
+
+.pzNotColMovenumber {
+    text-align: center;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.pzNotColWhite {
+    text-align: right;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 50%;
+}
+.pzNotColBlack {
+    text-align: right;
+    background-color: lightgray;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 50%;
+}
+::deep .pzNotResult {
+    font-weight: bold
+}
+
+::deep .pzMoveTextComment {
+    color: var(--move_text_comment_color);
+}
+
+::deep .pzComment {
+    background-color: var(--comment_background_color);
+}
+
+::deep .pzVariation {
+    background-color: var(--variation_background_color);
+}
+
+::deep .pzMoveTextLevel0 {
+    font-weight: bold
+}
+
+::deep p.pzVariation {
+    margin-block-end: 0em;
+}

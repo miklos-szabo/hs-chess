@@ -1,0 +1,29 @@
+﻿@if (Orientation == Orientation.Horizontal)
+{
+    <div @attributes=OtherAttributes>
+        <div class="pzEvaluationGaugeScore">@ScoreText</div>
+        <div class="pzEvaluationGauge">
+            <div class="pzEvaluationBar" style="width:@Width;"></div>
+        </div>
+        <div class="pzTickbar">
+            @TickBarSVG()
+        </div>
+    </div>
+}
+else
+{
+    <div @attributes=OtherAttributes>
+        <div class="pzVTickbar">@TickBarSVGV()</div>
+        <div class="pzVEvaluationGauge">
+            <div class="pzVEvaluationBar" style="height:@Height;"></div>
+        </div>
+        <div class="pzVEvaluationGaugeScore">
+            @ScoreText
+        </div>
+    </div>
+}
+
+
+@code {
+
+}

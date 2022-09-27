@@ -1,0 +1,13 @@
+﻿@page "/"
+@using System.Diagnostics
+
+<Chessboard Size="300" OnMovePlayed="OnMovePlayed" @ref="chessBoard" />
+
+@code {
+    private Chessboard chessBoard;
+
+    void OnMovePlayed(MovePlayedInfo mpi)
+    {
+        Debug.WriteLine(mpi.San);
+    }
+}

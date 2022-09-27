@@ -342,7 +342,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   }
 
   checkForBettingToOpen() {
-    if (this.chess.history().length === 4) {
+    if (this.chess.history().length === 20) {
       this.bettingStarted();
     }
   }
