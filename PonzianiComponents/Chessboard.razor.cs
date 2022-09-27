@@ -373,6 +373,10 @@ namespace PonzianiComponents
                     {
                         ClsShowModalPromo = " show-modal";
                     }
+                    else
+                    {
+                        draggedPieceSquare = Square.OUTSIDE;
+                    }
                 }
             }
         }
@@ -399,6 +403,20 @@ namespace PonzianiComponents
             draggedPiece = Chesslib.Fen.ParsePieceChar(pieceChar);
             draggedPieceSquare = Square.OUTSIDE;
             legalMoves.Clear();
+        }
+
+        private async Task PieceClicked(Square square)
+        {
+            if (draggedPieceSquare == Square.OUTSIDE)
+            {
+                HandleDragStart(square);
+            }
+            else
+            {
+                HandleDragEnter(square);
+                await HandleDropStandard();
+            }
+            
         }
 
         private async Task SetPromoPieceAsync(PieceType pt)

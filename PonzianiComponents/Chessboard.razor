@@ -126,7 +126,7 @@
 				@for (int file = FileStart; file >= 0 && file < 8; file += FileStep)
 				{
 					Chesslib.Square square = (Chesslib.Square)(8 * rank + file);					
-					<div class="@SquareClass(rank, file)" style="@SquareStyle" @ondragenter="() => HandleDragEnter(square)" id="@SquareId(square)" ondrop="event.preventDefault();">
+					<div class="@SquareClass(rank, file)" style="@SquareStyle" @ondragenter="() => HandleDragEnter(square)" @onclick="() => PieceClicked(square)" id="@SquareId(square)" ondrop="event.preventDefault();">
 						@if (ShowCoordinates && file == FileStart)
 						{
 							<div class="pzNotation pzNumeric">@(rank+1)</div>
@@ -141,7 +141,7 @@
 							     src="@GetPieceImageSource(board[8*rank +file])" 
 								 title="Piece"
 								 draggable="@IsDraggable(square)"
-								 @ondragstart="() => HandleDragStart(square)"
+                                 @ondragstart="() => HandleDragStart(square)"
 								 style="width: 100%; height: 100%;" /> 
 						}
 					 </div>

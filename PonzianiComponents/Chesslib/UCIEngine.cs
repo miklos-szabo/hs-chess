@@ -815,6 +815,10 @@ namespace PonzianiComponents.Chesslib
         /// </summary>
         public struct Info
         {
+            public Info()
+            {
+            }
+
             /// <summary>
             /// Determines the MultiPV (resp. line) Index from an engine's info message
             /// </summary>
