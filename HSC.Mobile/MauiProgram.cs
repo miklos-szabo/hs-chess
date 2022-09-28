@@ -1,5 +1,6 @@
 ﻿using HSC.Mobile.Data;
 using HSC.Mobile.Pages.ChessPage;
+using HSC.Mobile.Pages.Settings;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 
 namespace HSC.Mobile
@@ -17,11 +18,14 @@ namespace HSC.Mobile
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddLocalization();
+            builder.Services.AddLogging();
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
 
             builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddSingleton<ISettingsService, SettingsService>();
 
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<MainPage>();   

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using HSC.Mobile.Enums;
 using HSC.Mobile.Pages.ChessPage;

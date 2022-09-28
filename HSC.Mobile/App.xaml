@@ -4,23 +4,7 @@
              xmlns:local="clr-namespace:HSC.Mobile"
              x:Class="HSC.Mobile.App">
     <Application.Resources>
-        <ResourceDictionary>
-
-            <Color x:Key="PageBackgroundColor">#555555</Color>
-            <Color x:Key="PrimaryTextColor">White</Color>
-
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
-            </Style>
-
-            <Style TargetType="Button">
-                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
-                <Setter Property="BackgroundColor" Value="#2b0b98" />
-                <Setter Property="Padding" Value="14,10" />
-            </Style>
-
-        </ResourceDictionary>
+        <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
+        <ResourceDictionary Source="/Resources/Styles/ComponentStyles.xaml" />
     </Application.Resources>
 </Application>

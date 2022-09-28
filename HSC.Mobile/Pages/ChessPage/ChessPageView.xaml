@@ -4,11 +4,12 @@
              xmlns:local="clr-namespace:HSC.Mobile"
              x:Class="HSC.Mobile.ChessPageView"
              x:DataType="local:MainViewModel"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             BackgroundColor="{DynamicResource BackgroundColor}">
     <FlexLayout Direction="Column">
         <Label Text="hi" Padding="10"></Label>
         <StackLayout Orientation="Horizontal">
-            <Label Text="Moves made: "></Label>
+            <Label Text="{localize:Localize Key=Test}"></Label>
             <Label Text="{Binding MoveCount}"></Label>
             <Label Text=" Last move: "></Label>
             <Label Text="{Binding LastMove}"></Label>
