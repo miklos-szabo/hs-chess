@@ -1,5 +1,5 @@
 ﻿@page "/"
-@using System.Diagnostics
+@using HSC.Mobile.Enums
 
 <Chessboard Size="300" OnMovePlayed="OnMovePlayed" @ref="chessBoard" />
 
@@ -8,6 +8,7 @@
 
     void OnMovePlayed(MovePlayedInfo mpi)
     {
-        Debug.WriteLine(mpi.San);
+        //EventService.OnMoveMade(mpi);
+        MessagingCenter.Send(this, MessageTypes.MoveMade, mpi);
     }
 }

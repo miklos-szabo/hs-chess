@@ -53,4 +53,20 @@
       <ProjectReference Include="..\PonzianiComponents\PonzianiComponents.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Pages\ChessPage\ChessPageView.xaml.cs">
+        <DependentUpon>ChessPageView.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Pages\ChessPage\ChessPageView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>
