@@ -1,0 +1,18 @@
+﻿@inject IJSRuntime JsRuntime;
+@page "/"
+@inject NavigationManager NavigationManager
+
+<div class="main-container">
+    <label class="welcome-label">Welcome to High-Stakes Chess!</label>
+    <label class="welcome-label mb-50">Log in below!</label>
+    <button @onclick="LoginClicked">Log in</button>
+    <label class="welcome-label mb-50">@NavigationManager.Uri</label>
+</div>
+
+@code {
+
+    public async Task LoginClicked()
+    {
+        await JsRuntime.InvokeVoidAsync("login");
+    }
+}

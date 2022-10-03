@@ -2,7 +2,7 @@
 {
     public partial class App : Application
     {
-        public App(ChessPageView mainPage)
+        public App(MainPage mainPage)
         {
             InitializeComponent();
 

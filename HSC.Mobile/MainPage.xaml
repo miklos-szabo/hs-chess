@@ -5,21 +5,11 @@
              x:Class="HSC.Mobile.MainPage"
              x:DataType="local:MainViewModel"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
-    <FlexLayout Direction="Column">
-        <Label Text="hi" Padding="10"></Label>
-        <StackLayout Orientation="Horizontal">
-            <Label Text="Moves made: "></Label>
-            <Label Text="{Binding MoveCount}"></Label>
-            <Label Text=" Last move: "></Label>
-            <Label Text="{Binding LastMove}"></Label>
-        </StackLayout>
-
-        <BlazorWebView HostPage="wwwroot/index.html">
+    <BlazorWebView HostPage="wwwroot/index.html">
             <BlazorWebView.RootComponents>
                 <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
             </BlazorWebView.RootComponents>
-        </BlazorWebView>
-    </FlexLayout>
+    </BlazorWebView>
 
 
 </ContentPage>
