@@ -10,13 +10,39 @@ keycloak.init({
   onLoad: "login-required",
 });
 
+keycloak.onAuthSuccess = () => {
+  console.log("Auth success");
+  DotNet.invokeMethodAsync("HSC.Mobile", "LoggedIn", keycloak.token).then(
+    () => {}
+  );
+};
+
+keycloak.onAuthError = () => {
+  console.log("Auth error");
+};
+
 window.hi = () => {
   alert("hi");
 };
 
 window.login = () => {
-  keycloak.login({
-    redirectUri: "https://0.0.0.0/success",
+  console.log("login called");
+  keycloak
+    .login({
+      redirectUri: "https://0.0.0.0/success",
+    })
+    .then(() => {
+      console.log("hello there!");
+    })
+    .catch((a) => {
+      console.log("error");
+      console.log(a);
+    });
+};
+
+window.getLoginUrl = (redirectUri) => {
+  return keycloak.createLoginUrl({
+    redirectUri: redirectUri,
   });
 };
 

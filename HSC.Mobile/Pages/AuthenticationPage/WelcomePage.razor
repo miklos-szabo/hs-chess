@@ -1,5 +1,6 @@
 ﻿@inject IJSRuntime JsRuntime;
 @page "/"
+@using Android.Content
 @inject NavigationManager NavigationManager
 
 <div class="main-container">
@@ -7,12 +8,22 @@
     <label class="welcome-label mb-50">Log in below!</label>
     <button @onclick="LoginClicked">Log in</button>
     <label class="welcome-label mb-50">@NavigationManager.Uri</label>
+    <label class="welcome-label mb-50">@Token</label>
 </div>
 
 @code {
 
+    public static string Token { get; set; }
+
     public async Task LoginClicked()
     {
-        await JsRuntime.InvokeVoidAsync("login");
+        await JsRuntime.InvokeAsync<string>("login");
+    }
+
+    [JSInvokable]
+    public static Task LoggedIn(string token)
+    {
+        Token = token;
+        return Task.CompletedTask;
     }
 }

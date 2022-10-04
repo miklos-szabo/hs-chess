@@ -1,4 +1,5 @@
 ﻿@page "/success"
+@inject IJSRuntime JsRuntime;
 
 <div>
     <label>Successful login!</label>
@@ -6,5 +7,12 @@
 </div>
 
 @code {
+    public string Token { get; set; }
+
+    protected override async Task<Task> OnInitializedAsync()
+    {
+        Token = await JsRuntime.InvokeAsync<string>("getToken");
+        return base.OnInitializedAsync();
+    }
 
 }
