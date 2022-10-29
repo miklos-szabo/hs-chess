@@ -105,6 +105,11 @@ namespace HSC.Bll.AnalysisService
                     var depth24 = ReadLines.Where(l => l.StartsWith("info depth 20")).ToList();
                     var moveLines = depth24.Skip(Math.Max(0, depth24.Count() - 3)).ToList();
 
+                    if (dto.Fens[i].Split(" ")[1] == "b")
+                    {
+                        moveLines.Reverse();
+                    }
+
                     analysedGame.BestMoves.Add(new BestMovesDto
                     {
                         MoveNumber = i,
@@ -115,7 +120,7 @@ namespace HSC.Bll.AnalysisService
 
                     ReadLines.Clear();
 
-                    _logger.LogDebug("Analysed move {move} out of {allmoves} on {id}", i, dto.Fens.Count, dto.MatchId);
+                    _logger.LogDebug("Analysed move {move} out of {allmoves} on {id}", i + 1, dto.Fens.Count, dto.MatchId);
                 }
 
                 _logger.LogInformation("Analysis of {id} finished!", dto.MatchId);
