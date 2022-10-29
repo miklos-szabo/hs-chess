@@ -124,11 +124,15 @@
   "Tournaments.BackToTournament": "Back to the tournament",
   "ChessTabs.Chat": "Chat",
   "ChessTabs.Tournament": "Tournament",
+  "ChessTabs.Analyse": "Analyse",
   "TournamentOverPopup.Title": "Tournament over",
   "TournamentOverPopup.Winner": "Winner:",
   "TournamentOverPopup.YouWon": "You won:",
   "TournamentOverPopup.NotificationText": "Tournament over, you won:",
   "Tournaments.ConfirmJoin": "Are you sure you want to join? It will cost you {{buyIn}}$.",
   "Tournaments.ConfirmJoin.Cancel": "Cancel",
-  "Tournaments.ConfirmJoin.Join": "Join"
+  "Tournaments.ConfirmJoin.Join": "Join",
+  "Analysis.BestMoves": "Best Moves:",
+  "Analysis.RequestAnalysis": "Request analysis",
+  "Analysis.Working": "Working... This can take a few minutes"
 }

@@ -120,11 +120,15 @@
   "Tournaments.BackToTournament": "Vissza a bajnoksághoz",
   "ChessTabs.Chat": "Chat",
   "ChessTabs.Tournament": "Bajnokság",
+  "ChessTabs.Analyse": "Analízis",
   "TournamentOverPopup.Title": "Bajnokság vége",
   "TournamentOverPopup.Winner": "Győztes:",
   "TournamentOverPopup.YouWon": "Nyertél:",
   "TournamentOverPopup.NotificationText": "Bajnokság vége, nyertél:",
   "Tournaments.ConfirmJoin": "Biztos szeretnél csatlakozni? Nevezési díj: {{buyIn}}$.",
   "Tournaments.ConfirmJoin.Cancel": "Mégsem",
-  "Tournaments.ConfirmJoin.Join": "Csatlakozás"
+  "Tournaments.ConfirmJoin.Join": "Csatlakozás",
+  "Analysis.BestMoves": "Legjobb lépések:",
+  "Analysis.RequestAnalysis": "Analízis kérése",
+  "Analysis.Working": "Folyamatban... Ez tarthat néhány percig is"
 }

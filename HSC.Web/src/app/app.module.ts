@@ -48,6 +48,7 @@ import { CountdownModule } from 'ngx-countdown';
 import { TournamentOverPopupComponent } from './pages/chess-board/tournament-over-popup/tournament-over-popup.component';
 import { ConfirmJoinComponent } from './pages/play-page/tournaments-page/tournament-details/confirm-join/confirm-join.component';
 import { environment } from 'src/environments/environment';
+import { AnalysisBoardComponent } from './pages/analysis-board/analysis-board.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -63,7 +64,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html'
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        flow: 'standard'
       },
       loadUserProfileAtStartUp: true
     });
@@ -92,7 +94,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     CreateTournamentPopupComponent,
     TournamentDetailsComponent,
     TournamentOverPopupComponent,
-    ConfirmJoinComponent
+    ConfirmJoinComponent,
+    AnalysisBoardComponent
   ],
   imports: [
     BrowserModule,

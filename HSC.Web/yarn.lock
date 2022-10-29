@@ -5862,10 +5862,10 @@
   "resolved" "https://registry.npmjs.org/statuses/-/statuses-2.0.1.tgz"
   "version" "2.0.1"
 
-"stockfish@^14.1.0":
-  "integrity" "sha512-0jF2jhURDuo5sA+AJd7xKtNv2dgqZhtlEiR+KutHZD47pOQOrimWAKhcbW4ft6EuEbr3JUq3j1bXQ7hPJxfy2g=="
-  "resolved" "https://registry.npmjs.org/stockfish/-/stockfish-14.1.0.tgz"
-  "version" "14.1.0"
+"stockfish@^15.0.0":
+  "integrity" "sha512-ze3vTgMrnCmMdtC8qpONBdXkSHWwv4Dx+GFV1V5TIi0qP1HF+Vwa4lArgqvHDooU8Mwfs1cgRzkW3SM8x/7TJg=="
+  "resolved" "https://registry.npmjs.org/stockfish/-/stockfish-15.0.0.tgz"
+  "version" "15.0.0"
 
 "streamroller@^3.0.6":
   "integrity" "sha512-Qz32plKq/MZywYyhEatxyYc8vs994Gz0Hu2MSYXXLD233UyPeIeRBZARIIGwFer4Mdb8r3Y2UqKkgyDghM6QCg=="

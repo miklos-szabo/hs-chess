@@ -1,0 +1,7 @@
+<div class="d-flex flex-column align-start w-20">
+  <p>analysis-board works!</p>
+  <button class="mb-2" mat-raised-button (click)="start()">Start engine</button>
+  <input class="mb-2" matInput type="text" [(ngModel)]="command" />
+  <button class="mb-2" mat-raised-button (click)="send()">Send</button>
+  <label>{{ lastMessage }}</label>
+</div>

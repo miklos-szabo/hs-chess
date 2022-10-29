@@ -17,7 +17,7 @@ namespace HSC.Dal.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -35,6 +35,28 @@ namespace HSC.Dal.Migrations
                     b.HasIndex("UsersUserName");
 
                     b.ToTable("GroupUser");
+                });
+
+            modelBuilder.Entity("HSC.Dal.Entities.Analysis", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AnalysedGame")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("MatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId")
+                        .IsUnique();
+
+                    b.ToTable("Analysis");
                 });
 
             modelBuilder.Entity("HSC.Dal.Entities.Block", b =>
@@ -418,6 +440,18 @@ namespace HSC.Dal.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HSC.Dal.Entities.Analysis", b =>
+                {
+                    b.HasOne("HSC.Dal.Entities.Match", "Match")
+                        .WithOne("Analysis")
+                        .HasForeignKey("HSC.Dal.Entities.Analysis", "MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Match_Analysis");
+
+                    b.Navigation("Match");
+                });
+
             modelBuilder.Entity("HSC.Dal.Entities.Friend", b =>
                 {
                     b.HasOne("HSC.Dal.Entities.User", null)
@@ -481,6 +515,8 @@ namespace HSC.Dal.Migrations
 
             modelBuilder.Entity("HSC.Dal.Entities.Match", b =>
                 {
+                    b.Navigation("Analysis");
+
                     b.Navigation("MatchPlayers");
                 });
 

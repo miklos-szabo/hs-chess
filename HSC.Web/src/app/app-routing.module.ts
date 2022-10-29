@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AnalysisBoardComponent } from './pages/analysis-board/analysis-board.component';
 import { ChessPageComponent } from './pages/chess-page/chess-page.component';
 import { FriendsPageComponent } from './pages/friends-page/friends-page.component';
 import { GroupDetailsPageComponent } from './pages/groups-page/group-details-page/group-details-page.component';
@@ -45,6 +46,10 @@ const routes: Routes = [
     path: 'tournaments/:tournamentId',
     component: TournamentDetailsComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'analysis',
+    component: AnalysisBoardComponent
   },
   {
     path: '',

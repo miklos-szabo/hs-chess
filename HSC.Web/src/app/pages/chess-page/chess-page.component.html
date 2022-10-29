@@ -28,7 +28,7 @@
             </div>
           </ng-template></mat-tab
         >
-        <mat-tab *ngIf="data.tournamentId" [label]="'ChessTabs.Tournament' | translate"
+        <mat-tab [disabled]="!data.tournamentId" [label]="'ChessTabs.Tournament' | translate"
           ><ng-template matTabContent>
             <mat-list>
               <mat-list-item
@@ -45,6 +45,51 @@
                 </div>
               </mat-list-item>
             </mat-list>
+          </ng-template></mat-tab
+        >
+        <mat-tab [disabled]="!data.isHistoryMode" [label]="'ChessTabs.Analyse' | translate"
+          ><ng-template matTabContent>
+            <div *ngIf="!analysis" class="d-flex flex-column h-100 w-100 p-1">
+              <button [disabled]="isCurrentlyAnalysing" mat-raised-button (click)="getAnalysis()">
+                {{ 'Analysis.RequestAnalysis' | translate }}
+              </button>
+              <div *ngIf="isCurrentlyAnalysing" class="d-flex flex-column align-center">
+                <mat-progress-spinner [diameter]="25" mode="indeterminate"></mat-progress-spinner>
+                <label>{{ 'Analysis.Working' | translate }}</label>
+              </div>
+            </div>
+            <div *ngIf="analysis" class="d-flex flex-column w-100">
+              <label class="">{{ 'Analysis.BestMoves' | translate }}</label>
+              <div class="d-flex flex-column">
+                <div class="d-flex flex-column flex-1">
+                  <div class="d-flex flex-row justify-center">
+                    <label class="engine-move-font">{{ currentMoveAnalysis?.firstBest?.move }}</label>
+                    <label class="pl-2 engine-move-font">{{ currentMoveAnalysis?.firstBest?.eval }}</label>
+                  </div>
+                  <div class="p-1">
+                    <label class="engine-continuation-font">{{ currentMoveAnalysis?.firstBest?.continuation }}</label>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-1">
+                  <div class="d-flex flex-row justify-center">
+                    <label class="engine-move-font">{{ currentMoveAnalysis?.secondBest?.move }}</label>
+                    <label class="pl-2 engine-move-font">{{ currentMoveAnalysis?.secondBest?.eval }}</label>
+                  </div>
+                  <div class="p-1">
+                    <label class="engine-continuation-font">{{ currentMoveAnalysis?.secondBest?.continuation }}</label>
+                  </div>
+                </div>
+                <div class="d-flex flex-column flex-1">
+                  <div class="d-flex flex-row justify-center">
+                    <label class="engine-move-font">{{ currentMoveAnalysis?.thirdBest?.move }}</label>
+                    <label class="pl-2 engine-move-font">{{ currentMoveAnalysis?.thirdBest?.eval }}</label>
+                  </div>
+                  <div class="p-1">
+                    <label class="engine-continuation-font">{{ currentMoveAnalysis?.thirdBest?.continuation }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </ng-template></mat-tab
         >
       </mat-tab-group>

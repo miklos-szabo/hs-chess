@@ -25,6 +25,7 @@ namespace HSC.Dal.Entities
 
         public int? TournamentId { get; set; }
         public Tournament Tournament { get; set; }
+        public Analysis Analysis { get; set; }
 
         public virtual ICollection<MatchPlayer> MatchPlayers { get; set; }
     }

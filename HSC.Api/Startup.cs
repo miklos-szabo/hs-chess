@@ -3,6 +3,7 @@ using HSC.Api.ExceptionHandling;
 using HSC.Api.Extensions;
 using HSC.Api.RequestContext;
 using HSC.Bll.AccountService;
+using HSC.Bll.AnalysisService;
 using HSC.Bll.BettingService;
 using HSC.Bll.ChatService;
 using HSC.Bll.FriendService;
@@ -52,7 +53,7 @@ public class Startup
             options.RequireHttpsMetadata = false;
             options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
-                ValidIssuer = "http://hsckeycloak10.c5dzcec2bngmbcds.eastus.azurecontainer.ioy:8080/auth/realms/chess",
+                ValidIssuer = "http://hsckeycloak10.c5dzcec2bngmbcds.eastus.azurecontainer.io:8080/auth/realms/chess",
                 ValidAudience = "account",
                 AuthenticationType = JwtBearerDefaults.AuthenticationScheme,
             };
@@ -94,20 +95,21 @@ public class Startup
         {
             options.AddPolicy(_debugCorsPolicy, builder =>
             {
-                builder.WithOrigins("http://localhost:5212")
-                .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+                builder.WithOrigins("http://localhost:5212/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+
+                builder.WithOrigins("https://localhost:5000/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
 
                 builder.WithOrigins("http://hschess.azurewebsites.net")
                     .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyMethod();
 
                 builder.WithOrigins("https://hschess.azurewebsites.net")
                     .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyMethod();
             });
         });
 
@@ -133,6 +135,7 @@ public class Startup
         services.AddSingleton<HSCJobScheduler>();
         services.AddScoped<ITournamentService, TournamentService>();
         services.AddScoped<ITournamentJobService, TournamentJobService>();
+        services.AddScoped<IAnalysisService, AnalysisService>();
         services.AddDAL(connectionStringOptions);
         
     }
@@ -150,8 +153,19 @@ public class Startup
                     .AllowCredentials());
         }
 
-        //app.UseHttpsRedirection();
         app.UseCors(_debugCorsPolicy);
+
+        //app.Use(async (context, next) =>
+        //{
+        //    context.Response.Headers.Add("Cross-Origin-Embedder-Policy", "require-corp");
+        //    context.Response.Headers.Add("Cross-Origin-Opener-Policy", "same-origin");
+        //    context.Response.Headers.Add("Cross-Origin-Resource-Policy", "cross-origin");
+
+        //    await next();
+        //});
+
+        //app.UseHttpsRedirection();
+
         app.UseRouting();
 
         app.UseAuthentication();

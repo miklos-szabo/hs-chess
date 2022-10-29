@@ -17,6 +17,7 @@ namespace HSC.Dal.Configurations
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new MatchPlayerConfiguration());
             modelBuilder.ApplyConfiguration(new SearchingPlayerConfiguration());
+            modelBuilder.ApplyConfiguration(new AnalysisConfiguration());
         }
     }
 }

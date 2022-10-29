@@ -1,7 +1,7 @@
 import Keycloak from "keycloak-js";
 
 const keycloak = new Keycloak({
-  url: "http://hsckeycloak10.c5dzcec2bngmbcds.eastus.azurecontainer.io:8080/auth",
+  url: "https://hsckeycloak13.fagwgranamc5c8bp.westeurope.azurecontainer.io:8443/auth",
   realm: "chess",
   clientId: "hsc-mobile",
 });

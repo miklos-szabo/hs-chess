@@ -5,8 +5,12 @@ import { Color } from 'chessground/types';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable, Subject, Subscription } from 'rxjs';
 import {
+  AnalysedGameDto,
+  AnalysisService,
+  BestMovesDto,
   ChatMessageDto,
   ChatService,
+  GameToBeAnalysedDto,
   MatchFullDataDto,
   MatchService,
   MatchStartDto,
@@ -40,6 +44,9 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   messages: ChatMessageDto[] = [];
   tournamentPlayers: TournamentPlayerDto[] = [];
   tournamentId: number | undefined = undefined;
+  analysis: AnalysedGameDto | undefined = undefined;
+  currentMoveAnalysis: BestMovesDto | undefined = undefined;
+  isCurrentlyAnalysing = false;
 
   @ViewChild('ownCd', { static: false })
   ownCountDown!: CountdownTimerComponent;
@@ -62,6 +69,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   chatMessageSubscription!: Subscription;
   tournamentStandingsSubscription!: Subscription;
   tournamentOverSubscription!: Subscription;
+  setFenSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -72,7 +80,8 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     private eventService: EventService,
     private cdRef: ChangeDetectorRef,
     private tournamentService: TournamentService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private analysisService: AnalysisService
   ) {
     this.matchId = this.route.snapshot.params.matchId;
     this.matchData$ = this.matchService.getMatchData(this.matchId);
@@ -274,6 +283,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.currentlySelectedMove === -1) return;
     this.currentlySelectedMove = -1;
     this.setFenSubject.next('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
+    this.setAnalysisPosition(this.currentlySelectedMove);
   }
 
   moveBack() {
@@ -284,24 +294,28 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     } else {
       this.setFenSubject.next(this.history[this.currentlySelectedMove].fen);
     }
+    this.setAnalysisPosition(this.currentlySelectedMove);
   }
 
   moveForward() {
     if (this.currentlySelectedMove === this.history.length - 1 || this.history.length === 0) return;
     this.currentlySelectedMove++;
     this.setFenSubject.next(this.history[this.currentlySelectedMove].fen);
+    this.setAnalysisPosition(this.currentlySelectedMove);
   }
 
   moveToLast() {
     if (this.currentlySelectedMove === this.history.length - 1 || this.history.length === 0) return;
     this.currentlySelectedMove = this.history.length - 1;
     this.setFenSubject.next(this.history[this.history.length - 1].fen);
+    this.setAnalysisPosition(this.currentlySelectedMove);
   }
 
   moveToSpecificPosition(moveIndex: number) {
     if (this.currentlySelectedMove === moveIndex) return;
     this.currentlySelectedMove = moveIndex;
     this.setFenSubject.next(this.history[moveIndex].fen);
+    this.setAnalysisPosition(this.currentlySelectedMove);
   }
 
   flipBoard() {
@@ -354,5 +368,24 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
       width: '350px',
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
+  }
+
+  getAnalysis() {
+    this.isCurrentlyAnalysing = true;
+    var dto = new GameToBeAnalysedDto();
+    dto.matchId = this.matchId;
+    dto.fens = this.history.map((h) => h.fen);
+    this.analysisService.getAnalysis(dto).subscribe((data) => {
+      this.analysis = data;
+      this.isCurrentlyAnalysing = false;
+      this.setAnalysisPosition(this.currentlySelectedMove);
+    });
+  }
+
+  setAnalysisPosition(moveIndex: number) {
+    if (!this.analysis) return;
+    if (moveIndex === -1) this.currentMoveAnalysis = undefined;
+
+    this.currentMoveAnalysis = this.analysis.bestMoves?.find((m) => m.moveNumber == moveIndex);
   }
 }

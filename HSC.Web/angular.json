@@ -44,6 +44,11 @@
                 "input": "node_modules\\chess.js\\chess.js",
                 "inject": true,
                 "bundleName": "chessjs"
+              },
+              {
+                "input": "node_modules\\stockfish\\src\\stockfish.js",
+                "inject": true,
+                "bundleName": "stockfish"
               }
               ]
           },

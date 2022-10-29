@@ -14,6 +14,11 @@ namespace HSC.Dal.Configurations
                 .WithMany(t => t.Matches)
                 .HasForeignKey(m => m.TournamentId)
                 .HasConstraintName("FK_Match_Tournament");
+
+            builder.HasOne(m => m.Analysis)
+                .WithOne(a => a.Match)
+                .HasForeignKey<Analysis>(a => a.MatchId)
+                .HasConstraintName("FK_Match_Analysis");
         }
     }
 }

@@ -317,6 +317,72 @@ export class AccountService {
 @Injectable({
     providedIn: 'root'
 })
+export class AnalysisService {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAnalysis(dto: GameToBeAnalysedDto): Observable<AnalysedGameDto> {
+        let url_ = this.baseUrl + "/api/Analysis/GetAnalysis";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAnalysis(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAnalysis(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AnalysedGameDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AnalysedGameDto>;
+        }));
+    }
+
+    protected processGetAnalysis(response: HttpResponseBase): Observable<AnalysedGameDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AnalysedGameDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AnalysedGameDto>(null as any);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
 export class BettingService {
     private http: HttpClient;
     private baseUrl: string;
@@ -2344,6 +2410,190 @@ export interface IUserFullDetailsDto {
     ratingBlitz: number;
     ratingRapid: number;
     ratingClassical: number;
+}
+
+export class AnalysedGameDto implements IAnalysedGameDto {
+    bestMoves?: BestMovesDto[] | undefined;
+
+    constructor(data?: IAnalysedGameDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["bestMoves"])) {
+                this.bestMoves = [] as any;
+                for (let item of _data["bestMoves"])
+                    this.bestMoves!.push(BestMovesDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AnalysedGameDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AnalysedGameDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.bestMoves)) {
+            data["bestMoves"] = [];
+            for (let item of this.bestMoves)
+                data["bestMoves"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IAnalysedGameDto {
+    bestMoves?: BestMovesDto[] | undefined;
+}
+
+export class BestMovesDto implements IBestMovesDto {
+    moveNumber!: number;
+    firstBest?: EngineLineDto | undefined;
+    secondBest?: EngineLineDto | undefined;
+    thirdBest?: EngineLineDto | undefined;
+
+    constructor(data?: IBestMovesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.moveNumber = _data["moveNumber"];
+            this.firstBest = _data["firstBest"] ? EngineLineDto.fromJS(_data["firstBest"]) : <any>undefined;
+            this.secondBest = _data["secondBest"] ? EngineLineDto.fromJS(_data["secondBest"]) : <any>undefined;
+            this.thirdBest = _data["thirdBest"] ? EngineLineDto.fromJS(_data["thirdBest"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): BestMovesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BestMovesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["moveNumber"] = this.moveNumber;
+        data["firstBest"] = this.firstBest ? this.firstBest.toJSON() : <any>undefined;
+        data["secondBest"] = this.secondBest ? this.secondBest.toJSON() : <any>undefined;
+        data["thirdBest"] = this.thirdBest ? this.thirdBest.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IBestMovesDto {
+    moveNumber: number;
+    firstBest?: EngineLineDto | undefined;
+    secondBest?: EngineLineDto | undefined;
+    thirdBest?: EngineLineDto | undefined;
+}
+
+export class EngineLineDto implements IEngineLineDto {
+    eval?: string | undefined;
+    move?: string | undefined;
+    continuation?: string | undefined;
+
+    constructor(data?: IEngineLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.eval = _data["eval"];
+            this.move = _data["move"];
+            this.continuation = _data["continuation"];
+        }
+    }
+
+    static fromJS(data: any): EngineLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EngineLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["eval"] = this.eval;
+        data["move"] = this.move;
+        data["continuation"] = this.continuation;
+        return data;
+    }
+}
+
+export interface IEngineLineDto {
+    eval?: string | undefined;
+    move?: string | undefined;
+    continuation?: string | undefined;
+}
+
+export class GameToBeAnalysedDto implements IGameToBeAnalysedDto {
+    matchId!: string;
+    fens?: string[] | undefined;
+
+    constructor(data?: IGameToBeAnalysedDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.matchId = _data["matchId"];
+            if (Array.isArray(_data["fens"])) {
+                this.fens = [] as any;
+                for (let item of _data["fens"])
+                    this.fens!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): GameToBeAnalysedDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GameToBeAnalysedDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["matchId"] = this.matchId;
+        if (Array.isArray(this.fens)) {
+            data["fens"] = [];
+            for (let item of this.fens)
+                data["fens"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IGameToBeAnalysedDto {
+    matchId: string;
+    fens?: string[] | undefined;
 }
 
 export class ChatMessageDto implements IChatMessageDto {
