@@ -1,6 +1,7 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ChessInstance } from 'chess.js';
 import { Color } from 'chessground/types';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -32,6 +33,9 @@ import { TournamentOverPopupComponent } from '../chess-board/tournament-over-pop
   styleUrls: ['./chess-page.component.scss']
 })
 export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
+  ChessReq: any = require('chess.js');
+  private chess: ChessInstance = new this.ChessReq();
+
   matchId = '';
   matchData$: Observable<MatchFullDataDto>;
   startData = new MatchStartDto();
@@ -376,7 +380,8 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     dto.matchId = this.matchId;
     dto.fens = this.history.map((h) => h.fen);
     this.analysisService.getAnalysis(dto).subscribe((data) => {
-      this.analysis = data;
+      //this.analysis = data;
+      this.analysis = this.convertAnalysisToSan(data);
       this.isCurrentlyAnalysing = false;
       this.setAnalysisPosition(this.currentlySelectedMove);
     });
@@ -387,5 +392,54 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (moveIndex === -1) this.currentMoveAnalysis = undefined;
 
     this.currentMoveAnalysis = this.analysis.bestMoves?.find((m) => m.moveNumber == moveIndex);
+  }
+
+  convertAnalysisToSan(analysis: AnalysedGameDto): AnalysedGameDto {
+    analysis.bestMoves?.forEach((bm) => {
+      // First load the fen into the board
+      this.chess.load(this.history[bm.moveNumber].fen);
+
+      // Make the moves on the board
+      this.chess.move(bm.firstBest!.move!, { sloppy: true });
+      let continuationMoves = bm.firstBest!.continuation!.split(' ');
+      continuationMoves.forEach((m) => {
+        this.chess.move(m, { sloppy: true });
+      });
+
+      // Read the history with the SAN values
+      let history = this.chess.history({ verbose: true });
+      let sanHistory = history.map((h) => h.san);
+      bm.firstBest!.move = sanHistory[0];
+      bm.firstBest!.continuation = sanHistory.slice(1).join(' ');
+      this.chess.reset();
+
+      // Second best move
+      this.chess.load(this.history[bm.moveNumber].fen);
+      this.chess.move(bm.secondBest!.move!, { sloppy: true });
+      continuationMoves = bm.secondBest!.continuation!.split(' ');
+      continuationMoves.forEach((m) => {
+        this.chess.move(m, { sloppy: true });
+      });
+      history = this.chess.history({ verbose: true });
+      sanHistory = history.map((h) => h.san);
+      bm.secondBest!.move = sanHistory[0];
+      bm.secondBest!.continuation = sanHistory.slice(1).join(' ');
+      this.chess.reset();
+
+      // Third best move
+      this.chess.load(this.history[bm.moveNumber].fen);
+      this.chess.move(bm.thirdBest!.move!, { sloppy: true });
+      continuationMoves = bm.thirdBest!.continuation!.split(' ');
+      continuationMoves.forEach((m) => {
+        this.chess.move(m, { sloppy: true });
+      });
+      history = this.chess.history({ verbose: true });
+      sanHistory = history.map((h) => h.san);
+      bm.thirdBest!.move = sanHistory[0];
+      bm.thirdBest!.continuation = sanHistory.slice(1).join(' ');
+      this.chess.reset();
+    });
+
+    return analysis;
   }
 }
