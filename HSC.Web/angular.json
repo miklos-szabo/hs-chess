@@ -33,9 +33,9 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss",
-              "node_modules\\chessground\\assets\\chessground.base.css",
-              "node_modules\\chessground\\assets\\chessground.brown.css",
-              "node_modules\\chessground\\assets\\chessground.cburnett.css",
+              "src/assets/board/chessground.base.css",
+              "src/assets/board/chessground.brown.css",
+              "src/assets/board/chessground.cburnett.css",
               "src/themes/global-styles.scss",
               "src/themes/main-theme.scss"
             ],

@@ -22,6 +22,9 @@
       </mat-option>
     </mat-select>
   </div>
+  <div class="d-flex flex-row align-center menu-row">
+    <label (click)="toggleBoardTheme()">{{ 'Menu.ChangeBoardTheme' | translate }}</label>
+  </div>
   <div class="d-flex flex-row align-center menu-row menu-logout-padding justify-end">
     <button mat-button color="warn" (click)="logout()">{{ 'Menu.Logout' | translate }}</button>
   </div>

@@ -8,6 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs';
 import { AccountService, UserMenuDto } from 'src/app/api/app.generated';
+import { EventService } from 'src/app/services/event.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
@@ -31,7 +33,9 @@ export class MenuComponent implements OnInit {
     private accountService: AccountService,
     private keycloak: KeycloakService,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private localStorageService: LocalStorageService,
+    private eventService: EventService
   ) {
     this.isUsingRealMoney = !data.isUsingPlayMoney;
     this.languages = this.translateService.getLangs();
@@ -62,5 +66,12 @@ export class MenuComponent implements OnInit {
   toggleDarkTheme(darkTheme: boolean) {
     this.themeService.setDarkTheme(darkTheme);
     this.accountService.setLightTheme(!darkTheme).subscribe(() => {});
+  }
+
+  toggleBoardTheme() {
+    let currentTheme = this.localStorageService.getBoardTheme() ?? 'primary';
+    let newTheme = currentTheme === 'primary' ? 'secondary' : 'primary';
+    this.localStorageService.setBoardTheme(newTheme);
+    this.eventService.boardThemeChanged(newTheme);
   }
 }

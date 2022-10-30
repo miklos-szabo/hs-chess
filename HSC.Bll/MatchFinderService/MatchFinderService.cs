@@ -4,6 +4,7 @@ using HSC.Bll.Hubs;
 using HSC.Bll.Hubs.Clients;
 using HSC.Bll.RatingService;
 using HSC.Common.Enums;
+using HSC.Common.Exceptions;
 using HSC.Common.Extensions;
 using HSC.Common.RequestContext;
 using HSC.Dal;
@@ -34,6 +35,10 @@ namespace HSC.Bll.MatchFinderService
 
         public async Task CreateCustomGameAsync(CreateCustomGameDto dto)
         {
+            var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            if (me.Balance < dto.MaximumBet)
+                throw new BadRequestException("Not enough money in account!");
+
             var challenge = new Challenge
             {
                 Increment = dto.Increment,
@@ -71,6 +76,9 @@ namespace HSC.Bll.MatchFinderService
             _dbContext.Challenges.Remove(challenge);
 
             var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            if (me.Balance < challenge.MaximumBet)
+                throw new BadRequestException("Not enough money in account!");
+
             var myRating = _ratingService.GetRatingOfUserFromTimeControl(me, challenge.TimeLimitMinutes);
 
             var otherUser = await _dbContext.Users.SingleAsync(u => u.UserName == challenge.Offerer);
@@ -117,6 +125,9 @@ namespace HSC.Bll.MatchFinderService
         public async Task SearchForMatchAsync(SearchingForMatchDto dto)
         {
             var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
+            if (me.Balance < dto.MaximumBet)
+                throw new BadRequestException("Not enough money in account!");
+
             var myRating = _ratingService.GetRatingOfUserFromTimeControl(me, dto.TimeLimitMinutes);
 
             var otherPlayer = await _dbContext.SearchingPlayers

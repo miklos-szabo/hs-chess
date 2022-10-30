@@ -24,6 +24,7 @@
   "Menu.Language.en": "Angol",
   "Menu.Language.hu": "Magyar",
   "Menu.Logout": "Kijelentkezés",
+  "Menu.ChangeBoardTheme": "Táblaszín változtatása",
   "Notification.Dismiss": "Rendben",
   "Friends.Title": "Barátok",
   "Friends.FriendRequests": "Barát kérelmek",
@@ -130,5 +131,8 @@
   "Tournaments.ConfirmJoin.Join": "Csatlakozás",
   "Analysis.BestMoves": "Legjobb lépések:",
   "Analysis.RequestAnalysis": "Analízis kérése",
-  "Analysis.Working": "Folyamatban... Ez tarthat néhány percig is"
+  "Analysis.Working": "Folyamatban... Ez tarthat néhány percig is",
+  "Cashier.CurrentBalance": "Egyenleg:",
+  "Cashier.Add100": "100$ hozzáadása",
+  "Cashier.Title": "Pénztár"
 }

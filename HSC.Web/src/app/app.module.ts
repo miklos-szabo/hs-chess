@@ -49,6 +49,7 @@ import { TournamentOverPopupComponent } from './pages/chess-board/tournament-ove
 import { ConfirmJoinComponent } from './pages/play-page/tournaments-page/tournament-details/confirm-join/confirm-join.component';
 import { environment } from 'src/environments/environment';
 import { AnalysisBoardComponent } from './pages/analysis-board/analysis-board.component';
+import { CashierPageComponent } from './pages/cashier-page/cashier-page.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -95,7 +96,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     TournamentDetailsComponent,
     TournamentOverPopupComponent,
     ConfirmJoinComponent,
-    AnalysisBoardComponent
+    AnalysisBoardComponent,
+    CashierPageComponent
   ],
   imports: [
     BrowserModule,
@@ -126,8 +128,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
-      },
-      defaultLanguage: 'en'
+      }
     })
   ],
   providers: [

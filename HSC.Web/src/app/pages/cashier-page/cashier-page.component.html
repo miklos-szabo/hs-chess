@@ -1,0 +1,11 @@
+<div class="d-flex flex-column container self-align-center">
+  <h1>{{ 'Cashier.Title' | translate }}</h1>
+  <div class="d-flex flex-row justify-center align-center">
+    <label class="titleLabel pr-2">{{ 'Cashier.CurrentBalance' | translate }}</label>
+    <label class="titleLabel">{{ userData.balance + '$' }}</label>
+  </div>
+
+  <button mat-raised-button class="add-button mt-3 self-align-center" (click)="add100()">
+    {{ 'Cashier.Add100' | translate }}
+  </button>
+</div>

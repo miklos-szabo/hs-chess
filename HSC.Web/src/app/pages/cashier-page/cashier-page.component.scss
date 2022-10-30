@@ -1,0 +1,19 @@
+@import 'src/themes/variables.scss';
+
+:host {
+  @include full-page-layout;
+}
+
+.titleLabel{
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.container{
+  padding-top: 30px;
+  width: 800px;
+}
+
+.add-button{
+  width: 150px;
+}

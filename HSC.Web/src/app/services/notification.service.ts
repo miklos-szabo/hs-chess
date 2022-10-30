@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root'
 })
 export class NotificationService {
-  constructor(private snackBar: MatSnackBar, private translateService: TranslateService, private router: Router) {}
+  constructor(private snackBar: MatSnackBar, private translateService: TranslateService) {}
 
   error(message: string) {
     this.open(this.translateService.instant(message), 'error-style');

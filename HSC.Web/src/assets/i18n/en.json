@@ -26,6 +26,7 @@
   "Menu.Language": "Language",
   "Menu.Language.en": "English",
   "Menu.Language.hu": "Hungarian",
+  "Menu.ChangeBoardTheme": "Change board theme",
   "Menu.Logout": "Log out",
   "Notification.Dismiss": "Dismiss",
   "Friends.Title": "Friends",
@@ -134,5 +135,8 @@
   "Tournaments.ConfirmJoin.Join": "Join",
   "Analysis.BestMoves": "Best Moves:",
   "Analysis.RequestAnalysis": "Request analysis",
-  "Analysis.Working": "Working... This can take a few minutes"
+  "Analysis.Working": "Working... This can take a few minutes",
+  "Cashier.CurrentBalance": "Current balance:",
+  "Cashier.Add100": "Add 100$",
+  "Cashier.Title": "Cashier"
 }

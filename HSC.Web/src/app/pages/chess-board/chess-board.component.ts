@@ -12,6 +12,7 @@ import { BettingPopupComponent } from './betting-popup/betting-popup.component';
 import { EventService } from 'src/app/services/event.service';
 import { MoveDto } from 'src/app/services/signalr/signalr-dtos';
 import { Observable, Subscription } from 'rxjs';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-chess-board',
@@ -22,6 +23,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   ChessReq: any = require('chess.js');
   private chess: ChessInstance = new this.ChessReq();
   private cg!: Api;
+
+  boardTheme = 'primary';
 
   @Input()
   matchId = '';
@@ -58,9 +61,18 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   @Output() gameOverEvent: EventEmitter<void> = new EventEmitter();
   @Output() loadHistoryEvent: EventEmitter<HistoryMoveDto[]> = new EventEmitter();
 
+  private boardThemeChangedSubscription!: Subscription;
+
   currentOrientation: Color | undefined;
 
-  constructor(private dialog: MatDialog, private matchService: MatchService, private eventService: EventService) {}
+  constructor(
+    private dialog: MatDialog,
+    private matchService: MatchService,
+    private eventService: EventService,
+    private localStorageService: LocalStorageService
+  ) {
+    this.boardTheme = localStorageService.getBoardTheme() ?? 'primary';
+  }
 
   ngOnInit(): void {
     if (!this.historyMode) {
@@ -128,6 +140,9 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
 
       this.currentOrientation = this.color;
     }
+    this.boardThemeChangedSubscription = this.eventService.boardThemeChangedEvent.subscribe((theme) => {
+      this.boardTheme = theme;
+    });
   }
 
   ngOnDestroy(): void {
@@ -139,6 +154,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
       this.flipBoardSubscription.unsubscribe();
       this.loadFenSubscription.unsubscribe();
     }
+    this.boardThemeChangedSubscription.unsubscribe();
   }
 
   getDestinations(chess: ChessInstance): Map<Key, Key[]> {

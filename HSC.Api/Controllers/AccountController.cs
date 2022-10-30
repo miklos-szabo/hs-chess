@@ -54,5 +54,11 @@ namespace HSC.Api.Controllers
         {
             await _accountService.SetLightTheme(isLightTheme);
         }
+
+        [HttpGet]
+        public async Task AddMoney(int amount)
+        {
+            await _accountService.AddMoney(amount);
+        }
     }
 }

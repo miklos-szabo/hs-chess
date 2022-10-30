@@ -15,5 +15,6 @@ namespace HSC.Bll.AccountService
         Task ChangeRealMoneyAsync(bool toRealMoney);
         Task<bool> UsesLightThemeAsync();
         Task SetLightTheme(bool isLightTheme);
+        Task AddMoney(int amount);
     }
 }
