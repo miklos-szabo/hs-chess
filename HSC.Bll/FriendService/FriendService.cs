@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
 using HSC.Common.Exceptions;
+using HSC.Common.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace HSC.Bll.FriendService
 {
@@ -22,13 +24,15 @@ namespace HSC.Bll.FriendService
         private readonly IRequestContext _requestContext;
         private readonly IHubContext<ChessHub, IChessClient> _chessHub;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<LocalizedStrings> _localizer;
 
-        public FriendService(HSCContext dbContext, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub, IMapper mapper)
+        public FriendService(HSCContext dbContext, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub, IMapper mapper, IStringLocalizer<LocalizedStrings> localizer)
         {
             _dbContext = dbContext;
             _requestContext = requestContext;
             _chessHub = chessHub;
             _mapper = mapper;
+            _localizer = localizer;
         }
 
         public async Task AcceptFriendRequestAsync(int requestId)
@@ -96,10 +100,10 @@ namespace HSC.Bll.FriendService
         public async Task SendFriendRequestAsync(string toUserName)
         {
             if (!(await _dbContext.Users.AnyAsync(u => u.UserName == toUserName)))
-                throw new BadRequestException($"User {toUserName} doesn't exist.");
+                throw new BadRequestException($"{_localizer["UserDoesntExist_1"]} {toUserName} {_localizer["UserDoesntExist_2"]}");
 
             if (await _dbContext.FriendRequests.AnyAsync(r => r.ReceiverUsername == toUserName && r.RequesterUsername == _requestContext.UserName))
-                throw new BadRequestException($"Friend request already sent to {toUserName}!");
+                throw new BadRequestException(_localizer["FriendRequestAlreadySent"]);
 
             _dbContext.FriendRequests.Add(new Dal.Entities.FriendRequest
             {

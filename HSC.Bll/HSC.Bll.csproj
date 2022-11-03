@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="6.0.10" />
     <PackageReference Include="Quartz" Version="3.4.0" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
   </ItemGroup>

@@ -5,14 +5,15 @@ using HSC.Bll.Hubs.Clients;
 using HSC.Bll.RatingService;
 using HSC.Common.Enums;
 using HSC.Common.Exceptions;
-using HSC.Common.Extensions;
 using HSC.Common.RequestContext;
+using HSC.Common.Resources;
 using HSC.Dal;
 using HSC.Dal.Entities;
 using HSC.Transfer.Searching;
 using HSC.Transfer.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace HSC.Bll.MatchFinderService
 {
@@ -23,21 +24,23 @@ namespace HSC.Bll.MatchFinderService
         private readonly IHubContext<ChessHub, IChessClient> _chessHub;
         private readonly IMapper _mapper;
         private readonly IRatingService _ratingService;
+        private readonly IStringLocalizer<LocalizedStrings> _localizer;
 
-        public MatchFinderService(HSCContext context, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub, IMapper mapper, IRatingService ratingService)
+        public MatchFinderService(HSCContext context, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub, IMapper mapper, IRatingService ratingService, IStringLocalizer<LocalizedStrings> localizer)
         {
             _dbContext = context;
             _requestContext = requestContext;
             _chessHub = chessHub;
             _mapper = mapper;
             _ratingService = ratingService;
+            _localizer = localizer;
         }
 
         public async Task CreateCustomGameAsync(CreateCustomGameDto dto)
         {
             var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
             if (me.Balance < dto.MaximumBet)
-                throw new BadRequestException("Not enough money in account!");
+                throw new BadRequestException(_localizer["NotEnoughMoney"]);
 
             var challenge = new Challenge
             {
@@ -77,7 +80,7 @@ namespace HSC.Bll.MatchFinderService
 
             var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
             if (me.Balance < challenge.MaximumBet)
-                throw new BadRequestException("Not enough money in account!");
+                throw new BadRequestException(_localizer["NotEnoughMoney"]);
 
             var myRating = _ratingService.GetRatingOfUserFromTimeControl(me, challenge.TimeLimitMinutes);
 
@@ -126,7 +129,7 @@ namespace HSC.Bll.MatchFinderService
         {
             var me = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
             if (me.Balance < dto.MaximumBet)
-                throw new BadRequestException("Not enough money in account!");
+                throw new BadRequestException(_localizer["NotEnoughMoney"]);
 
             var myRating = _ratingService.GetRatingOfUserFromTimeControl(me, dto.TimeLimitMinutes);
 

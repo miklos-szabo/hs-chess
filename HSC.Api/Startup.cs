@@ -1,3 +1,4 @@
+using System.Globalization;
 using AutoMapper;
 using HSC.Api.ExceptionHandling;
 using HSC.Api.Extensions;
@@ -24,6 +25,7 @@ using HSC.Bll.TournamentService;
 using Quartz;
 using HSC.Bll.TournamentJobService;
 using HSC.Bll.Scheduling.Jobs;
+using Microsoft.AspNetCore.Localization;
 
 public class Startup
 {
@@ -90,6 +92,7 @@ public class Startup
         services.AddEndpointsApiExplorer();
         services.AddSwaggerDocument();
         services.AddSignalR();
+        services.AddLocalization();
 
         services.AddCors(options =>
         {
@@ -152,6 +155,19 @@ public class Startup
                     .AllowAnyHeader()
                     .AllowCredentials());
         }
+
+        var supportedCultures = new[]
+        {
+            new CultureInfo("hu"),
+            new CultureInfo("en"),
+        };
+
+        app.UseRequestLocalization(new RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new RequestCulture("en"),
+            SupportedCultures = supportedCultures,
+            SupportedUICultures = supportedCultures
+        });
 
         app.UseCors(_debugCorsPolicy);
 

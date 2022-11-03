@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Quartz;
+using HSC.Common.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace HSC.Bll.TournamentService
 {
@@ -31,8 +33,9 @@ namespace HSC.Bll.TournamentService
         private readonly IMapper _mapper;
         private readonly IHubContext<ChessHub, IChessClient> _chessHub;
         private readonly HSCJobScheduler _scheduler;
+        private readonly IStringLocalizer<LocalizedStrings> _localizer;
 
-        public TournamentService(HSCContext dbContext, ILogger<TournamentService> logger, IRequestContext requestContext, IMapper mapper, IHubContext<ChessHub, IChessClient> chessHub, HSCJobScheduler scheduler)
+        public TournamentService(HSCContext dbContext, ILogger<TournamentService> logger, IRequestContext requestContext, IMapper mapper, IHubContext<ChessHub, IChessClient> chessHub, HSCJobScheduler scheduler, IStringLocalizer<LocalizedStrings> localizer)
         {
             _dbContext = dbContext;
             _logger = logger;
@@ -40,6 +43,7 @@ namespace HSC.Bll.TournamentService
             _mapper = mapper;
             _chessHub = chessHub;
             _scheduler = scheduler;
+            _localizer = localizer;
         }
 
         public async Task CreateTournamentAsync(CreateTournamentDto dto)
@@ -116,7 +120,7 @@ namespace HSC.Bll.TournamentService
 
             if (tournament.Players.Any(p => p.UserName == _requestContext.UserName))
             {
-                throw new BadRequestException("Already in tournament.");
+                throw new BadRequestException(_localizer["AlreadyInTournament"]);
             }
 
             var user = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
@@ -124,7 +128,7 @@ namespace HSC.Bll.TournamentService
 
             if (user.Balance < 0)
             {
-                throw new BadRequestException("Not enough money in the account.");
+                throw new BadRequestException(_localizer["NotEnoughMoney"]);
             }
 
             tournament.PrizePool += tournament.BuyIn;

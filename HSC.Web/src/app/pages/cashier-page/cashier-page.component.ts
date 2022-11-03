@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService, UserMenuDto } from 'src/app/api/app.generated';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-cashier-page',
@@ -8,7 +9,7 @@ import { AccountService, UserMenuDto } from 'src/app/api/app.generated';
 })
 export class CashierPageComponent implements OnInit {
   userData: UserMenuDto = new UserMenuDto();
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, private eventService: EventService) {}
 
   ngOnInit(): void {
     this.accountService.getUserMenuData().subscribe((data) => {
@@ -20,6 +21,7 @@ export class CashierPageComponent implements OnInit {
     this.accountService.addMoney(100).subscribe(() => {
       this.accountService.getUserMenuData().subscribe((data) => {
         this.userData = data;
+        this.eventService.balanceChanged();
       });
     });
   }

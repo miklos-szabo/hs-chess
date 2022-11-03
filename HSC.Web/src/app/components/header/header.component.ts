@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { KeycloakService } from 'keycloak-angular';
+import { Subscription } from 'rxjs';
 import { AccountService, UserMenuDto } from 'src/app/api/app.generated';
+import { EventService } from 'src/app/services/event.service';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
 import { ThemeService } from 'src/app/services/theme.service';
 import { MenuComponent } from './menu/menu.component';
@@ -16,13 +18,17 @@ export class HeaderComponent implements OnInit {
   userName = '';
   isAuthed = false;
   userdata = new UserMenuDto();
+
+  balanceChangedSubscription!: Subscription;
+
   constructor(
     private translateService: TranslateService,
     private keycloak: KeycloakService,
     private accountService: AccountService,
     private dialog: MatDialog,
     private signalrService: SignalrService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private eventService: EventService
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +46,12 @@ export class HeaderComponent implements OnInit {
           });
         });
       }
+    });
+
+    this.balanceChangedSubscription = this.eventService.balanceChangedEvent.subscribe(() => {
+      this.accountService.getUserMenuData().subscribe((data) => {
+        this.userdata = data;
+      });
     });
   }
 

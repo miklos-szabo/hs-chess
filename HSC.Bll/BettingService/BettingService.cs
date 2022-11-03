@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using HSC.Common.Exceptions;
+using HSC.Common.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace HSC.Bll.BettingService
 {
@@ -18,12 +20,14 @@ namespace HSC.Bll.BettingService
         private readonly HSCContext _dbContext;
         private readonly IRequestContext _requestContext;
         private readonly IHubContext<ChessHub, IChessClient> _chessHub;
+        private readonly IStringLocalizer<LocalizedStrings> _localizer;
 
-        public BettingService(HSCContext dbContext, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub)
+        public BettingService(HSCContext dbContext, IRequestContext requestContext, IHubContext<ChessHub, IChessClient> chessHub, IStringLocalizer<LocalizedStrings> localizer)
         {
             _dbContext = dbContext;
             _requestContext = requestContext;
             _chessHub = chessHub;
+            _localizer = localizer;
         }
 
         public async Task CallAsnyc(Guid matchId)
@@ -34,7 +38,7 @@ namespace HSC.Bll.BettingService
             var currentPlayer = match.MatchPlayers.SingleOrDefault(p => p.IsBetting);
 
             if (currentPlayer.UserName != _requestContext.UserName)
-                throw new BadRequestException("Wrong user tried to bet, it's not their turn.");
+                throw new BadRequestException(_localizer["WrongUserBetting"]);
 
             var otherPlayer = match.MatchPlayers.SingleOrDefault(p => !p.IsBetting);
 
@@ -54,7 +58,7 @@ namespace HSC.Bll.BettingService
             var currentPlayer = match.MatchPlayers.SingleOrDefault(p => p.IsBetting);
 
             if (currentPlayer.UserName != _requestContext.UserName)
-                throw new BadRequestException("Wrong user tried to bet, it's not their turn.");
+                throw new BadRequestException(_localizer["WrongUserBetting"]);
 
             var otherPlayer = match.MatchPlayers.SingleOrDefault(p => !p.IsBetting);
 
@@ -75,7 +79,7 @@ namespace HSC.Bll.BettingService
             var currentPlayer = match.MatchPlayers.SingleOrDefault(p => p.IsBetting);
 
             if (currentPlayer.UserName != _requestContext.UserName)
-                throw new BadRequestException("Wrong user tried to bet, it's not their turn.");
+                throw new BadRequestException(_localizer["WrongUserBetting"]);
 
             var otherPlayer = match.MatchPlayers.SingleOrDefault(p => !p.IsBetting);
 
@@ -97,7 +101,7 @@ namespace HSC.Bll.BettingService
             var currentPlayer = match.MatchPlayers.SingleOrDefault(p => p.IsBetting);
 
             if (currentPlayer.UserName != _requestContext.UserName)
-                throw new BadRequestException("Wrong user tried to bet, it's not their turn.");
+                throw new BadRequestException(_localizer["WrongUserBetting"]);
 
             var otherPlayer = match.MatchPlayers.SingleOrDefault(p => !p.IsBetting);
 

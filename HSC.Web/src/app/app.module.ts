@@ -21,7 +21,7 @@ import { ChessPageComponent } from './pages/chess-page/chess-page.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { DefaultInterceptor } from './services/interceptors/default-interceptor';
+import { ErrorInterceptor } from './services/interceptors/error-interceptor';
 import { TimeBetSelectorComponent } from './pages/play-page/quick-match-page/time-bet-selector/time-bet-selector.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EndPopupComponent } from './pages/chess-board/end-popup/end-popup.component';
@@ -50,6 +50,7 @@ import { ConfirmJoinComponent } from './pages/play-page/tournaments-page/tournam
 import { environment } from 'src/environments/environment';
 import { AnalysisBoardComponent } from './pages/analysis-board/analysis-board.component';
 import { CashierPageComponent } from './pages/cashier-page/cashier-page.component';
+import { DefaultInterceptor } from './services/interceptors/default.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -133,7 +134,16 @@ function initializeKeycloak(keycloak: KeycloakService) {
   ],
   providers: [
     DatePipe,
-    { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: DefaultInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

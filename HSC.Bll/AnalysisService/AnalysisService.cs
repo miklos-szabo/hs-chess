@@ -5,10 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using HSC.Common.Resources;
 using HSC.Dal;
 using HSC.Dal.Entities;
 using HSC.Transfer.Analysis;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -18,6 +20,7 @@ namespace HSC.Bll.AnalysisService
     {
         private readonly HSCContext _dbContext;
         private readonly ILogger<AnalysisService> _logger;
+        private readonly IStringLocalizer<LocalizedStrings> _localizer;
 
         private readonly AutoResetEvent _uciResetEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent _readyResetEvent = new AutoResetEvent(false);
@@ -26,10 +29,11 @@ namespace HSC.Bll.AnalysisService
         public Process EngineProcess { get; set; } = new Process();
         public List<string> ReadLines { get; set; } = new List<string>();
 
-        public AnalysisService(HSCContext dbContext, ILogger<AnalysisService> logger)
+        public AnalysisService(HSCContext dbContext, ILogger<AnalysisService> logger, IStringLocalizer<LocalizedStrings> localizer)
         {
             _dbContext = dbContext;
             _logger = logger;
+            _localizer = localizer;
 
             EngineProcess.StartInfo.FileName = "stockfish_15_x64_avx2.exe";
 
@@ -65,7 +69,8 @@ namespace HSC.Bll.AnalysisService
                 var uciSuccess = _uciResetEvent.WaitOne(5000);
                 if (!uciSuccess)
                 {
-                    throw new Exception("Engine error: uciok wasn't received");
+                    _logger.LogError("Engine error: uciok wasn't received");
+                    throw new Exception(_localizer["EngineError"]);
                 }
                 ReadLines.Clear();
 
@@ -77,7 +82,8 @@ namespace HSC.Bll.AnalysisService
                 var readySuccess = _readyResetEvent.WaitOne(5000);
                 if (!readySuccess)
                 {
-                    throw new Exception("Engine error: readyok wasn't received");
+                    _logger.LogError("Engine error: readyok wasn't received");
+                    throw new Exception(_localizer["EngineError"]);
                 }
                 ReadLines.Clear();
 
@@ -97,7 +103,8 @@ namespace HSC.Bll.AnalysisService
                     var analyseSuccess = _analysingResetEvent.WaitOne(30000);
                     if (!analyseSuccess)
                     {
-                        throw new Exception("Position analysing has timed out!");
+                        _logger.LogError("Position analysing has timed out!");
+                        throw new Exception(_localizer["EngineError"]);
                     }
 
 

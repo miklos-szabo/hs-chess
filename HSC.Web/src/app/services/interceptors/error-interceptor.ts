@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { NotificationService } from '../notification.service';
 
 @Injectable()
-export class DefaultInterceptor implements HttpInterceptor {
+export class ErrorInterceptor implements HttpInterceptor {
   constructor(private notificationService: NotificationService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
