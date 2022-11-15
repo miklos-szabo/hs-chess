@@ -1,6 +1,9 @@
-﻿using HSC.Mobile.Data;
+﻿using System.Net.Http.Headers;
+using HSC.Mobile.Data;
+using HSC.Mobile.Handlers;
 using HSC.Mobile.Pages.ChessPage;
 using HSC.Mobile.Pages.Settings;
+using HSCApi;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 
 namespace HSC.Mobile
@@ -20,9 +23,30 @@ namespace HSC.Mobile
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddLocalization();
             builder.Services.AddLogging();
+
+            builder.Services.AddSingleton<TokenHandler>();
+            builder.Services.AddHttpClient("Name",
+                client =>
+                {
+                    client.BaseAddress = new Uri("http://hschess.azurewebsites.net");
+                }).AddHttpMessageHandler<TokenHandler>();
+
+            builder.Services.AddTransient(
+                sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Name")
+            );
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
+            builder.Services.AddTransient<AccountService>();
+            builder.Services.AddTransient<AnalysisService>();
+            builder.Services.AddTransient<BettingService>();
+            builder.Services.AddTransient<ChatService>();
+            builder.Services.AddTransient<FriendService>();
+            builder.Services.AddTransient<GroupService>();
+            builder.Services.AddTransient<HistoryService>();
+            builder.Services.AddTransient<MatchService>();
+            builder.Services.AddTransient<MatchFinderService>();
+            builder.Services.AddTransient<TournamentService>();
 
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<ISettingsService, SettingsService>();
@@ -32,6 +56,7 @@ namespace HSC.Mobile
             
             builder.Services.AddTransient<ChessPageViewModel>();
             builder.Services.AddTransient<ChessPageView>();
+
 
             return builder.Build();
         }

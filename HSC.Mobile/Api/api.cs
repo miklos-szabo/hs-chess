@@ -20,13 +20,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class AccountService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public AccountService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public AccountService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -36,12 +34,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -63,7 +55,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task CreateUserIfDoesntExistAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Account/CreateUserIfDoesntExist");
+            urlBuilder_.Append("api/Account/CreateUserIfDoesntExist");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -130,7 +122,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<UserMenuDto> GetUserMenuDataAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Account/GetUserMenuData");
+            urlBuilder_.Append("api/Account/GetUserMenuData");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -202,7 +194,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<UserFullDetailsDto> GetFullUserDataAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Account/GetFullUserData");
+            urlBuilder_.Append("api/Account/GetFullUserData");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -211,7 +203,8 @@ namespace HSCApi
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                    request_.Headers.Accept.Add(
+                        System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -220,11 +213,14 @@ namespace HSCApi
 
                     PrepareRequest(client_, request_, url_);
 
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var response_ = await client_.SendAsync(request_,
+                            System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                        .ConfigureAwait(false);
                     var disposeResponse_ = true;
                     try
                     {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        var headers_ =
+                            System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
                         if (response_.Content != null && response_.Content.Headers != null)
                         {
                             foreach (var item_ in response_.Content.Headers)
@@ -236,17 +232,25 @@ namespace HSCApi
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<UserFullDetailsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ =
+                                await ReadObjectResponseAsync<UserFullDetailsDto>(response_, headers_,
+                                    cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new ApiException("Response was null which was not expected.", status_,
+                                    objectResponse_.Text, headers_, null);
                             }
+
                             return objectResponse_.Object;
                         }
                         else
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            var responseData_ = response_.Content == null
+                                ? null
+                                : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException(
+                                "The HTTP status code of the response was not expected (" + status_ + ").", status_,
+                                responseData_, headers_, null);
                         }
                     }
                     finally
@@ -274,7 +278,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task ChangeRealMoneyAsync(bool? toRealMoney, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Account/ChangeRealMoney?");
+            urlBuilder_.Append("api/Account/ChangeRealMoney?");
             if (toRealMoney != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("toRealMoney") + "=").Append(System.Uri.EscapeDataString(ConvertToString(toRealMoney, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -346,7 +350,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<bool> UsesLightThemeAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Account/UsesLightTheme");
+            urlBuilder_.Append("api/Account/UsesLightTheme");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -418,7 +422,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task SetLightThemeAsync(bool? isLightTheme, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Account/SetLightTheme?");
+            urlBuilder_.Append("api/Account/SetLightTheme?");
             if (isLightTheme != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("isLightTheme") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isLightTheme, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -433,6 +437,77 @@ namespace HSCApi
                 {
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task AddMoneyAsync(int? amount)
+        {
+            return AddMoneyAsync(amount, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task AddMoneyAsync(int? amount, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/Account/AddMoney?");
+            if (amount != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("amount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(amount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -583,15 +658,13 @@ namespace HSCApi
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class BettingService 
+    public partial class AnalysisService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public BettingService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public AnalysisService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -603,10 +676,212 @@ namespace HSCApi
             return settings;
         }
 
-        public string BaseUrl
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<AnalysedGameDto> GetAnalysisAsync(GameToBeAnalysedDto dto)
         {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
+            return GetAnalysisAsync(dto, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<AnalysedGameDto> GetAnalysisAsync(GameToBeAnalysedDto dto, System.Threading.CancellationToken cancellationToken)
+        {
+            if (dto == null)
+                throw new System.ArgumentNullException("dto");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/Analysis/GetAnalysis");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(dto, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AnalysedGameDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        protected struct ObjectResponseResult<T>
+        {
+            public ObjectResponseResult(T responseObject, string responseText)
+            {
+                this.Object = responseObject;
+                this.Text = responseText;
+            }
+
+            public T Object { get; }
+
+            public string Text { get; }
+        }
+
+        public bool ReadResponseAsString { get; set; }
+
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
+        {
+            if (response == null || response.Content == null)
+            {
+                return new ObjectResponseResult<T>(default(T), string.Empty);
+            }
+
+            if (ReadResponseAsString)
+            {
+                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    return new ObjectResponseResult<T>(typedBody, responseText);
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, responseText, headers, exception);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                    {
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
+                    throw new ApiException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                }
+            }
+        }
+
+        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (value == null)
+            {
+                return "";
+            }
+
+            if (value is System.Enum)
+            {
+                var name = System.Enum.GetName(value.GetType(), value);
+                if (name != null)
+                {
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    if (field != null)
+                    {
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
+                        if (attribute != null)
+                        {
+                            return attribute.Value != null ? attribute.Value : name;
+                        }
+                    }
+
+                    var converted = System.Convert.ToString(System.Convert.ChangeType(value, System.Enum.GetUnderlyingType(value.GetType()), cultureInfo));
+                    return converted == null ? string.Empty : converted;
+                }
+            }
+            else if (value is bool) 
+            {
+                return System.Convert.ToString((bool)value, cultureInfo).ToLowerInvariant();
+            }
+            else if (value is byte[])
+            {
+                return System.Convert.ToBase64String((byte[]) value);
+            }
+            else if (value.GetType().IsArray)
+            {
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+            }
+
+            var result = System.Convert.ToString(value, cultureInfo);
+            return result == null ? "" : result;
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class BettingService 
+    {
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+
+        public BettingService(System.Net.Http.HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
+        }
+
+        private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            UpdateJsonSerializerSettings(settings);
+            return settings;
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -628,7 +903,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task CheckAsync(System.Guid? matchId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Betting/Check?");
+            urlBuilder_.Append("api/Betting/Check?");
             if (matchId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("matchId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -700,7 +975,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task CallAsnycAsync(System.Guid? matchId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Betting/CallAsnyc?");
+            urlBuilder_.Append("api/Betting/CallAsnyc?");
             if (matchId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("matchId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -772,7 +1047,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task RaiseAsync(System.Guid? matchId, decimal? newAmount, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Betting/Raise?");
+            urlBuilder_.Append("api/Betting/Raise?");
             if (matchId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("matchId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -848,7 +1123,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task FoldAsync(System.Guid? matchId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Betting/Fold?");
+            urlBuilder_.Append("api/Betting/Fold?");
             if (matchId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("matchId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1015,13 +1290,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ChatService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public ChatService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public ChatService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -1031,12 +1304,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -1058,7 +1325,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task SendChatMessageAsync(string toUserName, string message, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Chat/SendChatMessage?");
+            urlBuilder_.Append("api/Chat/SendChatMessage?");
             if (toUserName != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("toUserName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(toUserName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1134,7 +1401,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ChatMessageDto>> GetChatMessagesAsync(string fromUserName, int? pageSize, int? page, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Chat/GetChatMessages?");
+            urlBuilder_.Append("api/Chat/GetChatMessages?");
             if (fromUserName != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("fromUserName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fromUserName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1219,7 +1486,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task MessagesReadAsync(string fromUserName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Chat/MessagesRead?");
+            urlBuilder_.Append("api/Chat/MessagesRead?");
             if (fromUserName != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("fromUserName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fromUserName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1386,13 +1653,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class FriendService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public FriendService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public FriendService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -1402,12 +1667,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -1429,7 +1688,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task SendFriendRequestAsync(string toUserName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Friend/SendFriendRequest?");
+            urlBuilder_.Append("api/Friend/SendFriendRequest?");
             if (toUserName != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("toUserName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(toUserName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1501,7 +1760,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task AcceptFriendRequestAsync(int? requestId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Friend/AcceptFriendRequest?");
+            urlBuilder_.Append("api/Friend/AcceptFriendRequest?");
             if (requestId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("requestId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(requestId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1573,7 +1832,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task DeclineFriendRequestAsync(int? requestId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Friend/DeclineFriendRequest?");
+            urlBuilder_.Append("api/Friend/DeclineFriendRequest?");
             if (requestId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("requestId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(requestId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1645,7 +1904,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FriendDto>> GetFriendsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Friend/GetFriends");
+            urlBuilder_.Append("api/Friend/GetFriends");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1717,7 +1976,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FriendRequestDto>> GetFriendRequestsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Friend/GetFriendRequests");
+            urlBuilder_.Append("api/Friend/GetFriendRequests");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1789,7 +2048,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<bool> IsNewNotificationShownAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Friend/IsNewNotificationShown");
+            urlBuilder_.Append("api/Friend/IsNewNotificationShown");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1956,13 +2215,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class GroupService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public GroupService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public GroupService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -1972,12 +2229,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -1999,7 +2250,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task CreateGroupAsync(string groupName, string description, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Group/CreateGroup?");
+            urlBuilder_.Append("api/Group/CreateGroup?");
             if (groupName != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("groupName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(groupName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2075,7 +2326,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<GroupDto>> GetGroupsAsync(string searchText, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Group/GetGroups?");
+            urlBuilder_.Append("api/Group/GetGroups?");
             if (searchText != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("searchText") + "=").Append(System.Uri.EscapeDataString(ConvertToString(searchText, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2152,7 +2403,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<GroupDetailsDto> GetGroupDetailsAsync(int? groupId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Group/GetGroupDetails?");
+            urlBuilder_.Append("api/Group/GetGroupDetails?");
             if (groupId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("groupId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(groupId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2229,7 +2480,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task JoinGroupAsync(int? groupId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Group/JoinGroup?");
+            urlBuilder_.Append("api/Group/JoinGroup?");
             if (groupId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("groupId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(groupId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2396,13 +2647,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class HistoryService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public HistoryService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public HistoryService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -2412,12 +2661,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -2442,7 +2685,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("searchDto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/History/GetPastGames?");
+            urlBuilder_.Append("api/History/GetPastGames?");
             if (pageSize != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("pageSize") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2621,13 +2864,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class MatchService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public MatchService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public MatchService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -2637,12 +2878,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -2667,7 +2902,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("matchId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Match/GetMatchStartingData/{matchId}");
+            urlBuilder_.Append("api/Match/GetMatchStartingData/{matchId}");
             urlBuilder_.Replace("{matchId}", System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2743,7 +2978,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("matchId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Match/GetMatchData/{matchId}");
+            urlBuilder_.Append("api/Match/GetMatchData/{matchId}");
             urlBuilder_.Replace("{matchId}", System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -2819,7 +3054,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("matchId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Match/MatchOver/{matchId}?");
+            urlBuilder_.Append("api/Match/MatchOver/{matchId}?");
             urlBuilder_.Replace("{matchId}", System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture)));
             if (result != null)
             {
@@ -2899,7 +3134,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("matchId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Match/SaveMatchPgn/{matchId}?");
+            urlBuilder_.Append("api/Match/SaveMatchPgn/{matchId}?");
             urlBuilder_.Replace("{matchId}", System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture)));
             if (pgn != null)
             {
@@ -2975,7 +3210,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("matchId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Match/GetMatchPgn/{matchId}");
+            urlBuilder_.Append("api/Match/GetMatchPgn/{matchId}");
             urlBuilder_.Replace("{matchId}", System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -3143,13 +3378,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class MatchFinderService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public MatchFinderService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public MatchFinderService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -3159,12 +3392,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -3189,7 +3416,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("dto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MatchFinder/SearchForMatch");
+            urlBuilder_.Append("api/MatchFinder/SearchForMatch");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -3258,7 +3485,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CustomGameDto>> GetCustomGamesAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MatchFinder/GetCustomGames");
+            urlBuilder_.Append("api/MatchFinder/GetCustomGames");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -3333,7 +3560,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("dto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MatchFinder/CreateCustomGame");
+            urlBuilder_.Append("api/MatchFinder/CreateCustomGame");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -3402,7 +3629,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task JoinCustomGameAsync(int? challengeId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MatchFinder/JoinCustomGame?");
+            urlBuilder_.Append("api/MatchFinder/JoinCustomGame?");
             if (challengeId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("challengeId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(challengeId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -3569,13 +3796,11 @@ namespace HSCApi
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class TournamentService 
     {
-        private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public TournamentService(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public TournamentService(System.Net.Http.HttpClient httpClient)
         {
-            BaseUrl = baseUrl;
             _httpClient = httpClient;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
@@ -3585,12 +3810,6 @@ namespace HSCApi
             var settings = new Newtonsoft.Json.JsonSerializerSettings();
             UpdateJsonSerializerSettings(settings);
             return settings;
-        }
-
-        public string BaseUrl
-        {
-            get { return _baseUrl; }
-            set { _baseUrl = value; }
         }
 
         protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -3615,7 +3834,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("dto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/CreateTournament");
+            urlBuilder_.Append("api/Tournament/CreateTournament");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -3687,7 +3906,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("dto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/GetTournaments");
+            urlBuilder_.Append("api/Tournament/GetTournaments");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -3765,7 +3984,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/GetTournamentDetails/{id}");
+            urlBuilder_.Append("api/Tournament/GetTournamentDetails/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -3841,7 +4060,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/JoinTournament/{id}");
+            urlBuilder_.Append("api/Tournament/JoinTournament/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -3912,7 +4131,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/GetMessages/{id}");
+            urlBuilder_.Append("api/Tournament/GetMessages/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -3988,7 +4207,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/SendMessage/{id}?");
+            urlBuilder_.Append("api/Tournament/SendMessage/{id}?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (message != null)
             {
@@ -4064,7 +4283,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/SearchForNextMatch/{id}");
+            urlBuilder_.Append("api/Tournament/SearchForNextMatch/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -4135,7 +4354,7 @@ namespace HSCApi
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tournament/GetStandings/{id}");
+            urlBuilder_.Append("api/Tournament/GetStandings/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -4349,6 +4568,57 @@ namespace HSCApi
 
         [Newtonsoft.Json.JsonProperty("ratingClassical", Required = Newtonsoft.Json.Required.Always)]
         public int RatingClassical { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AnalysedGameDto
+    {
+        [Newtonsoft.Json.JsonProperty("bestMoves", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<BestMovesDto> BestMoves { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class BestMovesDto
+    {
+        [Newtonsoft.Json.JsonProperty("moveNumber", Required = Newtonsoft.Json.Required.Always)]
+        public int MoveNumber { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("firstBest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public EngineLineDto FirstBest { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("secondBest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public EngineLineDto SecondBest { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("thirdBest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public EngineLineDto ThirdBest { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class EngineLineDto
+    {
+        [Newtonsoft.Json.JsonProperty("eval", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Eval { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("move", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Move { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("continuation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Continuation { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class GameToBeAnalysedDto
+    {
+        [Newtonsoft.Json.JsonProperty("matchId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid MatchId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("fens", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Fens { get; set; }
 
     }
 

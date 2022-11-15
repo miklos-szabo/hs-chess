@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  serverUrl: 'https://hschess.azurewebsites.net',
+  serverUrl: 'http://hschess.azurewebsites.net',
   keyCloakClientName: 'hsc-prod'
 };

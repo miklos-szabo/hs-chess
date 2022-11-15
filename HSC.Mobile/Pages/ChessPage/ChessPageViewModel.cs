@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HSCApi;
 
 namespace HSC.Mobile.Pages.ChessPage
 {
@@ -14,11 +15,11 @@ namespace HSC.Mobile.Pages.ChessPage
     {
         private int _moveCount = 0;
         private string _lastMove;
-        private readonly HttpClient _httpClient;
+        private readonly AccountService _accountService;
 
-        public ChessPageViewModel(HttpClient httpClient)
+        public ChessPageViewModel(AccountService accountService)
         {
-            _httpClient = httpClient;
+            _accountService = accountService;
             MessagingCenter.Subscribe<ChessBoardPage.ChessBoardPage, MovePlayedInfo>(this, MessageTypes.MoveMade, (_, arg) => MoveMade(arg));
         }
 
@@ -27,9 +28,10 @@ namespace HSC.Mobile.Pages.ChessPage
             MoveCount++;
             LastMove = e.San;
 
+            var x = await _accountService.GetFullUserDataAsync();
 
-            var x = new KeycloakClient("https://hsckeycloak13.fagwgranamc5c8bp.westeurope.azurecontainer.io:8443", "user1", "user1");
-            var ahh = x.CreateInitialAccessTokenAsync("chess", new ClientInitialAccessCreatePresentation());
+            //var x = new KeycloakClient("https://hsckeycloak13.fagwgranamc5c8bp.westeurope.azurecontainer.io:8443", "user1", "user1");
+            //var ahh = x.CreateInitialAccessTokenAsync("chess", new ClientInitialAccessCreatePresentation());
             MoveCount++;
         }
 

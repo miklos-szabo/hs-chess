@@ -55,7 +55,7 @@ namespace HSC.Bll.AnalysisService
                 return JsonConvert.DeserializeObject<AnalysedGameDto>(existingAnalysis.AnalysedGame);
             }
 
-            _logger.LogInformation("Starting engine to analyse {id}", dto.MatchId);
+            _logger.LogInformation("Starting engine to analyze {id}", dto.MatchId);
 
             EngineProcess.Start();
             EngineProcess.BeginOutputReadLine();
@@ -64,7 +64,6 @@ namespace HSC.Bll.AnalysisService
             {
                 // uci -> uciok
                 await EngineProcess.StandardInput.WriteLineAsync("uci");
-                await Task.Delay(2000);
 
                 var uciSuccess = _uciResetEvent.WaitOne(5000);
                 if (!uciSuccess)
@@ -109,20 +108,17 @@ namespace HSC.Bll.AnalysisService
 
 
                     // Read results, take the last 3 which are the proper ones
-                    var depth24 = ReadLines.Where(l => l.StartsWith("info depth 20")).ToList();
+                    var depth24 = ReadLines.Where(l => l.StartsWith("info depth 20 seldepth")).ToList();
                     var moveLines = depth24.Skip(Math.Max(0, depth24.Count() - 3)).ToList();
 
-                    if (dto.Fens[i].Split(" ")[1] == "b")
-                    {
-                        moveLines.Reverse();
-                    }
+                    var isBlack = dto.Fens[i].Split(" ")[1] == "b";
 
                     analysedGame.BestMoves.Add(new BestMovesDto
                     {
                         MoveNumber = i,
-                        FirstBest = GetEngineLineDtoFromLine(moveLines[0]),
-                        SecondBest = GetEngineLineDtoFromLine(moveLines[1]),
-                        ThirdBest = GetEngineLineDtoFromLine(moveLines[2])
+                        FirstBest = GetEngineLineDtoFromLine(moveLines[0], isBlack),
+                        SecondBest = GetEngineLineDtoFromLine(moveLines[1], isBlack),
+                        ThirdBest = GetEngineLineDtoFromLine(moveLines[2], isBlack)
                     });
 
                     ReadLines.Clear();
@@ -152,14 +148,16 @@ namespace HSC.Bll.AnalysisService
             }
         }
 
-        private EngineLineDto GetEngineLineDtoFromLine(string line)
+        private EngineLineDto GetEngineLineDtoFromLine(string line, bool isBlack)
         {
             var lineParts = line.Split(" ");
             var dto = new EngineLineDto();
 
             if (lineParts[8] == "cp")
             {
-                dto.Eval = (double.Parse(lineParts[9]) / 100).ToString("F2");
+                var advantage = double.Parse(lineParts[9]) / 100;
+                var sidedAdvantage = isBlack ? advantage * -1 : advantage;
+                dto.Eval = sidedAdvantage.ToString("F2");
             }
             else
             {

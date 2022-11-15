@@ -126,7 +126,7 @@ namespace HSC.Bll.TournamentService
             var user = await _dbContext.Users.SingleAsync(u => u.UserName == _requestContext.UserName);
             user.Balance -= tournament.BuyIn;
 
-            if (user.Balance < 0)
+            if (user.Balance < tournament.BuyIn)
             {
                 throw new BadRequestException(_localizer["NotEnoughMoney"]);
             }
