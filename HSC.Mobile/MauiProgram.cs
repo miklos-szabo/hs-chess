@@ -3,6 +3,7 @@ using HSC.Mobile.Data;
 using HSC.Mobile.Handlers;
 using HSC.Mobile.Pages.ChessPage;
 using HSC.Mobile.Pages.Settings;
+using HSC.Mobile.Services;
 using HSCApi;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 
@@ -23,6 +24,8 @@ namespace HSC.Mobile
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddLocalization();
             builder.Services.AddLogging();
+
+            builder.Services.AddSingleton<SignalrService>();
 
             builder.Services.AddSingleton<TokenHandler>();
             builder.Services.AddHttpClient("Name",
