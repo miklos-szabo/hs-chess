@@ -132,6 +132,7 @@
   "Analysis.BestMoves": "Legjobb lépések:",
   "Analysis.RequestAnalysis": "Analízis kérése",
   "Analysis.Working": "Folyamatban... Ez tarthat néhány percig is",
+  "Analysis.BrowserButton": "Böngészős analízis bekapcsolása",
   "Cashier.CurrentBalance": "Egyenleg:",
   "Cashier.Add100": "100$ hozzáadása",
   "Cashier.Title": "Pénztár"

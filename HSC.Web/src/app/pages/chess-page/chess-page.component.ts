@@ -11,6 +11,7 @@ import {
   BestMovesDto,
   ChatMessageDto,
   ChatService,
+  EngineLineDto,
   GameToBeAnalysedDto,
   MatchFullDataDto,
   MatchService,
@@ -20,6 +21,7 @@ import {
   TournamentService
 } from 'src/app/api/app.generated';
 import { CountdownTimerComponent } from 'src/app/components/countdown-timer/countdown-timer.component';
+import { EngineService } from 'src/app/services/engine.service';
 import { EventService } from 'src/app/services/event.service';
 import { MoveDto, TournamentOverDto } from 'src/app/services/signalr/signalr-dtos';
 import { SignalrService } from 'src/app/services/signalr/signalr.service';
@@ -51,6 +53,10 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   analysis: AnalysedGameDto | undefined = undefined;
   currentMoveAnalysis: BestMovesDto | undefined = undefined;
   isCurrentlyAnalysing = false;
+  serverAnalysisChosen = false;
+  browserAnalysisChosen = false;
+  browserAnalysis: BestMovesDto | undefined = undefined;
+  currentDepth = 0;
 
   @ViewChild('ownCd', { static: false })
   ownCountDown!: CountdownTimerComponent;
@@ -85,7 +91,8 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     private tournamentService: TournamentService,
     private chatService: ChatService,
-    private analysisService: AnalysisService
+    private analysisService: AnalysisService,
+    private engineService: EngineService
   ) {
     this.matchId = this.route.snapshot.params.matchId;
     this.matchData$ = this.matchService.getMatchData(this.matchId);
@@ -135,6 +142,14 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (this.tournamentId) {
         this.getStandings();
       }
+    });
+
+    this.engineService.startEngine();
+    this.engineService.EngineReadyevent.subscribe(() => {
+      this.engineReady();
+    });
+    this.engineService.messageRecievedEvent.subscribe((m) => {
+      this.browserStockfishMessageReceived(m);
     });
   }
 
@@ -288,6 +303,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.currentlySelectedMove = -1;
     this.setFenSubject.next('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR');
     this.setAnalysisPosition(this.currentlySelectedMove);
+    this.positionChangedAnalyzeBrowser();
   }
 
   moveBack() {
@@ -299,6 +315,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.setFenSubject.next(this.history[this.currentlySelectedMove].fen);
     }
     this.setAnalysisPosition(this.currentlySelectedMove);
+    this.positionChangedAnalyzeBrowser();
   }
 
   moveForward() {
@@ -306,6 +323,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.currentlySelectedMove++;
     this.setFenSubject.next(this.history[this.currentlySelectedMove].fen);
     this.setAnalysisPosition(this.currentlySelectedMove);
+    this.positionChangedAnalyzeBrowser();
   }
 
   moveToLast() {
@@ -313,6 +331,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.currentlySelectedMove = this.history.length - 1;
     this.setFenSubject.next(this.history[this.history.length - 1].fen);
     this.setAnalysisPosition(this.currentlySelectedMove);
+    this.positionChangedAnalyzeBrowser();
   }
 
   moveToSpecificPosition(moveIndex: number) {
@@ -320,6 +339,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.currentlySelectedMove = moveIndex;
     this.setFenSubject.next(this.history[moveIndex].fen);
     this.setAnalysisPosition(this.currentlySelectedMove);
+    this.positionChangedAnalyzeBrowser();
   }
 
   flipBoard() {
@@ -375,6 +395,7 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   getAnalysis() {
+    this.serverAnalysisChosen = true;
     this.isCurrentlyAnalysing = true;
     var dto = new GameToBeAnalysedDto();
     dto.matchId = this.matchId;
@@ -441,5 +462,66 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
 
     return analysis;
+  }
+
+  browserAnalysisClicked() {
+    this.browserAnalysisChosen = true;
+    this.engineService.sendMessage('uci');
+  }
+
+  browserStockfishMessageReceived(m: string) {
+    console.log(m);
+    if (m.startsWith('info depth') && !m.includes('lowerbound') && !m.includes('upperbound')) {
+      let lineParts = m.split(' ');
+      if (+lineParts[2] < 14) return;
+      console.log('working!');
+      let isBlack = this.history[this.currentlySelectedMove].fen.split(' ')[1] == 'b';
+      this.browserAnalysis = new BestMovesDto();
+      let bestMove = new EngineLineDto();
+      if (lineParts[8] == 'cp') {
+        let advantage: number = +lineParts[9] / 100;
+        var sidedAdvantage = isBlack ? advantage * -1 : advantage;
+        bestMove.eval = sidedAdvantage.toFixed(2);
+      } else {
+        bestMove.eval = `M${Math.abs(+lineParts[9])}`;
+      }
+
+      bestMove.move = lineParts[17];
+      bestMove.continuation = lineParts.slice(18, -2).join(' ');
+
+      // Convert to SAN
+      let analChess: ChessInstance = new this.ChessReq();
+      analChess.load(this.history[this.currentlySelectedMove].fen);
+
+      // Make the moves on the board
+      analChess.move(bestMove.move, { sloppy: true });
+      let continuationMoves = bestMove.continuation!.split(' ');
+      continuationMoves.forEach((m) => {
+        analChess.move(m, { sloppy: true });
+      });
+
+      // Read the history with the SAN values
+      let history = analChess.history({ verbose: true });
+      let sanHistory = history.map((h) => h.san);
+      bestMove.move = sanHistory[0];
+      bestMove.continuation = sanHistory.slice(1).join(' ');
+
+      this.currentDepth = +lineParts[2];
+      this.browserAnalysis.firstBest = bestMove;
+    }
+  }
+
+  engineReady() {
+    this.engineService.sendMessage('position fen ' + this.history[this.currentlySelectedMove].fen);
+    this.engineService.sendMessage('go depth 24');
+  }
+
+  positionChangedAnalyzeBrowser() {
+    if (this.browserAnalysisChosen) {
+      this.engineService.sendMessage('stop');
+      this.engineService.sendMessage('ucinewgame');
+      this.engineService.sendMessage('position fen ' + this.history[this.currentlySelectedMove].fen);
+      this.engineService.sendMessage('go depth 24');
+    }
   }
 }

@@ -2,6 +2,7 @@
 using HSC.Mobile.Data;
 using HSC.Mobile.Handlers;
 using HSC.Mobile.Pages.ChessPage;
+using HSC.Mobile.Pages.QuickMatchPage;
 using HSC.Mobile.Pages.Settings;
 using HSC.Mobile.Services;
 using HSCApi;
@@ -59,6 +60,9 @@ namespace HSC.Mobile
             
             builder.Services.AddTransient<ChessPageViewModel>();
             builder.Services.AddTransient<ChessPageView>();
+
+            builder.Services.AddTransient<QuickMatchPage>();
+            builder.Services.AddTransient<QuickMatchViewModel>();
 
 
             return builder.Build();

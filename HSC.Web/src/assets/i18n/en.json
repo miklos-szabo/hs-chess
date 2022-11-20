@@ -136,6 +136,7 @@
   "Analysis.BestMoves": "Best Moves:",
   "Analysis.RequestAnalysis": "Request analysis",
   "Analysis.Working": "Working... This can take a few minutes",
+  "Analysis.BrowserButton": "Enable browser analysis",
   "Cashier.CurrentBalance": "Current balance:",
   "Cashier.Add100": "Add 100$",
   "Cashier.Title": "Cashier"

@@ -62,6 +62,9 @@
       <MauiXaml Update="Pages\ChessPage\ChessPageView.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Pages\QuickMatchPage\QuickMatchPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Resources\Styles\ComponentStyles.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
@@ -75,6 +78,9 @@
 
     <ItemGroup>
       <Folder Include="NpmJs\" />
+      <Folder Include="Pages\CustomGamesPage\" />
+      <Folder Include="Pages\FlyoutPage\" />
+      <Folder Include="Pages\TournamentsPage\" />
     </ItemGroup>
 
     <ItemGroup>
