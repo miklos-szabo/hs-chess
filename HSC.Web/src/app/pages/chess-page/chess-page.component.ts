@@ -142,14 +142,16 @@ export class ChessPageComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (this.tournamentId) {
         this.getStandings();
       }
-    });
 
-    this.engineService.startEngine();
-    this.engineService.EngineReadyevent.subscribe(() => {
-      this.engineReady();
-    });
-    this.engineService.messageRecievedEvent.subscribe((m) => {
-      this.browserStockfishMessageReceived(m);
+      if (data.isHistoryMode) {
+        this.engineService.startEngine();
+        this.engineService.EngineReadyevent.subscribe(() => {
+          this.engineReady();
+        });
+        this.engineService.messageRecievedEvent.subscribe((m) => {
+          this.browserStockfishMessageReceived(m);
+        });
+      }
     });
   }
 
