@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.FlyoutPage.HscFlyoutPage"
              xmlns:local="clr-namespace:HSC.Mobile.Pages.FlyoutPage"
-             Title="HscFlyoutPage">
+             Title="HscFlyoutPage"
+             BackgroundColor="{DynamicResource BackgroundColor}">
     <VerticalStackLayout>
         <local:HscFlyoutNavigation x:Name="navigation" x:FieldModifier="public"></local:HscFlyoutNavigation>
     </VerticalStackLayout>
