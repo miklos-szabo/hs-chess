@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CollectionView x:Name="collectionView"
+                x:FieldModifier="public"
+                SelectionMode="Single"
+                xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="HSC.Mobile.Pages.FlyoutPage.HscFlyoutNavigation"
+                xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+                xmlns:flyoutPage="clr-namespace:HSC.Mobile.Pages.FlyoutPage"
+                xmlns:local="clr-namespace:HSC.Mobile"
+                xmlns:quickMatchPage="clr-namespace:HSC.Mobile.Pages.QuickMatchPage"
+                xmlns:customGamesPage="clr-namespace:HSC.Mobile.Pages.CustomGamesPage"
+                xmlns:tournamentsPage="clr-namespace:HSC.Mobile.Pages.TournamentsPage"
+                xmlns:historyPage="clr-namespace:HSC.Mobile.Pages.HistoryPage"
+                xmlns:friendsPage="clr-namespace:HSC.Mobile.Pages.FriendsPage"
+                xmlns:groupsPage="clr-namespace:HSC.Mobile.Pages.GroupsPage"
+                xmlns:cashierPage="clr-namespace:HSC.Mobile.Pages.CashierPage"
+                xmlns:settings="clr-namespace:HSC.Mobile.Pages.Settings">
+    <CollectionView.ItemsSource>
+        <x:Array Type="{x:Type flyoutPage:FlyoutPageItem}">
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.QuickMatch}" TargetType="{x:Type quickMatchPage:QuickMatchPage}" />
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.BrowseCustom}" TargetType="{x:Type customGamesPage:CustomGamesPage}" />
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.Tournaments}" TargetType="{x:Type tournamentsPage:TournamentsPage}" />
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.History}" TargetType="{x:Type historyPage:HistoryPage}" />
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.Friends}" TargetType="{x:Type friendsPage:FriendsPage}" />
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.Groups}" TargetType="{x:Type groupsPage:GroupsPage}" />
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.Cashier}" TargetType="{x:Type cashierPage:CashierPage}" />
+            <flyoutPage:FlyoutPageItem Title="{localize:Localize Key=Menu.Settings}" TargetType="{x:Type settings:SettingsPage}" />
+        </x:Array>
+    </CollectionView.ItemsSource>
+    <CollectionView.ItemTemplate>
+        <DataTemplate>
+            <Label Margin="20,0"
+                       Text="{Binding Title}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+        </DataTemplate>
+    </CollectionView.ItemTemplate>
+</CollectionView>

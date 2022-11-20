@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSC.Mobile.Pages.QuickMatchPage
+namespace HSC.Mobile.Pages.TournamentsPage
 {
-    public class QuickMatchViewModel: BaseViewModel
+    public class TournamentsViewModel: BaseViewModel
     {
     }
 }

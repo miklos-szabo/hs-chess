@@ -56,13 +56,43 @@
       <Compile Update="Pages\ChessPage\ChessPageView.xaml.cs">
         <DependentUpon>ChessPageView.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Pages\FlyoutPage\HscFlyoutNavigation.xaml.cs">
+        <DependentUpon>HscFlyoutNavigation.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
+      <MauiXaml Update="Pages\CashierPage\CashierPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\ChessPage\ChessPageView.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Pages\CustomGamesPage\CustomGamesPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\FlyoutPage\HscFlyoutNavigation.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\FlyoutPage\HscFlyoutPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\FriendsPage\FriendsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\GroupsPage\GroupsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\HistoryPage\HistoryPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\QuickMatchPage\QuickMatchPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\Settings\SettingsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\TournamentsPage\TournamentsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
       <MauiXaml Update="Resources\Styles\ComponentStyles.xaml">
@@ -78,9 +108,6 @@
 
     <ItemGroup>
       <Folder Include="NpmJs\" />
-      <Folder Include="Pages\CustomGamesPage\" />
-      <Folder Include="Pages\FlyoutPage\" />
-      <Folder Include="Pages\TournamentsPage\" />
     </ItemGroup>
 
     <ItemGroup>

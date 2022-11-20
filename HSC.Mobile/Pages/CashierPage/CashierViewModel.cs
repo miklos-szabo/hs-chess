@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HSC.Mobile.Pages.QuickMatchPage
+namespace HSC.Mobile.Pages.CashierPage
 {
-    public class QuickMatchViewModel: BaseViewModel
+    public class CashierViewModel: BaseViewModel
     {
     }
 }

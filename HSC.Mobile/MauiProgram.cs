@@ -1,9 +1,16 @@
 ﻿using System.Net.Http.Headers;
 using HSC.Mobile.Data;
 using HSC.Mobile.Handlers;
+using HSC.Mobile.Pages.CashierPage;
 using HSC.Mobile.Pages.ChessPage;
+using HSC.Mobile.Pages.CustomGamesPage;
+using HSC.Mobile.Pages.FlyoutPage;
+using HSC.Mobile.Pages.FriendsPage;
+using HSC.Mobile.Pages.GroupsPage;
+using HSC.Mobile.Pages.HistoryPage;
 using HSC.Mobile.Pages.QuickMatchPage;
 using HSC.Mobile.Pages.Settings;
+using HSC.Mobile.Pages.TournamentsPage;
 using HSC.Mobile.Services;
 using HSCApi;
 using Microsoft.AspNetCore.Components.WebView.Maui;
@@ -55,7 +62,6 @@ namespace HSC.Mobile
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<ISettingsService, SettingsService>();
 
-            builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<MainPage>();   
             
             builder.Services.AddTransient<ChessPageViewModel>();
@@ -64,6 +70,30 @@ namespace HSC.Mobile
             builder.Services.AddTransient<QuickMatchPage>();
             builder.Services.AddTransient<QuickMatchViewModel>();
 
+            builder.Services.AddTransient<CashierPage>();
+            builder.Services.AddTransient<CashierViewModel>();
+
+            builder.Services.AddTransient<CustomGamesPage>();
+            builder.Services.AddTransient<CustomGamesViewModel>();
+
+            builder.Services.AddTransient<HscFlyoutNavigation>();
+            builder.Services.AddTransient<HscFlyoutPage>();
+            builder.Services.AddTransient<HscFlyoutPageViewModel>();
+
+            builder.Services.AddTransient<FriendsPage>();
+            builder.Services.AddTransient<FriendsViewModel>();
+
+            builder.Services.AddTransient<GroupsPage>();
+            builder.Services.AddTransient<GroupsViewModel>();
+
+            builder.Services.AddTransient<HistoryPage>();
+            builder.Services.AddTransient<HistoryViewModel>();
+
+            builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddTransient<SettingsViewModel>();
+
+            builder.Services.AddTransient<TournamentsPage>();
+            builder.Services.AddTransient<TournamentsViewModel>();
 
             return builder.Build();
         }

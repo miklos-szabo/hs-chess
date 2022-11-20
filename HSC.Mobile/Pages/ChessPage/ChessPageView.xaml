@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:HSC.Mobile"
              x:Class="HSC.Mobile.ChessPageView"
-             x:DataType="local:MainViewModel"
+             x:DataType="chessPage:ChessPageViewModel"
              xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:chessPage="clr-namespace:HSC.Mobile.Pages.ChessPage"
              BackgroundColor="{DynamicResource BackgroundColor}">
     <FlexLayout Direction="Column">
         <Label Text="hi" Padding="10"></Label>

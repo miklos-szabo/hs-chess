@@ -2,62 +2,90 @@
 using System.Runtime.CompilerServices;
 using HSC.Mobile.Enums;
 using HSC.Mobile.Pages;
+using HSC.Mobile.Pages.CashierPage;
 using HSC.Mobile.Pages.ChessPage.ChessBoardPage;
+using HSC.Mobile.Pages.CustomGamesPage;
+using HSC.Mobile.Pages.FlyoutPage;
+using HSC.Mobile.Pages.FriendsPage;
+using HSC.Mobile.Pages.GroupsPage;
+using HSC.Mobile.Pages.HistoryPage;
+using HSC.Mobile.Pages.QuickMatchPage;
+using HSC.Mobile.Pages.Settings;
+using HSC.Mobile.Pages.TournamentsPage;
+using Kotlin.Reflect;
 using PonzianiComponents;
+using static Android.Content.ClipData;
 
 namespace HSC.Mobile
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage : FlyoutPage
     {
-        public MainPage(MainViewModel viewModel)
+        private readonly HscFlyoutPage _flyoutPage;
+        private readonly QuickMatchPage _quickMatchPage;
+        private readonly CashierPage _cashierPage;
+        private readonly CustomGamesPage _customGamesPage;
+        private readonly FriendsPage _friendsPage;
+        private readonly GroupsPage _groupsPage;
+        private readonly HistoryPage _historyPage;
+        private readonly SettingsPage _settingsPage;
+        private readonly TournamentsPage _tournamentsPage;
+
+
+        public MainPage(HscFlyoutPage flyoutPage, QuickMatchPage quickMatchPage, CashierPage cashierPage, CustomGamesPage customGamesPage, FriendsPage friendsPage, GroupsPage groupsPage, HistoryPage historyPage, SettingsPage settingsPage, TournamentsPage tournamentsPage)
         {
-            BindingContext = viewModel;
+            _flyoutPage = flyoutPage;
+            _quickMatchPage = quickMatchPage;
+            _cashierPage = cashierPage;
+            _customGamesPage = customGamesPage;
+            _friendsPage = friendsPage;
+            _groupsPage = groupsPage;
+            _historyPage = historyPage;
+            _settingsPage = settingsPage;
+            _tournamentsPage = tournamentsPage;
+
+            Flyout = _flyoutPage;
+            Detail = new NavigationPage(_quickMatchPage);
             InitializeComponent();
+
+            _flyoutPage.navigation.SelectionChanged += OnSelectionChanged;
+        }
+
+        void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = e.CurrentSelection.FirstOrDefault() as FlyoutPageItem;
+            
+            if (item != null)
+            {
+                switch (item.TargetType)
+                {
+                    case { } cp when cp == typeof(CashierPage):
+                        Detail = new NavigationPage(_cashierPage);
+                        break;
+                    case { } cp when cp == typeof(CustomGamesPage):
+                        Detail = new NavigationPage(_customGamesPage);
+                        break;
+                    case { } cp when cp == typeof(FriendsPage):
+                        Detail = new NavigationPage(_friendsPage);
+                        break;
+                    case { } cp when cp == typeof(GroupsPage):
+                        Detail = new NavigationPage(_groupsPage);
+                        break;
+                    case { } cp when cp == typeof(HistoryPage):
+                        Detail = new NavigationPage(_historyPage);
+                        break;
+                    case { } cp when cp == typeof(QuickMatchPage):
+                        Detail = new NavigationPage(_quickMatchPage);
+                        break;
+                    case { } cp when cp == typeof(SettingsPage):
+                        Detail = new NavigationPage(_settingsPage);
+                        break;
+                    case { } cp when cp == typeof(TournamentsPage):
+                        Detail = new NavigationPage(_tournamentsPage);
+                        break;
+                }
+
+                IsPresented = false;
+            }
         }
     }
-
-    public class MainViewModel: INotifyPropertyChanged
-    {
-        private int _moveCount = 0;
-        private string _lastMove;
-
-        public MainViewModel()
-        {
-            MessagingCenter.Subscribe<ChessBoardPage, MovePlayedInfo>(this, MessageTypes.MoveMade, (_, arg) => MoveMade(arg));
-        }
-
-        private void MoveMade(MovePlayedInfo e)
-        {
-            MoveCount++;
-            LastMove = e.San;
-        }
-
-        public int MoveCount
-        {
-            get => _moveCount;
-            set => SetField(ref _moveCount, value);
-        }
-
-        public string LastMove
-        {
-            get => _lastMove;
-            set => SetField(ref _lastMove, value);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-    }
-
 }
