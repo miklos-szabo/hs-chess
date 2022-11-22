@@ -144,4 +144,16 @@
   <data name="Menu.Tournaments" xml:space="preserve">
     <value>Tournaments</value>
   </data>
+  <data name="QuickMatch.Bet" xml:space="preserve">
+    <value>Bet</value>
+  </data>
+  <data name="QuickMatch.CreateCustom" xml:space="preserve">
+    <value>Create custom</value>
+  </data>
+  <data name="QuickMatch.SearchButton" xml:space="preserve">
+    <value>Find game</value>
+  </data>
+  <data name="QuickMatch.TimeControl" xml:space="preserve">
+    <value>Time control</value>
+  </data>
 </root>

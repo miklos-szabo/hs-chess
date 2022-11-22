@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.FriendsPage.FriendsPage"
              Title="FriendsPage"
-             BackgroundColor="{DynamicResource BackgroundColor}">
+             BackgroundColor="{DynamicResource BackgroundColor}"
+             xmlns:friendsPage="clr-namespace:HSC.Mobile.Pages.FriendsPage"
+             x:DataType="friendsPage:FriendsViewModel"
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"

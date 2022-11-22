@@ -144,4 +144,16 @@
   <data name="Menu.Tournaments" xml:space="preserve">
     <value>Bajnokságok</value>
   </data>
+  <data name="QuickMatch.Bet" xml:space="preserve">
+    <value>Tét</value>
+  </data>
+  <data name="QuickMatch.CreateCustom" xml:space="preserve">
+    <value>Egyéni játék létrehozása</value>
+  </data>
+  <data name="QuickMatch.SearchButton" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
+  <data name="QuickMatch.TimeControl" xml:space="preserve">
+    <value>Idő</value>
+  </data>
 </root>

@@ -4,7 +4,10 @@
              x:Class="HSC.Mobile.Pages.FlyoutPage.HscFlyoutPage"
              xmlns:local="clr-namespace:HSC.Mobile.Pages.FlyoutPage"
              Title="HscFlyoutPage"
-             BackgroundColor="{DynamicResource BackgroundColor}">
+             BackgroundColor="{DynamicResource BackgroundColor}"
+             xmlns:flyoutPage="clr-namespace:HSC.Mobile.Pages.FlyoutPage"
+             x:DataType="flyoutPage:HscFlyoutPageViewModel"
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
     <VerticalStackLayout>
         <local:HscFlyoutNavigation x:Name="navigation" x:FieldModifier="public"></local:HscFlyoutNavigation>
     </VerticalStackLayout>
