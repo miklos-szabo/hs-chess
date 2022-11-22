@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HSC.Mobile.Pages.AuthenticationPage.AuthenticationPage"
+             Title="AuthenticationPage"
+             BackgroundColor="{DynamicResource BackgroundColor}" 
+             xmlns:authenticationPage="clr-namespace:HSC.Mobile.Pages.AuthenticationPage"
+             x:DataType="authenticationPage:AuthenticationViewModel"
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
+    <VerticalStackLayout VerticalOptions="Fill">
+        <VerticalStackLayout Padding="0, 50, 0, 0" Spacing="20" VerticalOptions="Start">
+            <Label Text="{localize:Localize Key=Login.Welcome}" HorizontalTextAlignment="Center" FontSize="36"></Label>
+            <Label Text="{localize:Localize Key=Login.Login}" HorizontalTextAlignment="Center" FontSize="24"></Label>
+        </VerticalStackLayout>
+        <VerticalStackLayout Padding="0, 0, 0, 50" VerticalOptions="End" Spacing="10" >
+            <Entry Placeholder="{localize:Localize Key=Login.UserName}" Text="{Binding UserName}" HorizontalTextAlignment="Center" WidthRequest="200"></Entry>
+            <Entry Placeholder="{localize:Localize Key=Login.Password}" Text="{Binding Password}" IsPassword="True" HorizontalTextAlignment="Center" WidthRequest="200"></Entry>
+        </VerticalStackLayout>
+        <Button Text="{localize:Localize Key=Login.Button}" Command="{Binding LoginCommand}" WidthRequest="150"></Button>
+    </VerticalStackLayout>
+</ContentPage>

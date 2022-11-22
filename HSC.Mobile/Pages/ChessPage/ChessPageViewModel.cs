@@ -1,6 +1,4 @@
 ﻿using HSC.Mobile.Enums;
-using Keycloak.Net.Models.ClientInitialAccess;
-using Keycloak.Net;
 using PonzianiComponents;
 using System;
 using System.Collections.Generic;
@@ -37,9 +35,6 @@ namespace HSC.Mobile.Pages.ChessPage
             LastMove = e.San;
 
             var x = await _accountService.GetFullUserDataAsync();
-
-            //var x = new KeycloakClient("https://hsckeycloak13.fagwgranamc5c8bp.westeurope.azurecontainer.io:8443", "user1", "user1");
-            //var ahh = x.CreateInitialAccessTokenAsync("chess", new ClientInitialAccessCreatePresentation());
             MoveCount++;
         }
 

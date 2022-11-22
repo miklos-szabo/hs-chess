@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Login.Button" xml:space="preserve">
+    <value>Bejelentkezés</value>
+  </data>
+  <data name="Login.InvalidPopupDescription" xml:space="preserve">
+    <value>Hibás felhasználónév vagy jelszó!</value>
+  </data>
+  <data name="Login.InvalidPopupTitle" xml:space="preserve">
+    <value>Hiba</value>
+  </data>
+  <data name="Login.Login" xml:space="preserve">
+    <value>Jelentkezzen be!</value>
+  </data>
+  <data name="Login.Password" xml:space="preserve">
+    <value>Jelszó</value>
+  </data>
+  <data name="Login.UserName" xml:space="preserve">
+    <value>Felhasználónév</value>
+  </data>
+  <data name="Login.Welcome" xml:space="preserve">
+    <value>Üdvözöljük!</value>
+  </data>
   <data name="Menu.BrowseCustom" xml:space="preserve">
     <value>Egyéni játékok</value>
   </data>

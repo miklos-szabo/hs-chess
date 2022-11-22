@@ -12,6 +12,6 @@
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Button Command="{Binding SearchCommand}" Text=""></Button>
+        <Button Command="{Binding SearchCommand}" Text="{localize:Localize Key=QuickMatch.SearchButton}" HeightRequest="80" WidthRequest="200"></Button>
     </VerticalStackLayout>
 </ContentPage>

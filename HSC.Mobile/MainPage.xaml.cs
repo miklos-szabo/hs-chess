@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using HSC.Mobile.Enums;
-using HSC.Mobile.Pages;
-using HSC.Mobile.Pages.CashierPage;
-using HSC.Mobile.Pages.ChessPage.ChessBoardPage;
+﻿using HSC.Mobile.Pages.CashierPage;
 using HSC.Mobile.Pages.CustomGamesPage;
 using HSC.Mobile.Pages.FlyoutPage;
 using HSC.Mobile.Pages.FriendsPage;
@@ -12,9 +7,6 @@ using HSC.Mobile.Pages.HistoryPage;
 using HSC.Mobile.Pages.QuickMatchPage;
 using HSC.Mobile.Pages.Settings;
 using HSC.Mobile.Pages.TournamentsPage;
-using Kotlin.Reflect;
-using PonzianiComponents;
-using static Android.Content.ClipData;
 
 namespace HSC.Mobile
 {

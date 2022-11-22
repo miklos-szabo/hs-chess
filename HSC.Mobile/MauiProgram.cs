@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using HSC.Mobile.Data;
 using HSC.Mobile.Handlers;
+using HSC.Mobile.Pages.AuthenticationPage;
 using HSC.Mobile.Pages.CashierPage;
 using HSC.Mobile.Pages.ChessPage;
 using HSC.Mobile.Pages.CustomGamesPage;
@@ -48,6 +49,10 @@ namespace HSC.Mobile
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
+
+            builder.Services.AddSingleton<AuthService>();
+            builder.Services.AddSingleton<AlertService>();
+
             builder.Services.AddTransient<AccountService>();
             builder.Services.AddTransient<AnalysisService>();
             builder.Services.AddTransient<BettingService>();
@@ -62,8 +67,11 @@ namespace HSC.Mobile
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<ISettingsService, SettingsService>();
 
-            builder.Services.AddTransient<MainPage>();   
-            
+            builder.Services.AddTransient<MainPage>();
+
+            builder.Services.AddTransient<AuthenticationPage>();
+            builder.Services.AddTransient<AuthenticationViewModel>();
+
             builder.Services.AddTransient<ChessPageViewModel>();
             builder.Services.AddTransient<ChessPageView>();
 

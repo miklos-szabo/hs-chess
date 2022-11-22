@@ -62,6 +62,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <MauiXaml Update="Pages\AuthenticationPage\AuthenticationPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\CashierPage\CashierPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
@@ -111,10 +114,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Keycloak.Net" Version="1.0.18" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.9" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -129,5 +132,7 @@
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 		<Exec Command="npm run build" WorkingDirectory="NpmJS" />
 	</Target>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionHSCMobileHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>
