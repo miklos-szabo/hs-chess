@@ -64,7 +64,6 @@ namespace HSC.Mobile
             builder.Services.AddTransient<MatchFinderService>();
             builder.Services.AddTransient<TournamentService>();
 
-            builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<ISettingsService, SettingsService>();
 
             builder.Services.AddTransient<MainPage>();

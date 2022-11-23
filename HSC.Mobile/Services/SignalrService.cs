@@ -12,6 +12,7 @@ namespace HSC.Mobile.Services
     public class SignalrService
     {
         private HubConnection _hubConnection;
+        private readonly AuthService _authService;
 
         public event EventHandler<MoveDto> MoveReceivedEvent;
         public event EventHandler<Guid> MatchFoundEvent;
@@ -29,12 +30,13 @@ namespace HSC.Mobile.Services
         public event EventHandler UpdateStandingsEvent;
         public event EventHandler TournamentStartedEvent;
 
-        public SignalrService()
+        public SignalrService(AuthService authService)
         {
+            _authService = authService;
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl("http://hschess.azurewebsites.net/hubs/chesshub", options =>
                 {
-                    options.AccessTokenProvider = () => Task.FromResult(TokenHolder.AccessToken);
+                    options.AccessTokenProvider = async () => await _authService.GetStoredToken();
                 })
                 .WithAutomaticReconnect()
                 .Build();

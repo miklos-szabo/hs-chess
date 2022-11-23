@@ -49,6 +49,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <AndroidResource Remove="NpmJs\**" />
+      <Compile Remove="NpmJs\**" />
+      <Content Remove="NpmJs\**" />
+      <EmbeddedResource Remove="NpmJs\**" />
+      <MauiXaml Remove="NpmJs\**" />
+      <None Remove="NpmJs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\PonzianiComponents\PonzianiComponents.csproj" />
     </ItemGroup>
 
@@ -107,10 +116,6 @@
       <MauiXaml Update="Resources\Styles\LightTheme.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="NpmJs\" />
     </ItemGroup>
 
     <ItemGroup>

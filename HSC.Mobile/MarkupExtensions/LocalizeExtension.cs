@@ -24,8 +24,7 @@ namespace HSC.Mobile.MarkupExtensions
 
         public object ProvideValue(IServiceProvider serviceProvider)
         {
-            string localizedText = _localizer[Key];
-            return localizedText;
+            return _localizer[Key];
         }
 
         object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider) => ProvideValue(serviceProvider);
