@@ -183,6 +183,9 @@
   <data name="QuickMatch.SearchButton" xml:space="preserve">
     <value>Find game</value>
   </data>
+  <data name="QuickMatch.Searching" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
   <data name="QuickMatch.SelectBet" xml:space="preserve">
     <value>Select a bet...</value>
   </data>

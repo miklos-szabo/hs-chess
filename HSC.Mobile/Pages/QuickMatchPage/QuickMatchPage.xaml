@@ -15,6 +15,7 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
+        <Label HorizontalOptions="Center" Padding="0, 10, 0, 0" Text="{localize:Localize Key=QuickMatch.Searching}"></Label>
         <FlexLayout Grid.Row="1" Direction="Column" AlignItems="Center">
             <Label Text="{localize:Localize Key=QuickMatch.TimeControl}"></Label>
             <Picker Title="{localize:Localize Key=QuickMatch.SelectTimeControl}" SelectedItem="{Binding SelectedTimeControl}" TitleColor="{DynamicResource TextColor}" WidthRequest="250" HorizontalTextAlignment="Center">
