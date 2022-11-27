@@ -8,12 +8,12 @@ namespace HSC.Mobile.Services
 {
     public class AlertService
     {
-        public Task ShowAlertAsync(string title, string message, string cancel = "OK")
+        private Task ShowAlertAsync(string title, string message, string cancel = "OK")
         {
             return Application.Current.MainPage.DisplayAlert(title, message, cancel);
         }
 
-        public Task<bool> ShowConfirmationAsync(string title, string message, string accept = "Yes", string cancel = "No")
+        private Task<bool> ShowConfirmationAsync(string title, string message, string accept = "Yes", string cancel = "No")
         {
             return Application.Current.MainPage.DisplayAlert(title, message, accept, cancel);
         }

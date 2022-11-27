@@ -15,7 +15,9 @@ namespace HSC.Mobile.Pages.FlyoutPage
         private readonly AccountService _accountService;
         private readonly IServiceProvider _provider;
         private readonly AuthService _authService;
+        private readonly NavigationService _navigationService;
         private UserMenuDto _userData;
+        private readonly SignalrService _signalrService;
 
         public UserMenuDto UserData
         {
@@ -23,26 +25,31 @@ namespace HSC.Mobile.Pages.FlyoutPage
             set => SetField(ref _userData, value);
         }
 
-        public HscFlyoutPageViewModel(AccountService accountService, IServiceProvider provider, AuthService authService)
+        public HscFlyoutPageViewModel(AccountService accountService, IServiceProvider provider, AuthService authService, NavigationService navigationService, SignalrService signalrService)
         {
             _accountService = accountService;
             _provider = provider;
             _authService = authService;
+            _navigationService = navigationService;
+            _signalrService = signalrService;
 
             LogoutCommand = new Command(Logout);
 
+            Task.Run(async () => await _signalrService.Connect());
             Task.Run(async () => await GetUserData());
         }
 
         public async Task GetUserData()
         {
             UserData = await _accountService.GetUserMenuDataAsync();
+            _authService.UserName = UserData.UserName;
         }
 
         public void Logout()
         {
             _authService.Logout();
-            Application.Current.MainPage = _provider.GetService<AuthenticationPage.AuthenticationPage>();
+            _signalrService.Disconnect();
+            _navigationService.ChangeMainPage(_provider.GetService<AuthenticationPage.AuthenticationPage>());
         }
     }
 }

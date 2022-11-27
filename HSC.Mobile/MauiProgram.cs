@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using CommunityToolkit.Maui;
 using HSC.Mobile.Handlers;
 using HSC.Mobile.Pages.AuthenticationPage;
 using HSC.Mobile.Pages.CashierPage;
@@ -9,6 +10,7 @@ using HSC.Mobile.Pages.FriendsPage;
 using HSC.Mobile.Pages.GroupsPage;
 using HSC.Mobile.Pages.HistoryPage;
 using HSC.Mobile.Pages.QuickMatchPage;
+using HSC.Mobile.Pages.QuickMatchPage.CreateCustomPage;
 using HSC.Mobile.Pages.Settings;
 using HSC.Mobile.Pages.TournamentsPage;
 using HSC.Mobile.Services;
@@ -24,10 +26,12 @@ namespace HSC.Mobile
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
+
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddLocalization();
@@ -51,6 +55,7 @@ namespace HSC.Mobile
 
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<AlertService>();
+            builder.Services.AddSingleton<NavigationService>();
 
             builder.Services.AddTransient<AccountService>();
             builder.Services.AddTransient<AnalysisService>();
@@ -72,6 +77,9 @@ namespace HSC.Mobile
 
             builder.Services.AddTransient<ChessPageViewModel>();
             builder.Services.AddTransient<ChessPageView>();
+
+            builder.Services.AddTransient<CreateCustomViewModel>();
+            builder.Services.AddTransient<CreateCustomPage>();
 
             builder.Services.AddTransient<QuickMatchPage>();
             builder.Services.AddTransient<QuickMatchViewModel>();

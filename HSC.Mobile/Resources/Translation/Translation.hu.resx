@@ -147,6 +147,12 @@
   <data name="Menu.Cashier" xml:space="preserve">
     <value>Pénztár</value>
   </data>
+  <data name="Menu.Connected" xml:space="preserve">
+    <value>Csatlakozva</value>
+  </data>
+  <data name="Menu.Disconnected" xml:space="preserve">
+    <value>Lecsatlakozva</value>
+  </data>
   <data name="Menu.Friends" xml:space="preserve">
     <value>Barátok</value>
   </data>
@@ -177,7 +183,16 @@
   <data name="QuickMatch.SearchButton" xml:space="preserve">
     <value>Keresés</value>
   </data>
+  <data name="QuickMatch.SelectBet" xml:space="preserve">
+    <value>Válassz egy tétet...</value>
+  </data>
+  <data name="QuickMatch.SelectTimeControl" xml:space="preserve">
+    <value>Válassz egy időzítést...</value>
+  </data>
   <data name="QuickMatch.TimeControl" xml:space="preserve">
     <value>Idő</value>
+  </data>
+  <data name="QuickMatch.Title" xml:space="preserve">
+    <value>Gyors játék</value>
   </data>
 </root>

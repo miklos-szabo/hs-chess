@@ -12,6 +12,7 @@ namespace HSC.Mobile.Services
         public string AccessToken { get; set; }
         public DateTimeOffset AccessTokenExpire { get; set; }
         public string RefreshToken { get; set; }
+        public string UserName { get; set; }
 
         public async Task<string> GetStoredToken()
         {

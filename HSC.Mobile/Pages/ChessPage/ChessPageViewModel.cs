@@ -12,6 +12,7 @@ namespace HSC.Mobile.Pages.ChessPage
 {
     public class ChessPageViewModel: BaseViewModel
     {
+        public Guid MatchId { get; set; }
         private int _moveCount = 0;
         private string _lastMove;
         private readonly AccountService _accountService;

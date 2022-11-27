@@ -147,6 +147,12 @@
   <data name="Menu.Cashier" xml:space="preserve">
     <value>Cashier</value>
   </data>
+  <data name="Menu.Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Menu.Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
   <data name="Menu.Friends" xml:space="preserve">
     <value>Friends</value>
   </data>
@@ -177,7 +183,16 @@
   <data name="QuickMatch.SearchButton" xml:space="preserve">
     <value>Find game</value>
   </data>
+  <data name="QuickMatch.SelectBet" xml:space="preserve">
+    <value>Select a bet...</value>
+  </data>
+  <data name="QuickMatch.SelectTimeControl" xml:space="preserve">
+    <value>Select a time control...</value>
+  </data>
   <data name="QuickMatch.TimeControl" xml:space="preserve">
     <value>Time control</value>
+  </data>
+  <data name="QuickMatch.Title" xml:space="preserve">
+    <value>Quick match</value>
   </data>
 </root>

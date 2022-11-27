@@ -3,15 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:quickMatchPage="clr-namespace:HSC.Mobile.Pages.QuickMatchPage"
              x:Class="HSC.Mobile.Pages.QuickMatchPage.QuickMatchPage"
-             Title="QuickMatchPage"
+             Title="{localize:Localize Key=QuickMatch.Title}"
              BackgroundColor="{DynamicResource BackgroundColor}" 
              x:DataType="quickMatchPage:QuickMatchViewModel"
              xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Command="{Binding SearchCommand}" Text="{localize:Localize Key=QuickMatch.SearchButton}" HeightRequest="80" WidthRequest="200"></Button>
-    </VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <FlexLayout Grid.Row="1" Direction="Column" AlignItems="Center">
+            <Label Text="{localize:Localize Key=QuickMatch.TimeControl}"></Label>
+            <Picker Title="{localize:Localize Key=QuickMatch.SelectTimeControl}" SelectedItem="{Binding SelectedTimeControl}" TitleColor="{DynamicResource TextColor}" WidthRequest="250" HorizontalTextAlignment="Center">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type quickMatchPage:QMTimeControl}">
+                        <quickMatchPage:QMTimeControl Minutes="1" Increment="0"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="1" Increment="2"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="3" Increment="0"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="3" Increment="2"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="5" Increment="0"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="5" Increment="3"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="10" Increment="0"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="10" Increment="5"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="15" Increment="10"></quickMatchPage:QMTimeControl>
+                        <quickMatchPage:QMTimeControl Minutes="30" Increment="15"></quickMatchPage:QMTimeControl>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </FlexLayout>
+        <FlexLayout Grid.Row="2" Direction="Column" AlignItems="Center">
+            <Label Text="{localize:Localize Key=QuickMatch.Bet}"></Label>
+            <Picker Title="{localize:Localize Key=QuickMatch.SelectBet}" SelectedItem="{Binding SelectedBet}" TitleColor="{DynamicResource TextColor}" WidthRequest="250" HorizontalTextAlignment="Center">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type quickMatchPage:QMBet}">
+                        <quickMatchPage:QMBet MinimumBet="0.01" MaximumBet="0.1"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="0.02" MaximumBet="0.2"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="0.05" MaximumBet="0.5"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="0.1" MaximumBet="1"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="0.2" MaximumBet="2"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="0.5" MaximumBet="5"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="1" MaximumBet="10"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="2" MaximumBet="20"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="5" MaximumBet="50"></quickMatchPage:QMBet>
+                        <quickMatchPage:QMBet MinimumBet="10" MaximumBet="100"></quickMatchPage:QMBet>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </FlexLayout>
+        <Button Grid.Row="3" Command="{Binding SearchCommand}" Text="{localize:Localize Key=QuickMatch.SearchButton}" HeightRequest="80" WidthRequest="200"></Button>
+        <Button Grid.Row="4" Command="{Binding CreateCustomCommand}" Text="{localize:Localize Key=QuickMatch.CreateCustom}" HeightRequest="60" WidthRequest="150" FontSize="14"></Button>
+    </Grid>
 </ContentPage>

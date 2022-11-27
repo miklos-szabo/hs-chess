@@ -98,6 +98,9 @@
       <MauiXaml Update="Pages\HistoryPage\HistoryPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Pages\QuickMatchPage\CreateCustomPage\CreateCustomPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\QuickMatchPage\QuickMatchPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
@@ -119,6 +122,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Maui" Version="2.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.9" />

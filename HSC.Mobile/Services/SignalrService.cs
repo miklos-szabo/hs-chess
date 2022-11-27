@@ -9,10 +9,17 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace HSC.Mobile.Services
 {
-    public class SignalrService
+    public class SignalrService: BaseViewModel
     {
         private HubConnection _hubConnection;
         private readonly AuthService _authService;
+        private bool _isConnected;
+
+        public bool IsConnected
+        {
+            get => _isConnected;
+            set => SetField(ref _isConnected, value);
+        }
 
         public event EventHandler<MoveDto> MoveReceivedEvent;
         public event EventHandler<Guid> MatchFoundEvent;
@@ -40,7 +47,6 @@ namespace HSC.Mobile.Services
                 })
                 .WithAutomaticReconnect()
                 .Build();
-
 
             _hubConnection.On<MoveDto>("ReceiveMove", move =>
             {
@@ -124,6 +130,16 @@ namespace HSC.Mobile.Services
                 return;
 
             await _hubConnection.StartAsync();
+            IsConnected = true;
+        }
+
+        public void Disconnect()
+        {
+            if (_hubConnection.State != HubConnectionState.Connected)
+                return;
+
+            Task.Run(async () => await _hubConnection.StopAsync());
+            IsConnected = false;
         }
 
         public async Task JoinMatch(Guid matchId)
@@ -143,7 +159,7 @@ namespace HSC.Mobile.Services
 
         public async Task SendDrawOffer(string toUserName)
         {
-            _hubConnection.InvokeAsync("SendDrawOfferToUser", toUserName);
+            await _hubConnection.InvokeAsync("SendDrawOfferToUser", toUserName);
         }
     }
 

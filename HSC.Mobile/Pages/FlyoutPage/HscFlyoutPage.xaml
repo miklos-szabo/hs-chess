@@ -3,11 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.FlyoutPage.HscFlyoutPage"
              xmlns:local="clr-namespace:HSC.Mobile.Pages.FlyoutPage"
+             xmlns:services="clr-namespace:HSC.Mobile.Services"
              Title="HscFlyoutPage"
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:flyoutPage="clr-namespace:HSC.Mobile.Pages.FlyoutPage"
              x:DataType="flyoutPage:HscFlyoutPageViewModel"
-             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -21,7 +28,10 @@
             <Label Text="{Binding UserData.Balance, StringFormat='{0}$'}" FontSize="20" Padding="0, 30, 20, 0"></Label>
         </FlexLayout>
         <local:HscFlyoutNavigation Grid.Row="2" x:Name="navigation" x:FieldModifier="public"></local:HscFlyoutNavigation>
-        <Button Grid.Row="3" Command="{Binding LogoutCommand}" FontSize="20" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="Start" Text="{localize:Localize Key=Flyout.Logout}" TextColor="Red" BorderColor="{DynamicResource BackgroundColor}" BackgroundColor="{DynamicResource BackgroundColor}"></Button>
+        <FlexLayout Grid.Row="3" Direction="Row" JustifyContent="SpaceBetween">
+            <Button Command="{Binding LogoutCommand}" FontSize="20" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="Start" Text="{localize:Localize Key=Flyout.Logout}" TextColor="Red" BorderColor="{DynamicResource BackgroundColor}" BackgroundColor="{DynamicResource BackgroundColor}" Padding="20, 0, 0, 0"></Button>
+            <Label x:DataType="services:SignalrService" IsVisible="{Binding IsConnected}" Text="{localize:Localize Key=Menu.Connected}" TextColor="Green" Padding="0, 0, 20, 0"></Label>
+        </FlexLayout>
     </Grid>
 
     

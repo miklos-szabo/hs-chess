@@ -26,4 +26,9 @@
         <Setter Property="BarTextColor" Value="{DynamicResource TextColor}" />
         <Setter Property="BarBackgroundColor" Value="{DynamicResource Primary}" />
     </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="TitleColor" Value="{DynamicResource TextColor}" />
+    </Style>
 </ResourceDictionary>

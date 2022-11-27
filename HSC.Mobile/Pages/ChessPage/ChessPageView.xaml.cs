@@ -10,8 +10,11 @@ namespace HSC.Mobile
 {
     public partial class ChessPageView : ContentPage
     {
+        public ChessPageViewModel ViewModel { get; set; }
+
         public ChessPageView(ChessPageViewModel viewModel)
         {
+            ViewModel = viewModel;
             BindingContext = viewModel;
             InitializeComponent();
         }
