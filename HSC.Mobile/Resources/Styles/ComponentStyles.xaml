@@ -4,13 +4,26 @@
              x:Class="HSC.Mobile.Resources.Styles.ComponentStyles">
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontFamily" Value="Verdana" />
+        <Setter Property="FontSize" Value="16" />
     </Style>
 
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
-        <Setter Property="FontFamily" Value="OpenSansRegular" />
-        <Setter Property="BackgroundColor" Value="#2b0b98" />
+        <Setter Property="FontFamily" Value="Verdana" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}" />
         <Setter Property="Padding" Value="14,10" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="PlaceholderColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="FontFamily" Value="Verdana" />
+    </Style>
+
+    <Style TargetType="NavigationPage">
+        <Setter Property="BarTextColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="BarBackgroundColor" Value="{DynamicResource Primary}" />
     </Style>
 </ResourceDictionary>

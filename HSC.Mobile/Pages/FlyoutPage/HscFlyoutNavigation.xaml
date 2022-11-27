@@ -31,9 +31,9 @@
     </CollectionView.ItemsSource>
     <CollectionView.ItemTemplate>
         <DataTemplate>
-            <Label Margin="20,0"
+            <Label Margin="20,5"
                        Text="{Binding Title}"
-                       FontSize="20"
+                       FontSize="24"
                        FontAttributes="Bold"
                        VerticalOptions="Center" />
         </DataTemplate>

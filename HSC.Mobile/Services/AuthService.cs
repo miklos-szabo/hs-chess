@@ -76,6 +76,13 @@ namespace HSC.Mobile.Services
             RefreshToken = response.RefreshToken;
             AccessTokenExpire = DateTimeOffset.UtcNow.AddSeconds(response.AccessTokenExpires);
         }
+
+        public void Logout()
+        {
+            AccessToken = string.Empty;
+            AccessTokenExpire = DateTimeOffset.UtcNow;
+            RefreshToken = string.Empty;
+        }
     }
 
     public class TokenResponseBody

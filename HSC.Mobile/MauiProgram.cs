@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using HSC.Mobile.Data;
 using HSC.Mobile.Handlers;
 using HSC.Mobile.Pages.AuthenticationPage;
 using HSC.Mobile.Pages.CashierPage;
