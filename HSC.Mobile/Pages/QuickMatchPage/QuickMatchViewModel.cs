@@ -16,7 +16,8 @@ namespace HSC.Mobile.Pages.QuickMatchPage
         private readonly NavigationService _navigationService;
         private readonly IServiceProvider _provider;
         private readonly SignalrService _signalrService;
-        private bool _isSearching;
+        private readonly MatchService _matchService;
+        private bool _isSearching = false;
 
         public QMTimeControl SelectedTimeControl { get; set; }
         public QMBet SelectedBet { get; set; }
@@ -64,15 +65,15 @@ namespace HSC.Mobile.Pages.QuickMatchPage
             await _navigationService.PushAsync(_provider.GetService<CreateCustomPage.CreateCustomPage>());
         }
 
-        private void MatchFound(object sender, Guid matchId)
+        private async void MatchFound(object sender, Guid matchId)
         {
             IsSearching = false;
             _signalrService.MatchFoundEvent -= MatchFound;
 
             var chessPage = _provider.GetService<ChessPageView>();
             chessPage.ViewModel.MatchId = matchId;
+            chessPage.ViewModel.StartDto = await _matchService.GetMatchStartingDataAsync(matchId);
             _navigationService.ChangeDetailPage(chessPage);
-            //Task.Run(async () => await _navigationService.PushAsync(_provider.GetService<ChessPageView>()));
         }
     }
 }

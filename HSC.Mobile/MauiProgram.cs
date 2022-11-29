@@ -56,6 +56,7 @@ namespace HSC.Mobile
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<AlertService>();
             builder.Services.AddSingleton<NavigationService>();
+            builder.Services.AddSingleton<SettingsService>();
 
             builder.Services.AddTransient<AccountService>();
             builder.Services.AddTransient<AnalysisService>();
@@ -67,8 +68,6 @@ namespace HSC.Mobile
             builder.Services.AddTransient<MatchService>();
             builder.Services.AddTransient<MatchFinderService>();
             builder.Services.AddTransient<TournamentService>();
-
-            builder.Services.AddSingleton<ISettingsService, SettingsService>();
 
             builder.Services.AddTransient<MainPage>();
 

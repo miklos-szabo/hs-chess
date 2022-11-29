@@ -198,4 +198,25 @@
   <data name="QuickMatch.Title" xml:space="preserve">
     <value>Gyors játék</value>
   </data>
+  <data name="Settings.BoardTheme" xml:space="preserve">
+    <value>Tábla színe</value>
+  </data>
+  <data name="Settings.ChangeBoardTheme" xml:space="preserve">
+    <value>Változtatás</value>
+  </data>
+  <data name="Settings.DarkTheme" xml:space="preserve">
+    <value>Sötét téma</value>
+  </data>
+  <data name="Settings.English" xml:space="preserve">
+    <value>Angol</value>
+  </data>
+  <data name="Settings.Hungarian" xml:space="preserve">
+    <value>Magyar</value>
+  </data>
+  <data name="Settings.Language" xml:space="preserve">
+    <value>Nyelv</value>
+  </data>
+  <data name="Settings.Save" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
 </root>

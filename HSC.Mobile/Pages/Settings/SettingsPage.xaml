@@ -7,10 +7,23 @@
              xmlns:settingsPage="clr-namespace:HSC.Mobile.Pages.Settings"
              x:DataType="settingsPage:SettingsViewModel"
              xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Spacing="20" Padding="20, 20, 20, 0">
+        <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center">
+            <Label Text="{localize:Localize Key=Settings.Language}"></Label>
+            <HorizontalStackLayout>
+                <Label Text="{localize:Localize Key=Settings.English}"></Label>
+                <Switch IsToggled="{Binding IsHungarian}"></Switch>
+                <Label Text="{localize:Localize Key=Settings.Hungarian}"></Label>
+            </HorizontalStackLayout>
+        </FlexLayout>
+        <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center">
+            <Label Text="{localize:Localize Key=Settings.DarkTheme}"></Label>
+            <Switch IsToggled="{Binding SelectedDarkTheme}"></Switch>
+        </FlexLayout>
+        <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center">
+            <Label Text="{localize:Localize Key=Settings.BoardTheme}"></Label>
+            <Button Text="{localize:Localize Key=Settings.ChangeBoardTheme}" Command="{Binding ChangeBoardThemeCommand}" HeightRequest="40"></Button>
+        </FlexLayout>
+        <Button Text="{localize:Localize Key=Settings.Save}" Command="{Binding SaveCommand}" Margin="0, 40, 0, 0" HorizontalOptions="Center" WidthRequest="150"></Button>
     </VerticalStackLayout>
 </ContentPage>

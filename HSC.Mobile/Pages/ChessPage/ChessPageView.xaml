@@ -7,21 +7,21 @@
              xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
              xmlns:chessPage="clr-namespace:HSC.Mobile.Pages.ChessPage"
              BackgroundColor="{DynamicResource BackgroundColor}">
-    <FlexLayout Direction="Column">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <FlexLayout Direction="Column">
+
+        </FlexLayout>
         <Label Text="hi" Padding="10"></Label>
-        <StackLayout Orientation="Horizontal">
-            <Label Text="{localize:Localize Key=Test}"></Label>
-            <Label Text="{Binding MoveCount}"></Label>
-            <Label Text=" Last move: "></Label>
-            <Label Text="{Binding LastMove}"></Label>
-        </StackLayout>
 
         <BlazorWebView HostPage="wwwroot/index.html">
             <BlazorWebView.RootComponents>
                 <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
             </BlazorWebView.RootComponents>
         </BlazorWebView>
-    </FlexLayout>
+    </Grid>
 
 
 </ContentPage>

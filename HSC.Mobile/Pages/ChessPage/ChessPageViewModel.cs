@@ -13,8 +13,8 @@ namespace HSC.Mobile.Pages.ChessPage
     public class ChessPageViewModel: BaseViewModel
     {
         public Guid MatchId { get; set; }
-        private int _moveCount = 0;
-        private string _lastMove;
+        public MatchStartDto StartDto { get; set; }
+
         private readonly AccountService _accountService;
         private readonly SignalrService _signalrService;
 
@@ -32,23 +32,7 @@ namespace HSC.Mobile.Pages.ChessPage
 
         private async Task MoveMade(MovePlayedInfo e)
         {
-            MoveCount++;
-            LastMove = e.San;
-
-            var x = await _accountService.GetFullUserDataAsync();
-            MoveCount++;
-        }
-
-        public int MoveCount
-        {
-            get => _moveCount;
-            set => SetField(ref _moveCount, value);
-        }
-
-        public string LastMove
-        {
-            get => _lastMove;
-            set => SetField(ref _lastMove, value);
+            
         }
     }
 }

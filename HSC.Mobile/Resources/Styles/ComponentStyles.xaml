@@ -31,4 +31,8 @@
         <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
         <Setter Property="TitleColor" Value="{DynamicResource TextColor}" />
     </Style>
+
+    <Style TargetType="Switch">
+        <Setter Property="OnColor" Value="{DynamicResource Primary}" />
+    </Style>
 </ResourceDictionary>

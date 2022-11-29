@@ -198,4 +198,25 @@
   <data name="QuickMatch.Title" xml:space="preserve">
     <value>Quick match</value>
   </data>
+  <data name="Settings.BoardTheme" xml:space="preserve">
+    <value>Board theme</value>
+  </data>
+  <data name="Settings.ChangeBoardTheme" xml:space="preserve">
+    <value>Dark squares</value>
+  </data>
+  <data name="Settings.DarkTheme" xml:space="preserve">
+    <value>Dark theme</value>
+  </data>
+  <data name="Settings.English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings.Hungarian" xml:space="preserve">
+    <value>Hungarian</value>
+  </data>
+  <data name="Settings.Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings.Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
 </root>
