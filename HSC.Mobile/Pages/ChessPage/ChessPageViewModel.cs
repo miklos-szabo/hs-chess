@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using HSC.Mobile.Services;
 using HSCApi;
 using PonzianiComponents.Chesslib;
@@ -97,6 +98,8 @@ namespace HSC.Mobile.Pages.ChessPage
                     TimeLeft = (int)OwnTime.TotalMilliseconds,
                 }, MatchId.ToString());
             Moves.Add(new HistoryMove{Fen = e.NewFen, San = e.San});
+            _eventService.OnScrollToMove(Moves.Count - 1);
+            SelectedMove = Moves.Last();
         }
 
         private async void OwnMoveEndedGame(object sender, Result result)
@@ -110,6 +113,8 @@ namespace HSC.Mobile.Pages.ChessPage
         private void OpponentMoveProcessed(object sender, HistoryMove e)
         {
             Moves.Add(e);
+            _eventService.OnScrollToMove(Moves.Count - 1);
+            SelectedMove = Moves.Last();
         }
 
         private void OpponentMoveReceived(object sender, MoveDto e)
@@ -119,7 +124,11 @@ namespace HSC.Mobile.Pages.ChessPage
             StartOwnTimer();
         }
 
-
+        public HistoryMove SelectedMove
+        {
+            get => _selectedMove;
+            set => SetField(ref _selectedMove, value);
+        }
 
         #region Timers
         private TimeSpan _ownTime;
@@ -129,6 +138,7 @@ namespace HSC.Mobile.Pages.ChessPage
 
         IDispatcherTimer _owntimer;
         IDispatcherTimer _opponentTimer;
+        private HistoryMove _selectedMove;
 
         public bool OpponentClockIsActive
         {

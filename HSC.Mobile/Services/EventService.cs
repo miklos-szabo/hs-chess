@@ -15,6 +15,7 @@ namespace HSC.Mobile.Services
         public event EventHandler<HistoryMove> OpponentMoveProcessed;
         public event EventHandler<Result> OwnMoveEndedGame;
         public event EventHandler<string> ChangeToFen;
+        public event EventHandler<int> ScrollToMove;
 
         public void OnOwnMovePlayed(MovePlayedInfo mpi)
         {
@@ -34,6 +35,11 @@ namespace HSC.Mobile.Services
         public void OnChangeToFen(string fen)
         {
             ChangeToFen?.Invoke(this, fen);
+        }
+
+        public void OnScrollToMove(int index)
+        {
+            ScrollToMove?.Invoke(this, index);
         }
     }
 }

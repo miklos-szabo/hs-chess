@@ -12,6 +12,26 @@
         <ResourceDictionary>
             <converters:TimeActiveToBackgroundcolorConverter x:Key="timetoBgConverter" />
         </ResourceDictionary>
+        <Style TargetType="Label">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{DynamicResource BackgroundColor}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{DynamicResource BackgroundColor2}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
     </ContentPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -38,6 +58,15 @@
                 </VerticalStackLayout>
             </FlexLayout>
         </VerticalStackLayout>
+        <HorizontalStackLayout Grid.Row="2" VerticalOptions="Fill" Padding="10, 0, 10, 10">
+            <CollectionView x:Name="MovesListView" WidthRequest="150" ItemsSource="{Binding Moves}" ItemsLayout="VerticalGrid, 2" SelectedItem="{Binding SelectedMove}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="chessPage:HistoryMove">
+                        <Label Text="{Binding San}" WidthRequest="75" Padding="5, 2, 5, 2"></Label>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </HorizontalStackLayout>
     </Grid>
 
 
