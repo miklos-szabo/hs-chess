@@ -77,9 +77,6 @@
       <MauiXaml Update="Pages\CashierPage\CashierPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
-      <MauiXaml Update="Pages\ChessPage\ChessClock.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </MauiXaml>
       <MauiXaml Update="Pages\ChessPage\ChessPageView.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

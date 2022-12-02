@@ -35,4 +35,8 @@
     <Style TargetType="Switch">
         <Setter Property="OnColor" Value="{DynamicResource Primary}" />
     </Style>
+
+    <Style TargetType="DatePicker">
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
 </ResourceDictionary>

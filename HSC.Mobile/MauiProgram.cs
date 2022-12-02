@@ -57,6 +57,8 @@ namespace HSC.Mobile
             builder.Services.AddSingleton<AlertService>();
             builder.Services.AddSingleton<NavigationService>();
             builder.Services.AddSingleton<SettingsService>();
+            builder.Services.AddSingleton<CurrentGameService>();
+            builder.Services.AddSingleton<EventService>();
 
             builder.Services.AddTransient<AccountService>();
             builder.Services.AddTransient<AnalysisService>();

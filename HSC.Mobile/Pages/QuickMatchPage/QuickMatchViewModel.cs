@@ -17,6 +17,7 @@ namespace HSC.Mobile.Pages.QuickMatchPage
         private readonly IServiceProvider _provider;
         private readonly SignalrService _signalrService;
         private readonly MatchService _matchService;
+        private readonly CurrentGameService _currentGameService;
         private bool _isSearching = false;
 
         public QMTimeControl SelectedTimeControl { get; set; }
@@ -31,13 +32,15 @@ namespace HSC.Mobile.Pages.QuickMatchPage
         public ICommand SearchCommand { get; set; }
         public ICommand CreateCustomCommand { get; set; }
 
-        public QuickMatchViewModel(AuthService authService, MatchFinderService matchFinderService, NavigationService navigationService, IServiceProvider provider, SignalrService signalrService)
+        public QuickMatchViewModel(AuthService authService, MatchFinderService matchFinderService, NavigationService navigationService, IServiceProvider provider, SignalrService signalrService, CurrentGameService currentGameService, MatchService matchService)
         {
             _authService = authService;
             _matchFinderService = matchFinderService;
             _navigationService = navigationService;
             _provider = provider;
             _signalrService = signalrService;
+            _currentGameService = currentGameService;
+            _matchService = matchService;
 
             // () => SelectedBet != null && SelectedTimeControl != null && !IsSearching
             SearchCommand = new Command(async () => await SearchForMatch());
@@ -70,9 +73,10 @@ namespace HSC.Mobile.Pages.QuickMatchPage
             IsSearching = false;
             _signalrService.MatchFoundEvent -= MatchFound;
 
+            var fullData = await _matchService.GetMatchDataAsync(matchId);
+            _currentGameService.SetData(_authService.UserName, matchId, fullData);
+
             var chessPage = _provider.GetService<ChessPageView>();
-            chessPage.ViewModel.MatchId = matchId;
-            chessPage.ViewModel.StartDto = await _matchService.GetMatchStartingDataAsync(matchId);
             _navigationService.ChangeDetailPage(chessPage);
         }
     }

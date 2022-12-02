@@ -6,11 +6,65 @@
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:historyPage="clr-namespace:HSC.Mobile.Pages.HistoryPage"
              x:DataType="historyPage:HistoryViewModel"
-             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:hscApi="clr-namespace:HSCApi">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:EnumToIntConverter x:Key="EnumToIntConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <FlexLayout Grid.Row="0" JustifyContent="SpaceBetween" AlignItems="Center">
+            <VerticalStackLayout Padding="5, 0, 0, 0">
+                <Picker ItemsSource="{Binding Results}"
+                        SelectedIndex="{Binding SearchSimpleResult, Converter={StaticResource EnumToIntConverter}}"/>
+                <Entry Text="{Binding Opponent}" Placeholder="{localize:Localize Key=History.Opponent}"></Entry>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="{localize:Localize Key=History.IntervalStart}" VerticalOptions="Center" Padding="0, 0, 5, 0"></Label>
+                    <DatePicker Date="{Binding IntervalStart}" VerticalOptions="Center"></DatePicker>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="{localize:Localize Key=History.IntervalEnd}" VerticalOptions="Center" Padding="0, 0, 5, 0"></Label>
+                    <DatePicker Date="{Binding IntervalEnd}" VerticalOptions="Center"></DatePicker>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            <Button Text="{localize:Localize Key=History.Search}" Command="{Binding SearchCommand}" Margin="0, 0, 5, 0"></Button>
+        </FlexLayout>
+        <ListView Grid.Row="1" ItemsSource="{Binding PastGames}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid x:DataType="hscApi:PastGameDto" Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding WhiteUserName}"></Label>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding BlackUserName}"></Label>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding StartTime}"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding SearchSimpleResult, StringFormat={localize:Localize Key=Result.{0}}}"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding BlackUserName}"></Label>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding StartTime}"></Label>
+                            <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Text="{localize:Localize Key=History.Review}" Command="{Binding ReviewCommand, Source={RelativeSource AncestorType={x:Type historyPage:HistoryViewModel}}}" CommandParameter="{Binding Id}"></Button>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+    
+
 </ContentPage>

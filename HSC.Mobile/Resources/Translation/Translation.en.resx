@@ -120,6 +120,24 @@
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Log out</value>
   </data>
+  <data name="History.IntervalEnd" xml:space="preserve">
+    <value>Inderval end</value>
+  </data>
+  <data name="History.IntervalStart" xml:space="preserve">
+    <value>Interval start</value>
+  </data>
+  <data name="History.Opponent" xml:space="preserve">
+    <value>Opponent</value>
+  </data>
+  <data name="History.Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="History.Review" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="History.Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="Login.Button" xml:space="preserve">
     <value>Log in</value>
   </data>
@@ -197,6 +215,18 @@
   </data>
   <data name="QuickMatch.Title" xml:space="preserve">
     <value>Quick match</value>
+  </data>
+  <data name="Result.All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Result.Defeat" xml:space="preserve">
+    <value>Defeat</value>
+  </data>
+  <data name="Result.Draw" xml:space="preserve">
+    <value>Draw</value>
+  </data>
+  <data name="Result.Victory" xml:space="preserve">
+    <value>Victory</value>
   </data>
   <data name="Settings.BoardTheme" xml:space="preserve">
     <value>Board theme</value>

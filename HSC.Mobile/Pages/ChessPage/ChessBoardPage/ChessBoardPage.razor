@@ -1,14 +1,75 @@
 ﻿@page "/"
 @using HSC.Mobile.Enums
+@using HSC.Mobile.Services
+@using Result = HSCApi.Result
+@inject SignalrService _signalrService
+@inject CurrentGameService _currentGameService
+@inject SettingsService _settingsService
+@inject EventService _eventService
 
-<Chessboard Size="300" OnMovePlayed="OnMovePlayed" @ref="chessBoard" />
+<Chessboard Size="393" OnMovePlayed="OnMovePlayed" @ref="chessBoard" Rotate="@(!_currentGameService.AmIWhite)" ColorDarkSquares="@(_settingsService.BoardTheme == 1 ? "#28caf7" : "#b58863")" ColorLightSquares="@(_settingsService.BoardTheme == 1 ? "#ebebeb" : "#f0d9b5")" HighlightLastAppliedMove="true"/>
 
 @code {
     private Chessboard chessBoard;
+    private Game game = new Game();
+
+    protected override Task OnInitializedAsync()
+    {
+        _signalrService.MoveReceivedEvent += MoveReceived;
+        _eventService.ChangeToFen += ChangeToFen;
+        return base.OnInitializedAsync();
+    }
+
+    private void MoveReceived(object sender, MoveDto e)
+    {
+        var move = new Move(ParseSquare(e.Origin), ParseSquare(e.Destination), ParsePieceType(e.Promotion));
+        var moveSan = game.Position.ToSAN(move);
+        chessBoard.SetFen(game.Position.FEN);
+        game.Add(new ExtendedMove(move));
+        chessBoard.ApplyMove(move);
+        _currentGameService.Pgn = game.ToPGN();
+        _eventService.OnOpponentMoveProcessed(new HistoryMove{Fen = game.Position.FEN, San = moveSan});
+    }
+
+    private void ChangeToFen(object sender, string fen)
+    {
+        chessBoard.SetFen(fen);
+    }
 
     void OnMovePlayed(MovePlayedInfo mpi)
     {
-        //EventService.OnMoveMade(mpi);
-        MessagingCenter.Send(this, MessageTypes.MoveMade, mpi);
+        game.Add(new ExtendedMove(mpi.Move));
+        _currentGameService.Pgn = game.ToPGN();
+        if (game.Position.IsMate)
+        {
+            _eventService.OnOwnMoveEndedGame(_currentGameService.AmIWhite ? Result.WhiteWonByCheckmate : Result.BlackWonByCheckmate);
+        }
+        if (game.Position.IsStalemate)
+        {
+            _eventService.OnOwnMoveEndedGame(Result.DrawByStalemate);
+        }
+        if (game.Position.IsDrawnByInsufficientMatingMaterial())
+        {
+            _eventService.OnOwnMoveEndedGame(Result.DrawByInsufficientMaterial);
+        }
+
+        _eventService.OnOwnMovePlayed(mpi);
+    }
+
+    private Square ParseSquare(string strSq)
+    {
+        return Enum.Parse<Square>(strSq.ToUpper());
+    }
+
+    private PieceType ParsePieceType(string strPiece)
+    {
+        switch (strPiece)
+        {
+            case "q": return PieceType.QUEEN;
+            case "r": return PieceType.ROOK;
+            case "n": return PieceType.KNIGHT;
+            case "b": return PieceType.BISHOP;
+        }
+        return PieceType.NONE;
     }
 }

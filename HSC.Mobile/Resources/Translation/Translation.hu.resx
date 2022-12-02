@@ -120,6 +120,24 @@
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Kijelentkezés</value>
   </data>
+  <data name="History.IntervalEnd" xml:space="preserve">
+    <value>Intervallum vég</value>
+  </data>
+  <data name="History.IntervalStart" xml:space="preserve">
+    <value>Intervallum kezdet</value>
+  </data>
+  <data name="History.Opponent" xml:space="preserve">
+    <value>Ellenfél</value>
+  </data>
+  <data name="History.Result" xml:space="preserve">
+    <value>Eredmény</value>
+  </data>
+  <data name="History.Review" xml:space="preserve">
+    <value>Visszanézés</value>
+  </data>
+  <data name="History.Search" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
   <data name="Login.Button" xml:space="preserve">
     <value>Bejelentkezés</value>
   </data>
@@ -197,6 +215,18 @@
   </data>
   <data name="QuickMatch.Title" xml:space="preserve">
     <value>Gyors játék</value>
+  </data>
+  <data name="Result.All" xml:space="preserve">
+    <value>Mind</value>
+  </data>
+  <data name="Result.Defeat" xml:space="preserve">
+    <value>Vereség</value>
+  </data>
+  <data name="Result.Draw" xml:space="preserve">
+    <value>Döntetlen</value>
+  </data>
+  <data name="Result.Victory" xml:space="preserve">
+    <value>Győzelem</value>
   </data>
   <data name="Settings.BoardTheme" xml:space="preserve">
     <value>Tábla színe</value>

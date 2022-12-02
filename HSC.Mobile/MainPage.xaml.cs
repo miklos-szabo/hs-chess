@@ -7,36 +7,25 @@ using HSC.Mobile.Pages.HistoryPage;
 using HSC.Mobile.Pages.QuickMatchPage;
 using HSC.Mobile.Pages.Settings;
 using HSC.Mobile.Pages.TournamentsPage;
+using HSC.Mobile.Services;
 
 namespace HSC.Mobile
 {
     public partial class MainPage : FlyoutPage
     {
+        private readonly NavigationService _navigationService;
+        private readonly IServiceProvider _serviceProvider;
         private readonly HscFlyoutPage _flyoutPage;
-        private readonly QuickMatchPage _quickMatchPage;
-        private readonly CashierPage _cashierPage;
-        private readonly CustomGamesPage _customGamesPage;
-        private readonly FriendsPage _friendsPage;
-        private readonly GroupsPage _groupsPage;
-        private readonly HistoryPage _historyPage;
-        private readonly SettingsPage _settingsPage;
-        private readonly TournamentsPage _tournamentsPage;
 
 
-        public MainPage(HscFlyoutPage flyoutPage, QuickMatchPage quickMatchPage, CashierPage cashierPage, CustomGamesPage customGamesPage, FriendsPage friendsPage, GroupsPage groupsPage, HistoryPage historyPage, SettingsPage settingsPage, TournamentsPage tournamentsPage)
+        public MainPage(NavigationService navigationService, HscFlyoutPage flyoutPage, IServiceProvider serviceProvider)
         {
+            _navigationService = navigationService;
             _flyoutPage = flyoutPage;
-            _quickMatchPage = quickMatchPage;
-            _cashierPage = cashierPage;
-            _customGamesPage = customGamesPage;
-            _friendsPage = friendsPage;
-            _groupsPage = groupsPage;
-            _historyPage = historyPage;
-            _settingsPage = settingsPage;
-            _tournamentsPage = tournamentsPage;
+            _serviceProvider = serviceProvider;
 
             Flyout = _flyoutPage;
-            Detail = new NavigationPage(_quickMatchPage);
+            Detail = new NavigationPage(_serviceProvider.GetService<QuickMatchPage>());
             InitializeComponent();
 
             _flyoutPage.navigation.SelectionChanged += OnSelectionChanged;
@@ -51,28 +40,28 @@ namespace HSC.Mobile
                 switch (item.TargetType)
                 {
                     case { } cp when cp == typeof(CashierPage):
-                        Detail = new NavigationPage(_cashierPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<CashierPage>());
                         break;
                     case { } cp when cp == typeof(CustomGamesPage):
-                        Detail = new NavigationPage(_customGamesPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<CustomGamesPage>());
                         break;
                     case { } cp when cp == typeof(FriendsPage):
-                        Detail = new NavigationPage(_friendsPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<FriendsPage>());
                         break;
                     case { } cp when cp == typeof(GroupsPage):
-                        Detail = new NavigationPage(_groupsPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<GroupsPage>());
                         break;
                     case { } cp when cp == typeof(HistoryPage):
-                        Detail = new NavigationPage(_historyPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<HistoryPage>());
                         break;
                     case { } cp when cp == typeof(QuickMatchPage):
-                        Detail = new NavigationPage(_quickMatchPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<QuickMatchPage>());
                         break;
                     case { } cp when cp == typeof(SettingsPage):
-                        Detail = new NavigationPage(_settingsPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<SettingsPage>());
                         break;
                     case { } cp when cp == typeof(TournamentsPage):
-                        Detail = new NavigationPage(_tournamentsPage);
+                        _navigationService.ChangeDetailPage(_serviceProvider.GetService<TournamentsPage>());
                         break;
                 }
 

@@ -6,21 +6,38 @@
              x:DataType="chessPage:ChessPageViewModel"
              xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
              xmlns:chessPage="clr-namespace:HSC.Mobile.Pages.ChessPage"
+             xmlns:converters="clr-namespace:HSC.Mobile.Converters"
              BackgroundColor="{DynamicResource BackgroundColor}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:TimeActiveToBackgroundcolorConverter x:Key="timetoBgConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="500"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <FlexLayout Direction="Column">
-
-        </FlexLayout>
-        <Label Text="hi" Padding="10"></Label>
-
-        <BlazorWebView HostPage="wwwroot/index.html">
-            <BlazorWebView.RootComponents>
-                <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
-            </BlazorWebView.RootComponents>
-        </BlazorWebView>
+        <VerticalStackLayout Grid.Row="1">
+            <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="End" HeightRequest="50">
+                <Label Text="{Binding OpponentUserName}" Padding="10, 0, 0, 0"></Label>
+                <VerticalStackLayout HeightRequest="50" WidthRequest="120" BackgroundColor="{Binding OpponentClockIsActive, Converter={StaticResource timetoBgConverter}}">
+                    <Label Text="{Binding OpponentTime, StringFormat='{0:mm\\:ss}'}" FontSize="40" HorizontalOptions="End" Padding="5, 0"/>
+                </VerticalStackLayout>
+            </FlexLayout>
+            <BlazorWebView HostPage="wwwroot/index.html" HeightRequest="390">
+                <BlazorWebView.RootComponents>
+                    <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
+                </BlazorWebView.RootComponents>
+            </BlazorWebView>
+            <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Start" HeightRequest="50">
+                <Label Text="{Binding OwnUserName}" Padding="10, 0, 0, 0"></Label>
+                <VerticalStackLayout HeightRequest="50" WidthRequest="120" BackgroundColor="{Binding OwnClockIsActive, Converter={StaticResource timetoBgConverter}}">
+                    <Label Text="{Binding OwnTime, StringFormat='{0:mm\\:ss}'}" FontSize="40" HorizontalOptions="End" Padding="5, 0"/>
+                </VerticalStackLayout>
+            </FlexLayout>
+        </VerticalStackLayout>
     </Grid>
 
 
