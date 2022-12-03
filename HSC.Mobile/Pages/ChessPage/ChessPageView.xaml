@@ -7,10 +7,12 @@
              xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
              xmlns:chessPage="clr-namespace:HSC.Mobile.Pages.ChessPage"
              xmlns:converters="clr-namespace:HSC.Mobile.Converters"
-             BackgroundColor="{DynamicResource BackgroundColor}">
+             BackgroundColor="{DynamicResource BackgroundColor}"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:TimeActiveToBackgroundcolorConverter x:Key="timetoBgConverter" />
+            <converters:DrawOfferToIconColorConverter x:Key="drawOffertoColorconverter" />
         </ResourceDictionary>
         <Style TargetType="Label">
             <Setter Property="VisualStateManager.VisualStateGroups">
@@ -66,6 +68,42 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <VerticalStackLayout VerticalOptions="Fill" HorizontalOptions="End" Padding="90, 5, 0, 0">
+                <HorizontalStackLayout HorizontalOptions="End">
+                    <ImageButton Command="{Binding ResignCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.Flag}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding DrawCommand}" Padding="10, 0, 0, 0" BackgroundColor="{Binding HasDrawBeenOffered, Converter={StaticResource drawOffertoColorconverter}}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.FractionOneHalf}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="End" Padding="0, 25, 0, 0">
+                    <ImageButton Command="{Binding ChangeToStartCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.PageFirst}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding ChangeToPreviousCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.ChevronLeft}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding ChangeToNextCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.ChevronRight}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding ChangeToLastCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.PageLast}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </HorizontalStackLayout>
     </Grid>
 

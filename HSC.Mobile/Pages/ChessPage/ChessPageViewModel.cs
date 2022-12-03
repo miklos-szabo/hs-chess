@@ -28,6 +28,16 @@ namespace HSC.Mobile.Pages.ChessPage
         private readonly MatchService _matchService;
         private readonly EventService _eventService;
 
+        public ICommand ResignCommand { get; set; }
+        public ICommand DrawCommand { get; set; }
+        public ICommand ChangeToStartCommand { get; set; }
+        public ICommand ChangeToPreviousCommand { get; set; }
+        public ICommand ChangeToNextCommand { get; set; }
+        public ICommand ChangeToLastCommand { get; set; }
+        public ICommand CheckCommand { get; set; }
+        public ICommand CallCommand { get; set; }
+        public ICommand RaiseCommand { get; set; }
+        public ICommand FoldCommand { get; set; }
 
         public ChessPageViewModel(SignalrService signalrService, CurrentGameService currentgameService, MatchService matchService, EventService eventService)
         {
@@ -48,7 +58,19 @@ namespace HSC.Mobile.Pages.ChessPage
             _eventService.OpponentMoveProcessed += OpponentMoveProcessed;
             _eventService.OwnMoveEndedGame += OwnMoveEndedGame;
             _eventService.OwnMovePlayed += OwnMovePlayed;
+            _signalrService.MatchEndedReceivedEvent += MatchEnded;
+            _signalrService.DrawOfferReceivedEvent += DrawOfferReceived;
 
+            ResignCommand = new Command(async () => await Resign());
+            DrawCommand = new Command(async () => await Draw());
+            ChangeToStartCommand = new Command(ChangeToStart);
+            ChangeToPreviousCommand = new Command(ChangeToPrevious);
+            ChangeToNextCommand = new Command(ChangeToNext);
+            ChangeToLastCommand = new Command(ChangeToLast);
+            CheckCommand = new Command(async () => await Check());
+            CallCommand = new Command(async () => await Call());
+            RaiseCommand = new Command(async () => await Raise());
+            FoldCommand = new Command(async () => await Fold());
 
             #region timers
             OwnTime = TimeSpan.FromMinutes(FullData.TimeLimitMinutes);
@@ -83,10 +105,21 @@ namespace HSC.Mobile.Pages.ChessPage
 #endregion
         }
 
+        private void DrawOfferReceived(object sender, EventArgs e)
+        {
+            HasDrawBeenOffered = true;
+        }
+
+        private async void MatchEnded(object sender, Result result)
+        {
+            await GameOver(result);
+        }
+
         private async void OwnMovePlayed(object sender, MovePlayedInfo e)
         {
             StopOwnTimer();
             StartOpponentTimer();
+            if (HasDrawBeenOffered) HasDrawBeenOffered = false;
             await _signalrService.sendMoveToServer(
                 new MoveDto
                 {
@@ -104,10 +137,9 @@ namespace HSC.Mobile.Pages.ChessPage
 
         private async void OwnMoveEndedGame(object sender, Result result)
         {
-            StopOwnTimerNoIcrement();
-            StopOpponentTimerNoIncrement();
             await _matchService.MatchOverAsync(MatchId, result, OwnUserName);
             await _matchService.SaveMatchPgnAsync(MatchId, _currentgameService.Pgn);
+            await GameOver(result);
         }
 
         private void OpponentMoveProcessed(object sender, HistoryMove e)
@@ -130,6 +162,134 @@ namespace HSC.Mobile.Pages.ChessPage
             set => SetField(ref _selectedMove, value);
         }
 
+        public bool HasDrawBeenOffered
+        {
+            get => _hasDrawBeenOffered;
+            set => SetField(ref _hasDrawBeenOffered, value);
+        }
+
+        public async Task Resign()
+        {
+            if (AmIWhite)
+            {
+                await _matchService.MatchOverAsync(MatchId, Result.BlackWonByResignation, FullData.BlackUserName);
+            }
+            else
+            {
+                await _matchService.MatchOverAsync(MatchId, Result.WhiteWonByResignation, FullData.WhiteUserName);
+            }
+
+            await GameOver(AmIWhite ? Result.BlackWonByResignation : Result.WhiteWonByResignation);
+        }
+
+        public async Task Draw()
+        {
+            if (HasDrawBeenOffered)
+            {
+                HasDrawBeenOffered = false;
+                await _matchService.MatchOverAsync(MatchId, Result.DrawByAgreement, string.Empty);
+                await GameOver(Result.DrawByAgreement);
+            }
+            else
+            {
+                await _signalrService.SendDrawOffer(AmIWhite ? FullData.BlackUserName : FullData.WhiteUserName);
+            }
+        }
+
+        #region MoveNavigation
+        public void ChangeToStart()
+        {
+            if (SelectedMove != null)
+            {
+                SelectedMove = null;
+                _eventService.OnScrollToMove(0);
+                _eventService.OnChangeToFen(Fen.INITIAL_POSITION);
+            }
+        }
+
+        public void ChangeToPrevious()
+        {
+            if (SelectedMove != null && Moves.Count != 0)
+            {
+                var oldIndex = Moves.IndexOf(SelectedMove);
+                if (oldIndex == 0)
+                {
+                    ChangeToStart();
+                    return;
+                }
+                else
+                {
+                    _eventService.OnChangeToFen(Moves[oldIndex - 1].Fen);
+                    _eventService.OnScrollToMove(oldIndex - 1);
+                    SelectedMove = Moves[oldIndex - 1];
+                }
+            }
+        }
+
+        public void ChangeToNext()
+        {
+            if (Moves.Count > 0)
+            {
+                var oldIndex = Moves.IndexOf(SelectedMove);
+                if (oldIndex == Moves.Count - 1)
+                {
+                    return;
+                }
+                else
+                {
+                    _eventService.OnChangeToFen(Moves[oldIndex + 1].Fen);
+                    _eventService.OnScrollToMove(oldIndex + 1);
+                    SelectedMove = Moves[oldIndex + 1];
+                }
+            }
+        }
+
+        public void ChangeToLast()
+        {
+            if (Moves.Count > 0)
+            {
+                var oldIndex = Moves.IndexOf(SelectedMove);
+                if (oldIndex == Moves.Count - 1)
+                {
+                    return;
+                }
+                else
+                {
+                    _eventService.OnChangeToFen(Moves[^1].Fen);
+                    _eventService.OnScrollToMove(Moves.Count - 1);
+                    SelectedMove = Moves[^1];
+                }
+            }
+        }
+#endregion
+
+        public async Task Check()
+        {
+
+        }
+
+        public async Task Call()
+        {
+
+        }
+
+        public async Task Raise()
+        {
+
+        }
+
+        public async Task Fold()
+        {
+
+        }
+
+        public async Task GameOver(Result result)
+        {
+            StopOpponentTimerNoIncrement();
+            StopOwnTimerNoIcrement();
+
+        }
+
         #region Timers
         private TimeSpan _ownTime;
         private TimeSpan _opponentTime;
@@ -139,6 +299,7 @@ namespace HSC.Mobile.Pages.ChessPage
         IDispatcherTimer _owntimer;
         IDispatcherTimer _opponentTimer;
         private HistoryMove _selectedMove;
+        private bool _hasDrawBeenOffered;
 
         public bool OpponentClockIsActive
         {

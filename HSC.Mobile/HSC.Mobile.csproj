@@ -58,6 +58,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Resources\Fonts\materialdesignicons-webfont.ttf" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\PonzianiComponents\PonzianiComponents.csproj" />
     </ItemGroup>
 

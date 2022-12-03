@@ -30,6 +30,7 @@ namespace HSC.Mobile
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("materialdesignicons-webfont.ttf", "MaterialDesignIcons");
                 });
 
 

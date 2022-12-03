@@ -34,6 +34,7 @@
     private void ChangeToFen(object sender, string fen)
     {
         chessBoard.SetFen(fen);
+        StateHasChanged();
     }
 
     void OnMovePlayed(MovePlayedInfo mpi)
