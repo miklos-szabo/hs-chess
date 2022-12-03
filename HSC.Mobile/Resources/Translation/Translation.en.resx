@@ -117,6 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Betting.Call" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="Betting.Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Betting.CurrentPot" xml:space="preserve">
+    <value>Current pot:</value>
+  </data>
+  <data name="Betting.Fold" xml:space="preserve">
+    <value>Fold</value>
+  </data>
+  <data name="Betting.OpponentCalled" xml:space="preserve">
+    <value>Opponent called.</value>
+  </data>
+  <data name="Betting.OpponentChecked" xml:space="preserve">
+    <value>Opponent checked.</value>
+  </data>
+  <data name="Betting.OpponentFolded" xml:space="preserve">
+    <value>Opponent folded.</value>
+  </data>
+  <data name="Betting.OpponentRaised" xml:space="preserve">
+    <value>Opponent raised: </value>
+  </data>
+  <data name="Betting.Raise" xml:space="preserve">
+    <value>Raise</value>
+  </data>
+  <data name="Betting.WaitingForOpponent" xml:space="preserve">
+    <value>Waiting for opponent...</value>
+  </data>
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Log out</value>
   </data>
@@ -277,7 +307,7 @@
     <value>Board theme</value>
   </data>
   <data name="Settings.ChangeBoardTheme" xml:space="preserve">
-    <value>Dark squares</value>
+    <value>Change</value>
   </data>
   <data name="Settings.DarkTheme" xml:space="preserve">
     <value>Dark theme</value>
@@ -293,5 +323,8 @@
   </data>
   <data name="Settings.Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="Settings.Title" xml:space="preserve">
+    <value>Settings</value>
   </data>
 </root>

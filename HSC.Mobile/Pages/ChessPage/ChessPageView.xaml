@@ -13,6 +13,8 @@
         <ResourceDictionary>
             <converters:TimeActiveToBackgroundcolorConverter x:Key="timetoBgConverter" />
             <converters:DrawOfferToIconColorConverter x:Key="drawOffertoColorconverter" />
+            <converters:InvertBoolConverter x:Key="invertBoolconverter" />
+            <converters:AllTrueMultiConverter x:Key="allTrueConverter" />
         </ResourceDictionary>
         <Style TargetType="Label">
             <Setter Property="VisualStateManager.VisualStateGroups">
@@ -41,6 +43,44 @@
             <RowDefinition Height="500"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+        <VerticalStackLayout Grid.Row="0" Padding="5, 5, 5, 0" VerticalOptions="Fill">
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding IsBettingActive, Converter={StaticResource invertBoolconverter}}" Padding="0, 20, 0, 0">
+                <Label Text="{localize:Localize Key=Betting.CurrentPot}" FontSize="24"></Label>
+                <Label Text="{Binding CurrentBet, StringFormat=' {0:F2}$'}" FontSize="24"></Label>
+            </HorizontalStackLayout>
+            <VerticalStackLayout IsVisible="{Binding IsBettingActive}">
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding MyTurn, Converter={StaticResource invertBoolconverter}}">
+                    <Label FontSize="24" Text="{localize:Localize Key=Betting.WaitingForOpponent}" Padding="0, 30, 0, 0"></Label>
+                </HorizontalStackLayout>
+                <VerticalStackLayout Spacing="10">
+                    <VerticalStackLayout.IsVisible>
+                        <MultiBinding Converter="{StaticResource allTrueConverter}">
+                            <Binding Path="MyTurn"/>
+                            <Binding Path="IsBettingOverReason" Converter="{StaticResource invertBoolconverter}"/>
+                        </MultiBinding>
+                    </VerticalStackLayout.IsVisible>
+                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding MyTurn}">
+                        <Label Text="{Binding BettingText}"></Label>
+                    </HorizontalStackLayout>
+                    <Slider IsVisible="{Binding MyTurn}" Maximum="{Binding FullData.MaximumBet}" Minimum="{Binding CurrentBet}" Value="{Binding CurrentBetSlider}"></Slider>
+                    <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding MyTurn}">
+                        <Button Command="{Binding CheckCommand}" Text="{localize:Localize Key=Betting.Check}" IsVisible="{Binding HasOpponentRaised, Converter={StaticResource invertBoolconverter}}"></Button>
+                        <Button Command="{Binding CallCommand}" Text="{localize:Localize Key=Betting.Call}" IsVisible="{Binding HasOpponentRaised}"></Button>
+                        <Button Command="{Binding RaiseCommand}" Text="{localize:Localize Key=Betting.Raise}"></Button>
+                        <Label Text="{Binding CurrentBetSlider, StringFormat='{0:F2}'}" VerticalOptions="Center"></Label>
+                        <Button Command="{Binding FoldCommand}" Text="{localize:Localize Key=Betting.Fold}"></Button>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+            <Label Text="{Binding BettingText}">
+                <Label.IsVisible>
+                    <MultiBinding Converter="{StaticResource allTrueConverter}">
+                        <Binding Path="MyTurn" />
+                        <Binding Path="IsBettingOverReason"/>
+                    </MultiBinding>
+                </Label.IsVisible>
+            </Label>
+        </VerticalStackLayout>
         <VerticalStackLayout Grid.Row="1">
             <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="End" HeightRequest="50">
                 <Label Text="{Binding OpponentUserName}" Padding="10, 0, 0, 0"></Label>

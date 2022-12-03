@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.Settings.SettingsPage"
-             Title="SettingsPage"
+             Title="{localize:Localize Key=Settings.Title}"
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:settingsPage="clr-namespace:HSC.Mobile.Pages.Settings"
              x:DataType="settingsPage:SettingsViewModel"
