@@ -84,6 +84,9 @@
       <MauiXaml Update="Pages\ChessPage\ChessPageView.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Pages\ChessPage\MatchEndPopup\GameOverPopup.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\CustomGamesPage\CustomGamesPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

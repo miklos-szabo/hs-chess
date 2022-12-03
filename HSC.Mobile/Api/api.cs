@@ -903,7 +903,7 @@ namespace HSCApi
         public virtual async System.Threading.Tasks.Task CheckAsync(System.Guid? matchId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Betting/Check?");
+            urlBuilder_.Append("api/Betting/OpponentChecked?");
             if (matchId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("matchId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(matchId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");

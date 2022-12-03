@@ -219,14 +219,59 @@
   <data name="Result.All" xml:space="preserve">
     <value>Mind</value>
   </data>
+  <data name="Result.BlackWonByCheckmate" xml:space="preserve">
+    <value>Matt miatt</value>
+  </data>
+  <data name="Result.BlackWonByResignation" xml:space="preserve">
+    <value>Feladás miatt</value>
+  </data>
+  <data name="Result.BlackWonByTimeOut" xml:space="preserve">
+    <value>Idő lejárta miatt</value>
+  </data>
   <data name="Result.Defeat" xml:space="preserve">
     <value>Vereség</value>
   </data>
   <data name="Result.Draw" xml:space="preserve">
     <value>Döntetlen</value>
   </data>
+  <data name="Result.DrawByAgreement" xml:space="preserve">
+    <value>Megegyezéses alapon</value>
+  </data>
+  <data name="Result.DrawByInsufficientMaterial" xml:space="preserve">
+    <value>Elégtelen mennyiségű bábu miatt</value>
+  </data>
+  <data name="Result.DrawByStalemate" xml:space="preserve">
+    <value>Patt miatt</value>
+  </data>
+  <data name="Result.DrawByThreefoldRepetition" xml:space="preserve">
+    <value>Háromszori ismétlés miatt</value>
+  </data>
+  <data name="Result.DrawByTimeoutVsInsufficientMaterial" xml:space="preserve">
+    <value>Elégtelen mennyiségű bábu miatt</value>
+  </data>
+  <data name="Result.Lost" xml:space="preserve">
+    <value>Veszteség:</value>
+  </data>
+  <data name="Result.Nochange" xml:space="preserve">
+    <value>Nem lett pénz vesztve.</value>
+  </data>
+  <data name="Result.Ongoing" xml:space="preserve">
+    <value>Folyamatban</value>
+  </data>
   <data name="Result.Victory" xml:space="preserve">
     <value>Győzelem</value>
+  </data>
+  <data name="Result.WhiteWonByCheckmate" xml:space="preserve">
+    <value>Matt miatt</value>
+  </data>
+  <data name="Result.WhiteWonByResignation" xml:space="preserve">
+    <value>Feladás miatt</value>
+  </data>
+  <data name="Result.WhiteWonByTimeout" xml:space="preserve">
+    <value>Idő lejárta miatt</value>
+  </data>
+  <data name="Result.Won" xml:space="preserve">
+    <value>Nyeremény:</value>
   </data>
   <data name="Settings.BoardTheme" xml:space="preserve">
     <value>Tábla színe</value>

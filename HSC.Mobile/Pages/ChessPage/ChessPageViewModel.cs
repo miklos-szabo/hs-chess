@@ -7,8 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Views;
+using HSC.Mobile.Pages.ChessPage.MatchEndPopup;
+using HSC.Mobile.Resources.Translation;
 using HSC.Mobile.Services;
 using HSCApi;
+using Microsoft.Extensions.Localization;
 using PonzianiComponents.Chesslib;
 using Result = HSCApi.Result;
 
@@ -27,6 +31,7 @@ namespace HSC.Mobile.Pages.ChessPage
         private readonly CurrentGameService _currentgameService;
         private readonly MatchService _matchService;
         private readonly EventService _eventService;
+        private readonly IStringLocalizer<Translation> _localizer;
 
         public ICommand ResignCommand { get; set; }
         public ICommand DrawCommand { get; set; }
@@ -39,12 +44,13 @@ namespace HSC.Mobile.Pages.ChessPage
         public ICommand RaiseCommand { get; set; }
         public ICommand FoldCommand { get; set; }
 
-        public ChessPageViewModel(SignalrService signalrService, CurrentGameService currentgameService, MatchService matchService, EventService eventService)
+        public ChessPageViewModel(SignalrService signalrService, CurrentGameService currentgameService, MatchService matchService, EventService eventService, IStringLocalizer<Translation> localizer)
         {
             _signalrService = signalrService;
             _currentgameService = currentgameService;
             _matchService = matchService;
             _eventService = eventService;
+            _localizer = localizer;
 
             MatchId = _currentgameService.MatchId;
             FullData = _currentgameService.FullData;
@@ -67,10 +73,10 @@ namespace HSC.Mobile.Pages.ChessPage
             ChangeToPreviousCommand = new Command(ChangeToPrevious);
             ChangeToNextCommand = new Command(ChangeToNext);
             ChangeToLastCommand = new Command(ChangeToLast);
-            CheckCommand = new Command(async () => await Check());
-            CallCommand = new Command(async () => await Call());
-            RaiseCommand = new Command(async () => await Raise());
-            FoldCommand = new Command(async () => await Fold());
+            CheckCommand = new Command(async () => await OpponentChecked());
+            CallCommand = new Command(async () => await OpponentCalled());
+            RaiseCommand = new Command(async () => await OpponentRaised());
+            FoldCommand = new Command(async () => await OpponentFolded());
 
             #region timers
             OwnTime = TimeSpan.FromMinutes(FullData.TimeLimitMinutes);
@@ -166,6 +172,11 @@ namespace HSC.Mobile.Pages.ChessPage
         {
             get => _hasDrawBeenOffered;
             set => SetField(ref _hasDrawBeenOffered, value);
+        }
+        public decimal CurrentBet
+        {
+            get => _currentBet;
+            set => SetField(ref _currentBet, value);
         }
 
         public async Task Resign()
@@ -263,22 +274,22 @@ namespace HSC.Mobile.Pages.ChessPage
         }
 #endregion
 
-        public async Task Check()
+        public async Task OpponentChecked()
         {
 
         }
 
-        public async Task Call()
+        public async Task OpponentCalled()
         {
 
         }
 
-        public async Task Raise()
+        public async Task OpponentRaised()
         {
 
         }
 
-        public async Task Fold()
+        public async Task OpponentFolded()
         {
 
         }
@@ -287,7 +298,27 @@ namespace HSC.Mobile.Pages.ChessPage
         {
             StopOpponentTimerNoIncrement();
             StopOwnTimerNoIcrement();
-
+            SearchSimpleResult searchSimpleResult;
+            if (result == Result.DrawByAgreement || result == Result.DrawByInsufficientMaterial ||
+                result == Result.DrawByStalemate || result == Result.DrawByThreefoldRepetition ||
+                result == Result.DrawByTimeoutVsInsufficientMaterial)
+            {
+                searchSimpleResult = SearchSimpleResult.Draw;
+            }
+            else if (result == Result.WhiteWonByCheckmate || result == Result.WhiteWonByTimeout ||
+                     result == Result.WhiteWonByResignation)
+            {
+                searchSimpleResult = OwnUserName == FullData.WhiteUserName
+                    ? SearchSimpleResult.Victory
+                    : SearchSimpleResult.Defeat;
+            }
+            else
+            {
+                searchSimpleResult = OwnUserName == FullData.WhiteUserName
+                    ? SearchSimpleResult.Defeat
+                    : SearchSimpleResult.Victory;
+            }
+            await MainThread.InvokeOnMainThreadAsync(() => Application.Current.MainPage.ShowPopup(new GameOverPopup(searchSimpleResult, result, CurrentBet, _localizer)));
         }
 
         #region Timers
@@ -300,6 +331,7 @@ namespace HSC.Mobile.Pages.ChessPage
         IDispatcherTimer _opponentTimer;
         private HistoryMove _selectedMove;
         private bool _hasDrawBeenOffered;
+        private decimal _currentBet;
 
         public bool OpponentClockIsActive
         {

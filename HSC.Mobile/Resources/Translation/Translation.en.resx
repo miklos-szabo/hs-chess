@@ -219,14 +219,59 @@
   <data name="Result.All" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="Result.BlackWonByCheckmate" xml:space="preserve">
+    <value>By checkmate</value>
+  </data>
+  <data name="Result.BlackWonByResignation" xml:space="preserve">
+    <value>By resignation</value>
+  </data>
+  <data name="Result.BlackWonByTimeOut" xml:space="preserve">
+    <value>By timeout</value>
+  </data>
   <data name="Result.Defeat" xml:space="preserve">
     <value>Defeat</value>
   </data>
   <data name="Result.Draw" xml:space="preserve">
     <value>Draw</value>
   </data>
+  <data name="Result.DrawByAgreement" xml:space="preserve">
+    <value>By agreement</value>
+  </data>
+  <data name="Result.DrawByInsufficientMaterial" xml:space="preserve">
+    <value>By insufficient material</value>
+  </data>
+  <data name="Result.DrawByStalemate" xml:space="preserve">
+    <value>By stalemate</value>
+  </data>
+  <data name="Result.DrawByThreefoldRepetition" xml:space="preserve">
+    <value>By threefold repetition</value>
+  </data>
+  <data name="Result.DrawByTimeoutVsInsufficientMaterial" xml:space="preserve">
+    <value>By insufficient material</value>
+  </data>
+  <data name="Result.Lost" xml:space="preserve">
+    <value>Lost:</value>
+  </data>
+  <data name="Result.Nochange" xml:space="preserve">
+    <value>No money was lost.</value>
+  </data>
+  <data name="Result.Ongoing" xml:space="preserve">
+    <value>Ongoing</value>
+  </data>
   <data name="Result.Victory" xml:space="preserve">
     <value>Victory</value>
+  </data>
+  <data name="Result.WhiteWonByCheckmate" xml:space="preserve">
+    <value>By checkmate</value>
+  </data>
+  <data name="Result.WhiteWonByResignation" xml:space="preserve">
+    <value>By resignation</value>
+  </data>
+  <data name="Result.WhiteWonByTimeout" xml:space="preserve">
+    <value>By timeout</value>
+  </data>
+  <data name="Result.Won" xml:space="preserve">
+    <value>Won:</value>
   </data>
   <data name="Settings.BoardTheme" xml:space="preserve">
     <value>Board theme</value>
