@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HSC.Mobile.Pages.HistoryPage.HistoryChessPage.HistoryChessPage"
+             BackgroundColor="{DynamicResource BackgroundColor}"
+             xmlns:historyChessPage="clr-namespace:HSC.Mobile.Pages.HistoryPage.HistoryChessPage"
+             x:DataType="historyChessPage:HistoryChessPageViewModel"
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:converters="clr-namespace:HSC.Mobile.Converters"
+             xmlns:local="clr-namespace:HSC.Mobile"
+             xmlns:chessPage="clr-namespace:HSC.Mobile.Pages.ChessPage"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:TimeActiveToBackgroundcolorConverter x:Key="timetoBgConverter" />
+            <converters:DrawOfferToIconColorConverter x:Key="drawOffertoColorconverter" />
+            <converters:InvertBoolConverter x:Key="invertBoolconverter" />
+            <converters:AllTrueMultiConverter x:Key="allTrueConverter" />
+        </ResourceDictionary>
+        <Style TargetType="Label">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{DynamicResource BackgroundColor}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{DynamicResource BackgroundColor2}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="460"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Grid.Row="0">
+            <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="End" HeightRequest="30">
+                <Label Text="{Binding OpponentUserName}" Padding="10, 0, 0, 0"></Label>
+            </FlexLayout>
+            <BlazorWebView HostPage="wwwroot/index.html" HeightRequest="390">
+                <BlazorWebView.RootComponents>
+                    <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
+                </BlazorWebView.RootComponents>
+            </BlazorWebView>
+            <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Start" HeightRequest="30">
+                <Label Text="{Binding OwnUserName}" Padding="10, 0, 0, 0"></Label>
+            </FlexLayout>
+        </VerticalStackLayout>
+        <HorizontalStackLayout Grid.Row="1" VerticalOptions="Fill" Padding="10, 0, 10, 10">
+            <FlexLayout Direction="Column">
+                <CollectionView x:Name="MovesListView" WidthRequest="150" ItemsSource="{Binding Moves}" ItemsLayout="VerticalGrid, 2" SelectedItem="{Binding SelectedMove}" SelectionMode="Single" FlexLayout.Grow="1" FlexLayout.Shrink="1" FlexLayout.Basis="1">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="chessPage:HistoryMove">
+                            <Label Text="{Binding San}" WidthRequest="75" Padding="5, 2, 5, 2"></Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="End" Padding="0, 25, 0, 0">
+                    <ImageButton Command="{Binding ChangeToStartCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.PageFirst}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding ChangeToPreviousCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.ChevronLeft}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding ChangeToNextCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.ChevronRight}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton Command="{Binding ChangeToLastCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource Color="{DynamicResource TextColor}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.PageLast}" Size="35" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                </HorizontalStackLayout>
+            </FlexLayout>
+            
+            <VerticalStackLayout VerticalOptions="Fill" HorizontalOptions="End" Padding="20, 5, 0, 0">
+                <VerticalStackLayout Spacing="10">
+                    <VerticalStackLayout.IsVisible>
+                        <MultiBinding Converter="{StaticResource allTrueConverter}">
+                            <Binding Path="ServerAnalysisSelected" Converter="{StaticResource invertBoolconverter}"/>
+                            <Binding Path="LocalAnalysisSelected" Converter="{StaticResource invertBoolconverter}"/>
+                        </MultiBinding>
+                    </VerticalStackLayout.IsVisible>
+                    <Button Command="{Binding LocalAnalysisCommand}" Text="{localize:Localize Key=Analysis.LocalAnalysis}"></Button>
+                    <Button Command="{Binding ServerAnalysisCommand}" Text="{localize:Localize Key=Analysis.ServerAnalysis}"></Button>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

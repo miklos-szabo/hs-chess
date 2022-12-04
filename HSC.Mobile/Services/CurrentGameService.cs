@@ -15,14 +15,16 @@ namespace HSC.Mobile.Services
         public string OpponentUserName { get; set; }
         public MatchFullDataDto FullData { get; set; }
         public string Pgn { get; set; } // Set by ChessBoardPage on every move
+        public bool IsHistoryMode { get; set; }
 
-        public void SetData(string ownUserName, Guid matchId, MatchFullDataDto fullData)
+        public void SetData(string ownUserName, Guid matchId, MatchFullDataDto fullData, bool ishistoryMode = false)
         {
             MatchId = matchId;
             OwnUserName = ownUserName;
             FullData = fullData;
             AmIWhite = ownUserName == fullData.WhiteUserName;
             OpponentUserName = AmIWhite ? fullData.BlackUserName : fullData.WhiteUserName;
+            IsHistoryMode = ishistoryMode;
         }
     }
 }

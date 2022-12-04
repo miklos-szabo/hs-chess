@@ -102,6 +102,9 @@
       <MauiXaml Update="Pages\GroupsPage\GroupsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Pages\HistoryPage\HistoryChessPage\HistoryChessPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\HistoryPage\HistoryPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

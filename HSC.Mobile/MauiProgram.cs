@@ -9,6 +9,7 @@ using HSC.Mobile.Pages.FlyoutPage;
 using HSC.Mobile.Pages.FriendsPage;
 using HSC.Mobile.Pages.GroupsPage;
 using HSC.Mobile.Pages.HistoryPage;
+using HSC.Mobile.Pages.HistoryPage.HistoryChessPage;
 using HSC.Mobile.Pages.QuickMatchPage;
 using HSC.Mobile.Pages.QuickMatchPage.CreateCustomPage;
 using HSC.Mobile.Pages.Settings;
@@ -104,6 +105,9 @@ namespace HSC.Mobile
 
             builder.Services.AddTransient<HistoryPage>();
             builder.Services.AddTransient<HistoryViewModel>();
+
+            builder.Services.AddTransient<HistoryChessPage>();
+            builder.Services.AddTransient<HistoryChessPageViewModel>();
 
             builder.Services.AddTransient<SettingsPage>();
             builder.Services.AddTransient<SettingsViewModel>();

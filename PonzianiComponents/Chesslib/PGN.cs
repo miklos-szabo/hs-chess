@@ -137,7 +137,7 @@ namespace PonzianiComponents.Chesslib
         /// </summary>
         /// <param name="comments">if true, comments are parsed as well</param>
         /// <returns>Enumerable with parsed Games</returns>
-        public IEnumerable<Game> GetGames(bool comments = false)
+        /*public IEnumerable<Game> GetGames(bool comments = false)
         {
             using var reader = new StreamReader(new FileStream(Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             string line;
@@ -210,7 +210,7 @@ namespace PonzianiComponents.Chesslib
                 return null;
             }
             else return null;
-        }
+        }*/
 
         private List<string> _players = null;
         public List<String> Players { get { return GetPlayers(); } }
@@ -302,33 +302,25 @@ namespace PonzianiComponents.Chesslib
         /// <returns>List of parsed Games</returns>
         public static List<Game> Parse(string pgn, bool comments = false, bool variations = false, int count = Int32.MaxValue, int offset = 0)
         {
-            MatchCollection mcGames = regexPGNGame.Matches(pgn);
-            List<Game> games = new(mcGames.Count);
-            int indx = 0;
-            foreach (Match mGame in mcGames)
+            //MatchCollection mcGames = regexPGNGame.Matches(pgn);
+            List<Game> games = new(1);
+            try
             {
-                if (indx < offset) continue;
-                try
-                {
-                    Game game = ParseGame(mGame, comments, variations);
-                    games.Add(game);
-                    if (indx >= count) break;
-                    indx++;
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
+                Game game = ParseGame(pgn, comments, variations);
+                games.Add(game);
+            }
+            catch (Exception)
+            {
             }
             return games;
         }
 
-        private static Game ParseGame(Match mGame, bool comments = false, bool variations = false)
+        private static Game ParseGame(string mGame, bool comments = false, bool variations = false)
         {
-            string tags = mGame.Groups[1].Value;
-            string moveText = mGame.Groups[3].Value;
+            //string tags = mGame.Groups[1].Value;
+            string moveText = mGame; //.Groups[3].Value;
             Game game = new();
-            MatchCollection mcTags = regexPGNTag.Matches(tags);
+            /*MatchCollection mcTags = regexPGNTag.Matches(tags);
             foreach (Match mTag in mcTags)
             {
                 game.SetTag(mTag.Groups[1].Value, mTag.Groups[2].Value);
@@ -355,7 +347,7 @@ namespace PonzianiComponents.Chesslib
                 variationBuffer = new List<string>();
                 moveText = regexPGNVariations.Replace(moveText, ReplaceVariation);
             }
-            else moveText = regexPGNVariations.Replace(moveText, string.Empty);
+            else moveText = regexPGNVariations.Replace(moveText, string.Empty);*/
             //Replace Black move numbering
             moveText = moveText[0] + regexPGNBlackMovenumber.Replace(moveText[1..], string.Empty);
             //Add missing spaces after move number

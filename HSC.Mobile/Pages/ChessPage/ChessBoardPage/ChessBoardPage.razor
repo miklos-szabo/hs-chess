@@ -7,7 +7,7 @@
 @inject SettingsService _settingsService
 @inject EventService _eventService
 
-<Chessboard Size="393" OnMovePlayed="OnMovePlayed" @ref="chessBoard" Rotate="@(!_currentGameService.AmIWhite)" ColorDarkSquares="@(_settingsService.BoardTheme == 1 ? "#28caf7" : "#b58863")" ColorLightSquares="@(_settingsService.BoardTheme == 1 ? "#ebebeb" : "#f0d9b5")" HighlightLastAppliedMove="true"/>
+<Chessboard Size="393" OnMovePlayed="OnMovePlayed" @ref="chessBoard" Rotate="@(!_currentGameService.AmIWhite)" ColorDarkSquares="@(_settingsService.BoardTheme == 1 ? "#b58863" : "#28caf7")" ColorLightSquares="@(_settingsService.BoardTheme == 1 ? "#f0d9b5" : "#ebebeb")" HighlightLastAppliedMove="true" />
 
 @code {
     private Chessboard chessBoard;
@@ -15,7 +15,11 @@
 
     protected override Task OnInitializedAsync()
     {
-        _signalrService.MoveReceivedEvent += MoveReceived;
+        if (!_currentGameService.IsHistoryMode)
+        {
+            _signalrService.MoveReceivedEvent += MoveReceived;
+        }
+
         _eventService.ChangeToFen += ChangeToFen;
         return base.OnInitializedAsync();
     }
@@ -39,6 +43,8 @@
 
     void OnMovePlayed(MovePlayedInfo mpi)
     {
+        if (_currentGameService.IsHistoryMode) return;
+
         game.Add(new ExtendedMove(mpi.Move));
         _currentGameService.Pgn = game.ToPGN();
         if (game.Position.IsMate)

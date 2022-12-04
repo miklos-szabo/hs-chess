@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Core.Extensions;
 using HSC.Mobile.Resources.Translation;
+using HSC.Mobile.Services;
 using HSCApi;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 namespace HSC.Mobile.Pages.HistoryPage
@@ -16,6 +18,11 @@ namespace HSC.Mobile.Pages.HistoryPage
     {
         private readonly HistoryService _historyService;
         private readonly IStringLocalizer<Translation> _localizer;
+        private readonly NavigationService _navigationService;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly MatchService _matchService;
+        private readonly CurrentGameService _currentGameService;
+        private readonly AuthService _authService;
         private string _opponent;
 
         private DateTimeOffset? _intervalStart = new DateTimeOffset(2021, 01, 01, 0, 0, 0, TimeSpan.Zero);
@@ -28,15 +35,20 @@ namespace HSC.Mobile.Pages.HistoryPage
         public ICommand SearchCommand { get; set; }
         public ICommand ReviewCommand { get; set; }
 
-        public HistoryViewModel(HistoryService historyService, IStringLocalizer<Translation> localizer)
+        public HistoryViewModel(HistoryService historyService, IStringLocalizer<Translation> localizer, NavigationService navigationService, MatchService matchService, CurrentGameService currentGameService, AuthService authService, IServiceProvider serviceProvider)
         {
             _historyService = historyService;
             _localizer = localizer;
+            _navigationService = navigationService;
+            _matchService = matchService;
+            _currentGameService = currentGameService;
+            _authService = authService;
+            _serviceProvider = serviceProvider;
 
             Results = Enum.GetNames(typeof(SearchSimpleResult)).Select(n => _localizer[$"Result.{n}"].Value).ToList();
 
             SearchCommand = new Command(async () => await Search());
-            ReviewCommand = new Command<Guid>(Review);
+            ReviewCommand = new Command<Guid>(async (id) => await Review(id));
 
             Task.Run(async () => await Search());
         }
@@ -52,9 +64,13 @@ namespace HSC.Mobile.Pages.HistoryPage
             }, 30, 0)).ToObservableCollection();
         }
 
-        public void Review(Guid matchId)
+        public async Task Review(Guid matchId)
         {
-            Console.WriteLine(matchId);
+            var fullData = await _matchService.GetMatchDataAsync(matchId);
+            _currentGameService.SetData(_authService.UserName, matchId, fullData, true);
+
+            var chessPage = _serviceProvider.GetService<HistoryChessPage.HistoryChessPage>();
+            await _navigationService.PushAsync(new NavigationPage(chessPage));
         }
 
         public string Opponent
