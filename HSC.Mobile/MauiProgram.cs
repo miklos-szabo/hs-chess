@@ -40,7 +40,7 @@ namespace HSC.Mobile
 
             builder.Services.AddSingleton<SignalrService>();
 
-            builder.Services.AddSingleton<TokenHandler>();
+            builder.Services.AddTransient<TokenHandler>();
             builder.Services.AddHttpClient("Name",
                 client =>
                 {

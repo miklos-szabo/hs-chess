@@ -156,6 +156,21 @@
   <data name="Casier.Add100" xml:space="preserve">
     <value>Add 100$</value>
   </data>
+  <data name="CreateCustom.Bet" xml:space="preserve">
+    <value>Bet:</value>
+  </data>
+  <data name="CreateCustom.Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="CreateCustom.Searching" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="CreateCustom.Time" xml:space="preserve">
+    <value>Time:</value>
+  </data>
+  <data name="CreateCustom.Title" xml:space="preserve">
+    <value>Create custom game</value>
+  </data>
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Log out</value>
   </data>
