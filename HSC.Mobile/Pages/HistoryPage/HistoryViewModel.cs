@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Maui.Core.Extensions;
 using HSC.Mobile.Resources.Translation;
 using HSCApi;
 using Microsoft.Extensions.Localization;
@@ -15,16 +17,11 @@ namespace HSC.Mobile.Pages.HistoryPage
         private readonly HistoryService _historyService;
         private readonly IStringLocalizer<Translation> _localizer;
         private string _opponent;
-        private SearchSimpleResult _searchSimpleResult;
+
         private DateTimeOffset? _intervalStart = new DateTimeOffset(2021, 01, 01, 0, 0, 0, TimeSpan.Zero);
         private DateTimeOffset? _intervalEnd = new DateTimeOffset(2024, 01, 01, 0, 0, 0, TimeSpan.Zero);
-        private List<PastGameDto> _pastGames;
-
-        public List<PastGameDto> PastGames
-        {
-            get => _pastGames;
-            set => SetField(ref _pastGames, value);
-        }
+        private int _simpleResultIndex;
+        private ObservableCollection<PastGameDto> _pastGames = new ObservableCollection<PastGameDto>();
 
         public IReadOnlyList<string> Results { get; }
 
@@ -38,10 +35,10 @@ namespace HSC.Mobile.Pages.HistoryPage
 
             Results = Enum.GetNames(typeof(SearchSimpleResult)).Select(n => _localizer[$"Result.{n}"].Value).ToList();
 
-            Task.Run(async () => await Search());
-
             SearchCommand = new Command(async () => await Search());
             ReviewCommand = new Command<Guid>(Review);
+
+            Task.Run(async () => await Search());
         }
 
         public async Task Search()
@@ -51,8 +48,8 @@ namespace HSC.Mobile.Pages.HistoryPage
                 IntervalEnd = IntervalEnd,
                 IntervalStart = IntervalStart,
                 Opponent = Opponent,
-                SearchSimpleResult = SearchSimpleResult
-            }, 30, 0)).ToList();
+                SearchSimpleResult = (SearchSimpleResult)SimpleResultIndex,
+            }, 30, 0)).ToObservableCollection();
         }
 
         public void Review(Guid matchId)
@@ -66,11 +63,6 @@ namespace HSC.Mobile.Pages.HistoryPage
             set => SetField(ref _opponent, value);
         }
 
-        public SearchSimpleResult SearchSimpleResult
-        {
-            get => _searchSimpleResult;
-            set => SetField(ref _searchSimpleResult, value);
-        }
 
         public DateTimeOffset? IntervalStart
         {
@@ -82,6 +74,18 @@ namespace HSC.Mobile.Pages.HistoryPage
         {
             get => _intervalEnd;
             set => SetField(ref _intervalEnd, value);
+        }
+
+        public int SimpleResultIndex
+        {
+            get => _simpleResultIndex;
+            set => SetField(ref _simpleResultIndex, value);
+        }
+
+        public ObservableCollection<PastGameDto> PastGames
+        {
+            get => _pastGames;
+            set => SetField(ref _pastGames, value);
         }
     }
 }
