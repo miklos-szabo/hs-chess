@@ -134,7 +134,7 @@ namespace PonzianiComponents
 
         private int _numberOfLines = 1;
         private List<Info> Infos = new List<Info>() { new Info() };
-        private Chesslib.Position position;
+        public Chesslib.Position position;
 
         /// <summary>
         /// Score from white's point of view in centipawns. Mate scores are converted to very high scores
@@ -232,7 +232,7 @@ namespace PonzianiComponents
             await module.InvokeVoidAsync("send", new object[] { command });
         }
 
-        private string PVToSAN(string pv)
+        public string PVToSAN(string pv)
         {
             if (position == null) return String.Empty;
             Game game = new Game(position.FEN);

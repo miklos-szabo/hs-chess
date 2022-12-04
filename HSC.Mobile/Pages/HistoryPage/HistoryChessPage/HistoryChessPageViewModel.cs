@@ -8,6 +8,8 @@ using System.Windows.Input;
 using HSC.Mobile.Pages.ChessPage;
 using HSC.Mobile.Services;
 using HSCApi;
+using Microsoft.AspNetCore.Components;
+using PonzianiComponents;
 using PonzianiComponents.Chesslib;
 
 namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
@@ -17,6 +19,7 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
         private readonly EventService _eventService;
         private readonly MatchService _matchService;
         private readonly CurrentGameService _currentGameService;
+        private readonly AnalysisService _analysisService;
 
         public Guid MatchId { get; set; }
         public MatchFullDataDto FullData { get; set; }
@@ -26,10 +29,12 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
 
         private HistoryMove _selectedMove;
         private Game _game = new Game();
+        private Engine _engine = new Engine();
         private bool _serverAnalysisSelected;
         private bool _localAnalysisSelected;
         private BestMovesDto _currentAnalysis;
         private AnalysedGameDto _fullServerAnalysis;
+        private bool _isServerAnalysisLoading;
 
         public ICommand ChangeToStartCommand { get; set; }
         public ICommand ChangeToPreviousCommand { get; set; }
@@ -40,11 +45,12 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
 
         public ObservableCollection<HistoryMove> Moves { get; set; } = new ObservableCollection<HistoryMove>();
 
-        public HistoryChessPageViewModel(EventService eventService, CurrentGameService currentGameService, MatchService matchService)
+        public HistoryChessPageViewModel(EventService eventService, CurrentGameService currentGameService, MatchService matchService, AnalysisService analysisService)
         {
             _eventService = eventService;
             _currentGameService = currentGameService;
             _matchService = matchService;
+            _analysisService = analysisService;
 
             MatchId = _currentGameService.MatchId;
             FullData = _currentGameService.FullData;
@@ -52,10 +58,10 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
             AmIWhite = _currentGameService.AmIWhite;
             OwnUserName = _currentGameService.OwnUserName;
 
-            ChangeToStartCommand = new Command(ChangeToStart);
-            ChangeToPreviousCommand = new Command(ChangeToPrevious);
-            ChangeToNextCommand = new Command(ChangeToNext);
-            ChangeToLastCommand = new Command(ChangeToLast);
+            ChangeToStartCommand = new Command(async () => await ChangeToStart());
+            ChangeToPreviousCommand = new Command(async () => await ChangeToPrevious());
+            ChangeToNextCommand = new Command(async () => await ChangeToNext());
+            ChangeToLastCommand = new Command(async () => await ChangeToLast());
             ServerAnalysisCommand = new Command(async () => await ServerAnalysis());
             LocalAnalysisCommand = new Command(async () => await LocalAnalysis());
 
@@ -93,7 +99,7 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
             set => SetField(ref _selectedMove, value);
         }
 
-        public void ChangeToStart()
+        public async Task ChangeToStart()
         {
             if (SelectedMove != null)
             {
@@ -103,7 +109,7 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
             }
         }
 
-        public void ChangeToPrevious()
+        public async Task ChangeToPrevious()
         {
             if (SelectedMove != null && Moves.Count != 0)
             {
@@ -118,11 +124,15 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
                     _eventService.OnChangeToFen(Moves[oldIndex - 1].Fen);
                     _eventService.OnScrollToMove(oldIndex - 1);
                     SelectedMove = Moves[oldIndex - 1];
+                    if (ServerAnalysisSelected && !IsServerAnalysisLoading)
+                    {
+                        CurrentAnalysis = FullServerAnalysis.BestMoves.ToList()[oldIndex - 1];
+                    }
                 }
             }
         }
 
-        public void ChangeToNext()
+        public async Task ChangeToNext()
         {
             if (Moves.Count > 0)
             {
@@ -136,11 +146,15 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
                     _eventService.OnChangeToFen(Moves[oldIndex + 1].Fen);
                     _eventService.OnScrollToMove(oldIndex + 1);
                     SelectedMove = Moves[oldIndex + 1];
+                    if (ServerAnalysisSelected && !IsServerAnalysisLoading)
+                    {
+                        CurrentAnalysis = FullServerAnalysis.BestMoves.ToList()[oldIndex + 1];
+                    }
                 }
             }
         }
 
-        public void ChangeToLast()
+        public async Task ChangeToLast()
         {
             if (Moves.Count > 0)
             {
@@ -154,6 +168,10 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
                     _eventService.OnChangeToFen(Moves[^1].Fen);
                     _eventService.OnScrollToMove(Moves.Count - 1);
                     SelectedMove = Moves[^1];
+                    if (ServerAnalysisSelected && !IsServerAnalysisLoading)
+                    {
+                        CurrentAnalysis = FullServerAnalysis.BestMoves.ToList()[Moves.Count - 1];
+                    }
                 }
             }
         }
@@ -161,12 +179,45 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
 
         public async Task ServerAnalysis()
         {
+            ServerAnalysisSelected = true;
+            IsServerAnalysisLoading = true;
 
+            FullServerAnalysis = await _analysisService.GetAnalysisAsync(new GameToBeAnalysedDto
+            {
+                Fens = Moves.Select(m => m.Fen).ToList(),
+                MatchId = MatchId,
+            });
+
+            for (int i = 0; i < FullServerAnalysis.BestMoves.Count; i++)
+            {
+                var bestMove = FullServerAnalysis.BestMoves.ToList()[i];
+
+                _engine.position = new Position(Moves[i].Fen);
+                var san1 = _engine.PVToSAN(bestMove.FirstBest.Move + " " + bestMove.FirstBest.Continuation);
+                var sansplit1 = san1.Split();
+                bestMove.FirstBest.Move = sansplit1[1];
+                bestMove.FirstBest.Continuation = string.Join(" ", sansplit1[1..^2]);
+
+                _engine.position = new Position(Moves[i].Fen);
+                var san2 = _engine.PVToSAN(bestMove.SecondBest.Move + " " + bestMove.SecondBest.Continuation);
+                var sansplit2 = san2.Split();
+                bestMove.SecondBest.Move = sansplit2[1];
+                bestMove.SecondBest.Continuation = string.Join(" ", sansplit2[1..^2]);
+
+                _engine.position = new Position(Moves[i].Fen);
+                var san3 = _engine.PVToSAN(bestMove.ThirdBest.Move + " " + bestMove.ThirdBest.Continuation);
+                var sansplit3 = san3.Split();
+                bestMove.ThirdBest.Move = sansplit3[1];
+                bestMove.ThirdBest.Continuation = string.Join(" ", sansplit3[1..^2]);
+            }
+
+            IsServerAnalysisLoading = false;
+            CurrentAnalysis = FullServerAnalysis.BestMoves.ToList()[Moves.IndexOf(SelectedMove)];
         }
 
         public async Task LocalAnalysis()
         {
-
+            LocalAnalysisSelected = true;
         }
 
         public BestMovesDto CurrentAnalysis
@@ -191,6 +242,12 @@ namespace HSC.Mobile.Pages.HistoryPage.HistoryChessPage
         {
             get => _localAnalysisSelected;
             set => SetField(ref _localAnalysisSelected, value);
+        }
+
+        public bool IsServerAnalysisLoading
+        {
+            get => _isServerAnalysisLoading;
+            set => SetField(ref _isServerAnalysisLoading, value);
         }
     }
 }

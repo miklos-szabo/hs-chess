@@ -35,7 +35,7 @@
         _eventService.OnOpponentMoveProcessed(new HistoryMove{Fen = game.Position.FEN, San = moveSan});
     }
 
-    private void ChangeToFen(object sender, string fen)
+    private async void ChangeToFen(object sender, string fen)
     {
         chessBoard.SetFen(fen);
         StateHasChanged();

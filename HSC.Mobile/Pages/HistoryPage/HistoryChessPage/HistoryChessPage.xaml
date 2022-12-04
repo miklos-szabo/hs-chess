@@ -100,6 +100,32 @@
                     <Button Command="{Binding LocalAnalysisCommand}" Text="{localize:Localize Key=Analysis.LocalAnalysis}"></Button>
                     <Button Command="{Binding ServerAnalysisCommand}" Text="{localize:Localize Key=Analysis.ServerAnalysis}"></Button>
                 </VerticalStackLayout>
+                <Label Text="{localize:Localize Key=Analysis.ServerInProgress}" IsVisible="{Binding IsServerAnalysisLoading}"></Label>
+                <VerticalStackLayout WidthRequest="200">
+                    <VerticalStackLayout.IsVisible>
+                        <MultiBinding Converter="{StaticResource allTrueConverter}">
+                            <Binding Path="ServerAnalysisSelected"/>
+                            <Binding Path="IsServerAnalysisLoading" Converter="{StaticResource invertBoolconverter}"/>
+                        </MultiBinding>
+                    </VerticalStackLayout.IsVisible>
+                    <HorizontalStackLayout HorizontalOptions="Center" Padding="0, 0, 0, 5">
+                        <Label Text="{Binding CurrentAnalysis.FirstBest.Move}" Padding="0, 0, 25, 0" FontSize="18" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding CurrentAnalysis.FirstBest.Eval}" FontSize="18" FontAttributes="Bold"></Label>
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding CurrentAnalysis.FirstBest.Continuation}" LineBreakMode="TailTruncation" Padding="0, 0, 0, 15"></Label>
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Padding="0, 0, 0, 5">
+                        <Label Text="{Binding CurrentAnalysis.SecondBest.Move}" Padding="0, 0, 25, 0" FontSize="18" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding CurrentAnalysis.SecondBest.Eval}" FontSize="18" FontAttributes="Bold"></Label>
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding CurrentAnalysis.SecondBest.Continuation}" LineBreakMode="TailTruncation" Padding="0, 0, 0, 15"></Label>
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Padding="0, 0, 0, 5">
+                        <Label Text="{Binding CurrentAnalysis.ThirdBest.Move}" Padding="0, 0, 25, 0" FontSize="18" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding CurrentAnalysis.ThirdBest.Eval}" FontSize="18" FontAttributes="Bold"></Label>
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding CurrentAnalysis.ThirdBest.Continuation}" LineBreakMode="TailTruncation" Padding="0, 0, 0, 15"></Label>
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </HorizontalStackLayout>
     </Grid>

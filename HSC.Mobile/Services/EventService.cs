@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HSC.Mobile.Pages.ChessPage;
-using HSCApi;
 using PonzianiComponents;
+using PonzianiComponents.Chesslib;
+using Result = HSCApi.Result;
 
 namespace HSC.Mobile.Services
 {

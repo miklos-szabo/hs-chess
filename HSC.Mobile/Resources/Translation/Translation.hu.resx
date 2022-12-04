@@ -126,6 +126,9 @@
   <data name="Analysis.ServerAnalysis" xml:space="preserve">
     <value>Szerveroldali analízis kérése</value>
   </data>
+  <data name="Analysis.ServerInProgress" xml:space="preserve">
+    <value>Analízis folyamatban, eltarthat pár percig...</value>
+  </data>
   <data name="Betting.Call" xml:space="preserve">
     <value>Megadás</value>
   </data>
