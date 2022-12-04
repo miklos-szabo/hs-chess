@@ -2,15 +2,39 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.CustomGamesPage.CustomGamesPage"
-             Title="CustomGamesPage"
+             Title="{localize:Localize Key=CustomGames.Title}"
              BackgroundColor="{DynamicResource BackgroundColor}" 
              xmlns:customGamesPage="clr-namespace:HSC.Mobile.Pages.CustomGamesPage"
              x:DataType="customGamesPage:CustomGamesViewModel"
-             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:hscApi="clr-namespace:HSCApi">
+    <ListView ItemsSource="{Binding CustomGames}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True" RefreshCommand="{Binding RefreshCommand}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid x:DataType="hscApi:CustomGameDto" Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Offerer}"></Label>
+                        <HorizontalStackLayout Grid.Row="0" Grid.Column="1">
+                            <Label Text="{Binding TimeLimitMinutes}"></Label>
+                            <Label Text="{Binding Increment, StringFormat=' + {0}'}"></Label>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Row="1" Grid.Column="1">
+                            <Label Text="{Binding TimeLimitMinutes}"></Label>
+                            <Label Text="{Binding Increment, StringFormat=' + {0}'}"></Label>
+                        </HorizontalStackLayout>
+                        <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="{localize:Localize Key=CustomGames.Join}" Command="{Binding JoinGameCommand, Source={RelativeSource AncestorType={x:Type customGamesPage:CustomGamesViewModel}}}" CommandParameter="{Binding Id}" HeightRequest="40"></Button>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </ContentPage>
