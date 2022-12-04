@@ -147,6 +147,15 @@
   <data name="Betting.WaitingForOpponent" xml:space="preserve">
     <value>Várakozás az ellenfélre...</value>
   </data>
+  <data name="Cashier.Balance" xml:space="preserve">
+    <value>Egyenleg: </value>
+  </data>
+  <data name="Cashier.Title" xml:space="preserve">
+    <value>Pénztár</value>
+  </data>
+  <data name="Casier.Add100" xml:space="preserve">
+    <value>100$ hozzáadása</value>
+  </data>
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Kijelentkezés</value>
   </data>
