@@ -204,8 +204,17 @@
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Kijelentkezés</value>
   </data>
+  <data name="Friends.AddFriend" xml:space="preserve">
+    <value>Barát hozzáadása...</value>
+  </data>
+  <data name="Friends.FriendRequests" xml:space="preserve">
+    <value>Barátkérelmek</value>
+  </data>
   <data name="Friends.RequestSent" xml:space="preserve">
     <value>Barátkérelem elküldve!</value>
+  </data>
+  <data name="Friends.Title" xml:space="preserve">
+    <value>Barátok</value>
   </data>
   <data name="Groups.Create" xml:space="preserve">
     <value>Létrehozás</value>

@@ -7,6 +7,7 @@ using HSC.Mobile.Pages.ChessPage;
 using HSC.Mobile.Pages.CustomGamesPage;
 using HSC.Mobile.Pages.FlyoutPage;
 using HSC.Mobile.Pages.FriendsPage;
+using HSC.Mobile.Pages.FriendsPage.ChatPage;
 using HSC.Mobile.Pages.GroupsPage;
 using HSC.Mobile.Pages.GroupsPage.CreateGroupPage;
 using HSC.Mobile.Pages.GroupsPage.GroupDetailsPage;
@@ -101,6 +102,9 @@ namespace HSC.Mobile
 
             builder.Services.AddTransient<FriendsPage>();
             builder.Services.AddTransient<FriendsViewModel>();
+
+            builder.Services.AddTransient<ChatViewModel>();
+            builder.Services.AddTransient<ChatPage>();
 
             builder.Services.AddTransient<GroupsPage>();
             builder.Services.AddTransient<GroupsViewModel>();

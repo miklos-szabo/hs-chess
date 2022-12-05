@@ -2,15 +2,88 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.FriendsPage.FriendsPage"
-             Title="FriendsPage"
+             Title="{localize:Localize Key=Friends.Title}"
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:friendsPage="clr-namespace:HSC.Mobile.Pages.FriendsPage"
              x:DataType="friendsPage:FriendsViewModel"
-             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:hscApi="clr-namespace:HSCApi"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers">
+    <Grid Padding="10, 10, 10, 10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Grid.Row="0" Padding="0, 0, 0, 15">
+            <Label Text="{localize:Localize Key=Friends.FriendRequests}" FontAttributes="Bold"></Label>
+            <ListView ItemsSource="{Binding FriendRequests}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid x:DataType="hscApi:FriendRequestDto" Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{Binding RequesterUserName}" VerticalOptions="Center"></Label>
+                                <HorizontalStackLayout Grid.Column="1">
+                                    <ImageButton Command="{Binding DenyFriendRequestCommand, Source={RelativeSource AncestorType={x:Type friendsPage:FriendsViewModel}}}" CommandParameter="{Binding Id}">
+                                        <ImageButton.Source>
+                                            <FontImageSource Color="Red" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.Close}" Size="30" />
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                    <ImageButton Command="{Binding AcceptFriendRequestCommand, Source={RelativeSource AncestorType={x:Type friendsPage:FriendsViewModel}}}" CommandParameter="{Binding Id}" Padding="5, 0, 0, 0">
+                                        <ImageButton.Source>
+                                            <FontImageSource Color="Green" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.Check}" Size="30" />
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="1">
+            <HorizontalStackLayout>
+                <Entry Text="{Binding AddFriendText}" Placeholder="{localize:Localize Key=Friends.AddFriend}" WidthRequest="200" Margin="0, 0, 0, 10"></Entry>
+                <ImageButton Command="{Binding SendFriendRequestCommand, Source={RelativeSource AncestorType={x:Type friendsPage:FriendsViewModel}}}">
+                    <ImageButton.Source>
+                        <FontImageSource Color="Green" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.AccountPlus}" Size="30" />
+                    </ImageButton.Source>
+                </ImageButton>
+            </HorizontalStackLayout>
+            <Label Text="{localize:Localize Key=Friends.Title}"></Label>
+            <ListView ItemsSource="{Binding Friends}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid x:DataType="hscApi:FriendDto" Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                </Grid.ColumnDefinitions>
+                                <HorizontalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding UserName}" Padding="0, 0, 20, 0" VerticalOptions="Center"></Label>
+                                    <Label Text="{Binding NewMessagesCount}" TextColor="Red" VerticalOptions="Center"></Label>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Grid.Column="1">
+                                    <ImageButton Command="{Binding SelectedFriend, Source={RelativeSource AncestorType={x:Type friendsPage:FriendsViewModel}}}" CommandParameter="{Binding UserName}" Padding="0, 0, 10, 0">
+                                        <ImageButton.Source>
+                                            <FontImageSource Color="{DynamicResource Primary}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.Message}" Size="30" />
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                    <ImageButton Command="{Binding ChallengeFriendCommand, Source={RelativeSource AncestorType={x:Type friendsPage:FriendsViewModel}}}" CommandParameter="{Binding UserName}">
+                                        <ImageButton.Source>
+                                            <FontImageSource Color="Red" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.SwordCross}" Size="30" />
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>

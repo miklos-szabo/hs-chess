@@ -96,6 +96,9 @@
       <MauiXaml Update="Pages\FlyoutPage\HscFlyoutPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Pages\FriendsPage\ChatPage\ChatPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\FriendsPage\FriendsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

@@ -26,6 +26,8 @@ namespace HSC.Mobile.Pages.QuickMatchPage.CreateCustomPage
         private bool _isSearching;
         private ICommand _createCommand;
 
+        public string ToUserName { get; set; }
+
         public ICommand CreateCommand
         {
             get => _createCommand;
@@ -54,7 +56,8 @@ namespace HSC.Mobile.Pages.QuickMatchPage.CreateCustomPage
                 Increment = Increment,
                 MaximumBet = MaximumBet,
                 MinimumBet = MinimumBet,
-                TimeLimitMinutes = Minutes
+                TimeLimitMinutes = Minutes,
+                UserName = string.IsNullOrEmpty(ToUserName) ? null : ToUserName,
             });
         }
 
