@@ -39,4 +39,10 @@
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
     </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="PlaceholderColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="FontFamily" Value="Verdana" />
+    </Style>
 </ResourceDictionary>

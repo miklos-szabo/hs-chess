@@ -2,15 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.GroupsPage.CreateGroupPage.CreateGroupPage"
-             Title="CreateGroupPage"
+             Title="{localize:Localize Key=CreateGroup.Title}"
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:createGroupPage="clr-namespace:HSC.Mobile.Pages.GroupsPage.CreateGroupPage"
              x:DataType="createGroupPage:CreateGroupViewModel"
              xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout HorizontalOptions="Center">
+        <Entry Placeholder="{localize:Localize Key=CreateGroup.GroupTitle}" Text="{Binding Title}" WidthRequest="300" HorizontalTextAlignment="Center" FontSize="20" Margin="0, 10, 0, 10"></Entry>
+        <Editor HeightRequest="150" Placeholder="{localize:Localize Key=CreateGroup.Description}" Text="{Binding Description}" Margin="0, 0, 0, 10"></Editor>
+        <Button Command="{Binding CreateCommand}" Text="{localize:Localize Key=CreateGroup.Create}" WidthRequest="100"></Button>
     </VerticalStackLayout>
 </ContentPage>
