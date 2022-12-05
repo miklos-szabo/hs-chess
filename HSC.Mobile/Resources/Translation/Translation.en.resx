@@ -192,6 +192,30 @@
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Log out</value>
   </data>
+  <data name="Groups.Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Groups.Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Groups.Join" xml:space="preserve">
+    <value>Join</value>
+  </data>
+  <data name="Groups.OtherGroups" xml:space="preserve">
+    <value>Other groups</value>
+  </data>
+  <data name="Groups.OwnGroups" xml:space="preserve">
+    <value>Own groups</value>
+  </data>
+  <data name="Groups.Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Groups.SearchPlaceholder" xml:space="preserve">
+    <value>Search groups...</value>
+  </data>
+  <data name="Groups.Title" xml:space="preserve">
+    <value>Groups</value>
+  </data>
   <data name="History.IntervalEnd" xml:space="preserve">
     <value>Inderval end</value>
   </data>

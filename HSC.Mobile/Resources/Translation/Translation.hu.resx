@@ -192,6 +192,30 @@
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Kijelentkezés</value>
   </data>
+  <data name="Groups.Create" xml:space="preserve">
+    <value>Létrehozás</value>
+  </data>
+  <data name="Groups.Details" xml:space="preserve">
+    <value>Részletek</value>
+  </data>
+  <data name="Groups.Join" xml:space="preserve">
+    <value>Csatlakozás</value>
+  </data>
+  <data name="Groups.OtherGroups" xml:space="preserve">
+    <value>Egyéb csoportok</value>
+  </data>
+  <data name="Groups.OwnGroups" xml:space="preserve">
+    <value>Saját csoportok</value>
+  </data>
+  <data name="Groups.Search" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
+  <data name="Groups.SearchPlaceholder" xml:space="preserve">
+    <value>Keresés...</value>
+  </data>
+  <data name="Groups.Title" xml:space="preserve">
+    <value>Csoportok</value>
+  </data>
   <data name="History.IntervalEnd" xml:space="preserve">
     <value>Intervallum vég</value>
   </data>

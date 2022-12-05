@@ -99,6 +99,12 @@
       <MauiXaml Update="Pages\FriendsPage\FriendsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
+      <MauiXaml Update="Pages\GroupsPage\CreateGroupPage\CreateGroupPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\GroupsPage\GroupDetailsPage\GroupDetailsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
       <MauiXaml Update="Pages\GroupsPage\GroupsPage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>

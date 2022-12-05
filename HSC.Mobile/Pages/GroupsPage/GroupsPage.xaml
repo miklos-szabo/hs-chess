@@ -2,15 +2,79 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.GroupsPage.GroupsPage"
-             Title="GroupsPage"
+             Title="{localize:Localize Key=Groups.Title}"
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:groupsPage="clr-namespace:HSC.Mobile.Pages.GroupsPage"
              x:DataType="groupsPage:GroupsViewModel"
-             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:hscApi="clr-namespace:HSCApi"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center" Grid.Row="0" BackgroundColor="{DynamicResource BackgroundColor2}" Padding="10, 10, 10, 10">
+            <Entry Text="{Binding SearchText}" Placeholder="{localize:Localize Key=Groups.SearchPlaceholder}" HeightRequest="40" Margin="10, 0, 0, 0" WidthRequest="150"></Entry>
+            <Button Text="{localize:Localize Key=Groups.Search}" Command="{Binding SearchCommand}"></Button>
+            <Button Text="{localize:Localize Key=Groups.Create}" Command="{Binding CreateGroupCommand}" Margin="0, 0, 10, 0"></Button>
+        </FlexLayout>
+        <VerticalStackLayout Grid.Row="1" Padding="5, 10, 5, 10">
+            <Label Text="{localize:Localize Key=Groups.OwnGroups}" FontAttributes="Bold"></Label>
+            <ListView ItemsSource="{Binding OwnGroups}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid x:DataType="hscApi:GroupDto" Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="20" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}"></Label>
+                                <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
+                                    <Label Text="{Binding UserCount}"></Label>
+                                    <Label FontFamily="MaterialDesignIcons" Text="{x:Static helpers:IconFont.Account}" FontSize="16"></Label>
+                                </HorizontalStackLayout>
+                                <Button Grid.RowSpan="2" Grid.Row="0" Grid.Column="1" Text="{localize:Localize Key=Groups.Details}" Command="{Binding DetailsCommand, Source={RelativeSource AncestorType={x:Type groupsPage:GroupsViewModel}}}" CommandParameter="{Binding Id}"></Button>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="2" Padding="5, 10, 5, 10">
+            <Label Text="{localize:Localize Key=Groups.OtherGroups}" FontAttributes="Bold"></Label>
+            <ListView ItemsSource="{Binding OtherGroups}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid x:DataType="hscApi:GroupDto" Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="20" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="90" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}"></Label>
+                                <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
+                                    <Label Text="{Binding UserCount}"></Label>
+                                    <Label FontFamily="MaterialDesignIcons" Text="{x:Static helpers:IconFont.Account}" FontSize="16"></Label>
+                                </HorizontalStackLayout>
+                                <Button Grid.RowSpan="2" Grid.Row="0" Grid.Column="1" Text="{localize:Localize Key=Groups.Join}" Command="{Binding JoinCommand, Source={RelativeSource AncestorType={x:Type groupsPage:GroupsViewModel}}}" CommandParameter="{Binding Id}"></Button>
+                                <Button Grid.RowSpan="2" Grid.Row="0" Grid.Column="2" Text="{localize:Localize Key=Groups.Details}" Command="{Binding DetailsCommand, Source={RelativeSource AncestorType={x:Type groupsPage:GroupsViewModel}}}" CommandParameter="{Binding Id}" Margin="10, 0, 0, 0"></Button>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>
