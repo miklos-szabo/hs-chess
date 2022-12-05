@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Core.Extensions;
+using HSC.Mobile.Resources.Translation;
 using HSC.Mobile.Services;
 using HSCApi;
+using Microsoft.Extensions.Localization;
 
 namespace HSC.Mobile.Pages.GroupsPage
 {
@@ -18,6 +20,8 @@ namespace HSC.Mobile.Pages.GroupsPage
         private readonly NavigationService _navigationService;
         private ObservableCollection<GroupDto> _ownGroups = new();
         private ObservableCollection<GroupDto> _otherGroups = new();
+        private readonly AlertService _alertService;
+        private readonly IStringLocalizer<Translation> _localizer;
         private string _searchText;
 
         public string SearchText
@@ -43,11 +47,13 @@ namespace HSC.Mobile.Pages.GroupsPage
         public ICommand JoinCommand { get; set; }
         public ICommand DetailsCommand { get; set; }
 
-        public GroupsViewModel(GroupService groupService, IServiceProvider serviceProvider, NavigationService navigationService)
+        public GroupsViewModel(GroupService groupService, IServiceProvider serviceProvider, NavigationService navigationService, AlertService alertService, IStringLocalizer<Translation> localizer)
         {
             _groupService = groupService;
             _serviceProvider = serviceProvider;
             _navigationService = navigationService;
+            _alertService = alertService;
+            _localizer = localizer;
 
             SearchCommand = new Command(async () => await Search());
             CreateGroupCommand = new Command(async () => await CreateGroup());
@@ -74,6 +80,7 @@ namespace HSC.Mobile.Pages.GroupsPage
         {
             await _groupService.JoinGroupAsync(Id);
             await Search();
+            await _alertService.DisplaySuccessNoti(_localizer["Groups.Joined"]);
         }
 
         public async Task Details(int Id)

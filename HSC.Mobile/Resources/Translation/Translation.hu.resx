@@ -192,6 +192,9 @@
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Kijelentkezés</value>
   </data>
+  <data name="Friends.RequestSent" xml:space="preserve">
+    <value>Barátkérelem elküldve!</value>
+  </data>
   <data name="Groups.Create" xml:space="preserve">
     <value>Létrehozás</value>
   </data>
@@ -200,6 +203,12 @@
   </data>
   <data name="Groups.Join" xml:space="preserve">
     <value>Csatlakozás</value>
+  </data>
+  <data name="Groups.Joined" xml:space="preserve">
+    <value>Csatlakozva a csoporthoz!</value>
+  </data>
+  <data name="Groups.Members" xml:space="preserve">
+    <value>Tagok:</value>
   </data>
   <data name="Groups.OtherGroups" xml:space="preserve">
     <value>Egyéb csoportok</value>

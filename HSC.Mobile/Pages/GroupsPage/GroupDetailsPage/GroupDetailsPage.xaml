@@ -2,15 +2,71 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.GroupsPage.GroupDetailsPage.GroupDetailsPage"
-             Title="GroupDetailsPage"
+             Title="{Binding Details.Name}"
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:groupDetailssPage="clr-namespace:HSC.Mobile.Pages.GroupsPage.GroupDetailsPage"
              x:DataType="groupDetailssPage:GroupDetailsViewModel"
-             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:converters="clr-namespace:HSC.Mobile.Converters"
+             xmlns:hscApi="clr-namespace:HSCApi"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InvertBoolConverter x:Key="invertBoolconverter" />
+            <converters:AllTrueMultiConverter x:Key="allTrueConverter" />
+            <converters:StringDoesntEqualConverter x:Key="StringDoesntEqualConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Grid.Row="0" Padding="10, 10, 10, 0">
+            <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center" HeightRequest="50">
+                <Label Text="{Binding Details.Name}" FontSize="24" FontAttributes="Bold"></Label>
+                <Button IsVisible="{Binding Details.IsInGroup, Converter={StaticResource invertBoolconverter}}" Text="{localize:Localize Key=Groups.Join}" Command="{Binding JoinCommand}"></Button>
+            </FlexLayout>
+            <Label Text="{Binding Details.Description}" LineBreakMode="WordWrap"></Label>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="1" Padding="10">
+            <Label Text="{localize:Localize Key=Groups.Members}" FontAttributes="Bold"></Label>
+            <ListView ItemsSource="{Binding Details.Users}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid x:DataType="hscApi:UserContextMenuDto" Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="0" />
+                                </Grid.ColumnDefinitions>
+                                <FlexLayout Direction="Row" JustifyContent="SpaceBetween" AlignItems="Center" HeightRequest="25">
+                                    <Label Text="{Binding UserName}" FlexLayout.Grow="1" FlexLayout.Shrink="1" FlexLayout.Basis="1"></Label>
+                                    <HorizontalStackLayout>
+                                        <HorizontalStackLayout.IsVisible>
+                                            <MultiBinding Converter="{StaticResource StringDoesntEqualConverter}">
+                                                <Binding Path="UserName"/>
+                                                <Binding Path="OwnUserName" Source="{RelativeSource AncestorType={x:Type groupDetailssPage:GroupDetailsViewModel}}"/>
+                                            </MultiBinding>
+                                        </HorizontalStackLayout.IsVisible>
+                                        <ImageButton IsVisible="{Binding IsFriend, Converter={StaticResource invertBoolconverter}}" Command="{Binding AddFriendCommand, Source={RelativeSource AncestorType={x:Type groupDetailssPage:GroupDetailsViewModel}}}" CommandParameter="{Binding UserName}">
+                                            <ImageButton.Source>
+                                                <FontImageSource Color="Green" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.AccountPlus}" Size="50" />
+                                            </ImageButton.Source>
+                                        </ImageButton>
+                                        <ImageButton IsVisible="{Binding IsFriend}" Command="{Binding SendMessageCommand, Source={RelativeSource AncestorType={x:Type groupDetailssPage:GroupDetailsViewModel}}}" CommandParameter="{Binding UserName}">
+                                            <ImageButton.Source>
+                                                <FontImageSource Color="{DynamicResource Primary}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.Message}" Size="50" />
+                                            </ImageButton.Source>
+                                        </ImageButton>
+                                    </HorizontalStackLayout>
+                                </FlexLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+        
+    </Grid>
 </ContentPage>
