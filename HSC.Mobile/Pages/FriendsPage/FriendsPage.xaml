@@ -68,7 +68,7 @@
                                     <Label Text="{Binding NewMessagesCount}" TextColor="Red" VerticalOptions="Center"></Label>
                                 </HorizontalStackLayout>
                                 <HorizontalStackLayout Grid.Column="1">
-                                    <ImageButton Command="{Binding SelectedFriend, Source={RelativeSource AncestorType={x:Type friendsPage:FriendsViewModel}}}" CommandParameter="{Binding UserName}" Padding="0, 0, 10, 0">
+                                    <ImageButton Command="{Binding FriendClickedCommand, Source={RelativeSource AncestorType={x:Type friendsPage:FriendsViewModel}}}" CommandParameter="{Binding UserName}" Padding="0, 0, 10, 0">
                                         <ImageButton.Source>
                                             <FontImageSource Color="{DynamicResource Primary}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.Message}" Size="30" />
                                         </ImageButton.Source>

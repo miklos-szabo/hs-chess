@@ -2,11 +2,71 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.FriendsPage.ChatPage.ChatPage"
-             Title="ChatPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding OtherUserName}"
+             BackgroundColor="{DynamicResource BackgroundColor}"
+             xmlns:chatPage="clr-namespace:HSC.Mobile.Pages.FriendsPage.ChatPage"
+             x:DataType="chatPage:ChatViewModel"
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:hscApi="clr-namespace:HSCApi"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers"
+             xmlns:converters="clr-namespace:HSC.Mobile.Converters">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InvertBoolConverter x:Key="invertBoolconverter" />
+            <converters:StringDoesntEqualConverter x:Key="StringDoesntEqualConverter" />
+            <converters:StringEqualsConverter x:Key="StringEqualsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListView x:Name="MessagesList" Grid.Row="0" ItemsSource="{Binding Messages}" HasUnevenRows="True" SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid x:DataType="hscApi:ChatMessageDto" Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" BackgroundColor="{DynamicResource BackgroundColor2}" Padding="14, 7" HorizontalOptions="Start">
+                                <Border.IsVisible>
+                                    <MultiBinding Converter="{StaticResource StringDoesntEqualConverter}">
+                                        <Binding Path="SenderUserName"/>
+                                        <Binding Path="OwnUserName" Source="{RelativeSource AncestorType={x:Type chatPage:ChatViewModel}}"/>
+                                    </MultiBinding>
+                                </Border.IsVisible>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="40" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Message}" HorizontalOptions="Start" LineBreakMode="WordWrap"></Label>
+                            </Border>
+
+                            <Border Grid.Column="0" BackgroundColor="{DynamicResource Primary}" Padding="14, 7" HorizontalOptions="End">
+                                <Border.IsVisible>
+                                    <MultiBinding Converter="{StaticResource StringEqualsConverter}">
+                                        <Binding Path="SenderUserName"/>
+                                        <Binding Path="OwnUserName" Source="{RelativeSource AncestorType={x:Type chatPage:ChatViewModel}}"/>
+                                    </MultiBinding>
+                                </Border.IsVisible>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="40" />
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Message}" HorizontalOptions="End" LineBreakMode="WordWrap"></Label>
+                            </Border>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <HorizontalStackLayout Grid.Row="1" Padding="10">
+            <Entry Text="{Binding TypedMessage}" ReturnCommand="{Binding SendMessageCommand}" Placeholder="{localize:Localize Key=Chat.WriteMessage}" WidthRequest="345"></Entry>
+            <ImageButton Command="{Binding SendMessageCommand}">
+                <ImageButton.Source>
+                    <FontImageSource Color="{DynamicResource Primary}" FontFamily="MaterialDesignIcons" Glyph="{x:Static helpers:IconFont.Send}" Size="30" />
+                </ImageButton.Source>
+            </ImageButton>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

@@ -168,6 +168,9 @@
   <data name="Casier.Add100" xml:space="preserve">
     <value>100$ hozzáadása</value>
   </data>
+  <data name="Chat.WriteMessage" xml:space="preserve">
+    <value>Írj egy üzenetet</value>
+  </data>
   <data name="CreateCustom.Bet" xml:space="preserve">
     <value>Tét:</value>
   </data>

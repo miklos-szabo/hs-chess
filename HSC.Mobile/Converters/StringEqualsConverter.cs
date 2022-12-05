@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HSC.Mobile.Converters
 {
-     public class StringEqualsConverter<T>: IMultiValueConverter
+     public class StringEqualsConverter: IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
