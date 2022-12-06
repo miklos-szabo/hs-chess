@@ -168,6 +168,12 @@
   <data name="Casier.Add100" xml:space="preserve">
     <value>Add 100$</value>
   </data>
+  <data name="Challenge.Button" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Challenge.Text" xml:space="preserve">
+    <value>New challenge from</value>
+  </data>
   <data name="Chat.WriteMessage" xml:space="preserve">
     <value>Write a message</value>
   </data>
@@ -206,6 +212,9 @@
   </data>
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Log out</value>
+  </data>
+  <data name="FriendRequestReceived" xml:space="preserve">
+    <value>New friend request from</value>
   </data>
   <data name="Friends.AddFriend" xml:space="preserve">
     <value>Add a user...</value>
@@ -428,5 +437,65 @@
   </data>
   <data name="Settings.Title" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="Tournaments.BuyIn" xml:space="preserve">
+    <value>Buy-in:</value>
+  </data>
+  <data name="Tournaments.BuyInMax" xml:space="preserve">
+    <value>Buy-in max</value>
+  </data>
+  <data name="Tournaments.BuyInMin" xml:space="preserve">
+    <value>Buy-in min</value>
+  </data>
+  <data name="Tournaments.Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Tournaments.EndsIn" xml:space="preserve">
+    <value>Ends in:</value>
+  </data>
+  <data name="Tournaments.FindMatch" xml:space="preserve">
+    <value>Find match</value>
+  </data>
+  <data name="Tournaments.Finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="Tournaments.IntervalEnd" xml:space="preserve">
+    <value>Interval end</value>
+  </data>
+  <data name="Tournaments.IntervalStart" xml:space="preserve">
+    <value>Interval start</value>
+  </data>
+  <data name="Tournaments.Join" xml:space="preserve">
+    <value>Join</value>
+  </data>
+  <data name="Tournaments.Joined" xml:space="preserve">
+    <value>Tournament joined!</value>
+  </data>
+  <data name="Tournaments.Length" xml:space="preserve">
+    <value>Tournament length:</value>
+  </data>
+  <data name="Tournaments.PrizePool" xml:space="preserve">
+    <value>Prize pool:</value>
+  </data>
+  <data name="Tournaments.Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Tournaments.Searching" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="Tournaments.StartsIn" xml:space="preserve">
+    <value>Starts in:</value>
+  </data>
+  <data name="Tournaments.Timecontrol" xml:space="preserve">
+    <value>Time control:</value>
+  </data>
+  <data name="Tournaments.Title" xml:space="preserve">
+    <value>Tournaments</value>
+  </data>
+  <data name="Tournaments.TitleSearch" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Tournaments.Winner" xml:space="preserve">
+    <value>Winner:</value>
   </data>
 </root>

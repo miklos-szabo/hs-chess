@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HSC.Mobile.Pages.TournamentsPage.TournamentDetails.TournamentDetailsPage"
+             Title="{Binding Details.Title}"
+             BackgroundColor="{DynamicResource BackgroundColor}"
+             xmlns:tournamentDetailssPage="clr-namespace:HSC.Mobile.Pages.TournamentsPage.TournamentDetails"
+             x:DataType="tournamentDetailssPage:TournamentDetailsViewModel"
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:hscApi="clr-namespace:HSCApi"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers"
+             xmlns:converters="clr-namespace:HSC.Mobile.Converters">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InvertBoolConverter x:Key="invertBoolconverter" />
+            <converters:AllTrueMultiConverter x:Key="allTrueConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid Padding="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <FlexLayout Grid.Row="0" Direction="Row" JustifyContent="SpaceBetween">
+            <Label Text="{Binding Details.Description}" WidthRequest="220" Padding="0, 0, 10, 0"></Label>
+            <VerticalStackLayout FlexLayout.AlignSelf="Center" Padding="0, 0, 10, 0">
+                <VerticalStackLayout>
+                    <VerticalStackLayout.IsVisible>
+                        <MultiBinding Converter="{StaticResource allTrueConverter}">
+                            <Binding Path="HasStarted" Converter="{StaticResource invertBoolconverter}"/>
+                            <Binding Path="HasFinished" Converter="{StaticResource invertBoolconverter}"/>
+                        </MultiBinding>
+                    </VerticalStackLayout.IsVisible>
+                    <HorizontalStackLayout>
+                        <Label Text="{localize:Localize Key=Tournaments.StartsIn}" Padding="0, 0, 2, 0"></Label>
+                        <Label Text="{Binding CountdownTo, StringFormat='{0:c}'}"></Label>
+                    </HorizontalStackLayout>
+                    <Button Command="{Binding JoinCommand}" Text="{localize:Localize Key=Tournaments.Join}" IsEnabled="{Binding Details.HasJoined, Converter={StaticResource invertBoolconverter}}" Margin="0, 10, 0, 0"></Button>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <VerticalStackLayout.IsVisible>
+                        <MultiBinding Converter="{StaticResource allTrueConverter}">
+                            <Binding Path="HasStarted"/>
+                            <Binding Path="HasFinished" Converter="{StaticResource invertBoolconverter}"/>
+                        </MultiBinding>
+                    </VerticalStackLayout.IsVisible>
+                    <Label IsVisible="{Binding IsSearching}" Text="{localize:Localize Key=Tournaments.Searching}" HorizontalOptions="Center"></Label>
+                    <HorizontalStackLayout>
+                        <Label Text="{localize:Localize Key=Tournaments.EndsIn}"></Label>
+                        <Label Text="{Binding CountdownTo, StringFormat=' {0:c}'}"></Label>
+                    </HorizontalStackLayout>
+                    <Button Command="{Binding FindMatchCommand}" Text="{localize:Localize Key=Tournaments.FindMatch}" IsEnabled="{Binding IsSearching, Converter={StaticResource invertBoolconverter}}"></Button>
+                </VerticalStackLayout>
+                <VerticalStackLayout>
+                    <VerticalStackLayout.IsVisible>
+                        <MultiBinding Converter="{StaticResource allTrueConverter}">
+                            <Binding Path="HasStarted" Converter="{StaticResource invertBoolconverter}"/>
+                            <Binding Path="HasFinished"/>
+                        </MultiBinding>
+                    </VerticalStackLayout.IsVisible>
+                    <HorizontalStackLayout>
+                        <Label Text="{localize:Localize Key=Tournaments.Winner}"></Label>
+                        <Label Text="{Binding Details.WinnerUserName}"></Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </FlexLayout>
+        <FlexLayout Grid.Row="1" Direction="Row" JustifyContent="SpaceBetween">
+            <ListView ItemsSource="{Binding Standings}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True" WidthRequest="150">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid x:DataType="hscApi:TournamentPlayerDto" Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="50" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{Binding UserName}"></Label>
+                                <Label Grid.Column="1" Text="{Binding Points}"></Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <VerticalStackLayout FlexLayout.Grow="1" FlexLayout.Shrink="1" FlexLayout.Basis="1" Padding="10, 0, 0, 0">
+                <HorizontalStackLayout>
+                    <Label Text="{localize:Localize Key=Tournaments.PrizePool}"></Label>
+                    <Label Text="{Binding Details.PrizePool, StringFormat=' {0:F2}$'}"></Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="{localize:Localize Key=Tournaments.BuyIn}"></Label>
+                    <Label Text="{Binding Details.BuyIn, StringFormat=' {0:F2}$'}"></Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="{localize:Localize Key=Tournaments.Length}"></Label>
+                    <Label Text="{Binding Details.Length, StringFormat=' {0:HH/:mm/:ss}'}"></Label>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="{localize:Localize Key=Tournaments.Timecontrol}"></Label>
+                    <Label Text="{Binding Details.GameTimeMinutes, StringFormat=' {0}+'}"></Label>
+                    <Label Text="{Binding Details.GameIncrement}"></Label>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </FlexLayout>
+    </Grid>
+</ContentPage>

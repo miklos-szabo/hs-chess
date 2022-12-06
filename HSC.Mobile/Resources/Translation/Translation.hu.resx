@@ -168,6 +168,12 @@
   <data name="Casier.Add100" xml:space="preserve">
     <value>100$ hozzáadása</value>
   </data>
+  <data name="Challenge.Button" xml:space="preserve">
+    <value>Elfogadás</value>
+  </data>
+  <data name="Challenge.Text" xml:space="preserve">
+    <value>Kihívás érkezett tőle:</value>
+  </data>
   <data name="Chat.WriteMessage" xml:space="preserve">
     <value>Írj egy üzenetet</value>
   </data>
@@ -206,6 +212,9 @@
   </data>
   <data name="Flyout.Logout" xml:space="preserve">
     <value>Kijelentkezés</value>
+  </data>
+  <data name="FriendRequestReceived" xml:space="preserve">
+    <value>Új barátkérelem tőle:</value>
   </data>
   <data name="Friends.AddFriend" xml:space="preserve">
     <value>Barát hozzáadása...</value>
@@ -428,5 +437,65 @@
   </data>
   <data name="Settings.Title" xml:space="preserve">
     <value>Beállítások</value>
+  </data>
+  <data name="Tournaments.BuyIn" xml:space="preserve">
+    <value>Belépési díj:</value>
+  </data>
+  <data name="Tournaments.BuyInMax" xml:space="preserve">
+    <value>Belépési díj max</value>
+  </data>
+  <data name="Tournaments.BuyInMin" xml:space="preserve">
+    <value>Belépési díj min</value>
+  </data>
+  <data name="Tournaments.Details" xml:space="preserve">
+    <value>Részletek</value>
+  </data>
+  <data name="Tournaments.EndsIn" xml:space="preserve">
+    <value>Vége:</value>
+  </data>
+  <data name="Tournaments.FindMatch" xml:space="preserve">
+    <value>Játék keresése</value>
+  </data>
+  <data name="Tournaments.Finished" xml:space="preserve">
+    <value>Befejezeve</value>
+  </data>
+  <data name="Tournaments.IntervalEnd" xml:space="preserve">
+    <value>Dátum vég</value>
+  </data>
+  <data name="Tournaments.IntervalStart" xml:space="preserve">
+    <value>Dátum kezdet</value>
+  </data>
+  <data name="Tournaments.Join" xml:space="preserve">
+    <value>Csatlakozás</value>
+  </data>
+  <data name="Tournaments.Joined" xml:space="preserve">
+    <value>Csatlakozva a bajnoksághoz!</value>
+  </data>
+  <data name="Tournaments.Length" xml:space="preserve">
+    <value>Bajnokság hossza:</value>
+  </data>
+  <data name="Tournaments.PrizePool" xml:space="preserve">
+    <value>Nyereményalap:</value>
+  </data>
+  <data name="Tournaments.Search" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
+  <data name="Tournaments.Searching" xml:space="preserve">
+    <value>Keresés...</value>
+  </data>
+  <data name="Tournaments.StartsIn" xml:space="preserve">
+    <value>Kezdés:</value>
+  </data>
+  <data name="Tournaments.Timecontrol" xml:space="preserve">
+    <value>Időzítés:</value>
+  </data>
+  <data name="Tournaments.Title" xml:space="preserve">
+    <value>Bajnokságok</value>
+  </data>
+  <data name="Tournaments.TitleSearch" xml:space="preserve">
+    <value>Cím</value>
+  </data>
+  <data name="Tournaments.Winner" xml:space="preserve">
+    <value>Nyertes:</value>
   </data>
 </root>

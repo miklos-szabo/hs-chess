@@ -117,7 +117,6 @@ namespace HSC.Mobile.Services
                 CornerRadius = new CornerRadius(10),
                 Font = Font.SystemFontOfSize(14),
                 ActionButtonFont = Font.SystemFontOfSize(14),
-                CharacterSpacing = 0.5
             };
 
             TimeSpan duration = TimeSpan.FromSeconds(3);

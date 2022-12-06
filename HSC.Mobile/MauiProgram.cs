@@ -17,6 +17,7 @@ using HSC.Mobile.Pages.QuickMatchPage;
 using HSC.Mobile.Pages.QuickMatchPage.CreateCustomPage;
 using HSC.Mobile.Pages.Settings;
 using HSC.Mobile.Pages.TournamentsPage;
+using HSC.Mobile.Pages.TournamentsPage.TournamentDetails;
 using HSC.Mobile.Services;
 using HSCApi;
 using Microsoft.AspNetCore.Components.WebView.Maui;
@@ -126,6 +127,9 @@ namespace HSC.Mobile
 
             builder.Services.AddTransient<TournamentsPage>();
             builder.Services.AddTransient<TournamentsViewModel>();
+
+            builder.Services.AddTransient<TournamentDetailsPage>();
+            builder.Services.AddTransient<TournamentDetailsViewModel>();
 
             return builder.Build();
         }

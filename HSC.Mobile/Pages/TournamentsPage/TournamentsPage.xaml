@@ -2,15 +2,83 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HSC.Mobile.Pages.TournamentsPage.TournamentsPage"
-             Title="TournamentsPage"
+             Title="{localize:Localize Key=Tournaments.Title}"
              BackgroundColor="{DynamicResource BackgroundColor}"
              xmlns:tournamentsPage="clr-namespace:HSC.Mobile.Pages.TournamentsPage"
              x:DataType="tournamentsPage:TournamentsViewModel"
-             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:localize="clr-namespace:HSC.Mobile.MarkupExtensions"
+             xmlns:hscApi="clr-namespace:HSCApi"
+             xmlns:helpers="clr-namespace:HSC.Mobile.Helpers">
+     <Grid>
+         <Grid.RowDefinitions>
+             <RowDefinition Height="130"></RowDefinition>
+             <RowDefinition Height="*"></RowDefinition>
+         </Grid.RowDefinitions>
+         <Grid Grid.Row="0" BackgroundColor="{DynamicResource BackgroundColor2}">
+             <Grid.ColumnDefinitions>
+                 <ColumnDefinition Width="130"></ColumnDefinition>
+                 <ColumnDefinition Width="*"></ColumnDefinition>
+                 <ColumnDefinition Width="90"></ColumnDefinition>
+             </Grid.ColumnDefinitions>
+             <VerticalStackLayout Grid.Column="0">
+                <HorizontalStackLayout Padding="5, 0, 0, 0">
+                     <Label Text="{localize:Localize Key=Tournaments.Finished}" VerticalOptions="Center"></Label>
+                     <Switch IsToggled="{Binding Finished}"></Switch>
+                 </HorizontalStackLayout>
+                 <Entry Text="{Binding TitleSearch}" Placeholder="{localize:Localize Key=Tournaments.TitleSearch}"></Entry>
+                 <Entry Placeholder="{localize:Localize Key=Tournaments.BuyInMin}" Text="{Binding BuyInMinimum}" Keyboard="Numeric"></Entry>
+             </VerticalStackLayout>
+             <VerticalStackLayout Grid.Column="1" Padding="5, 0, 5, 0">
+                 <HorizontalStackLayout>
+                    <Label Text="{localize:Localize Key=Tournaments.IntervalStart}" VerticalOptions="Center"></Label>
+                     <DatePicker Date="{Binding StartInterval}"></DatePicker>
+                 </HorizontalStackLayout>
+                 <HorizontalStackLayout Padding="0, 8, 0, 0">
+                    <Label Text="{localize:Localize Key=Tournaments.IntervalEnd}" VerticalOptions="Center"></Label>
+                     <DatePicker Date="{Binding EndInterval}" ></DatePicker>
+                 </HorizontalStackLayout>
+                <Entry Placeholder="{localize:Localize Key=Tournaments.BuyInMax}" Text="{Binding BuyInMaximum}" Keyboard="Numeric"></Entry>
+             </VerticalStackLayout>
+            <Button Grid.Column="2" Command="{Binding SearchCommand}" Text="{localize:Localize Key=Tournaments.Search}" HeightRequest="50" Margin="5, 0, 5, 0"></Button>
+         </Grid>
+        <ListView Grid.Row="1" ItemsSource="{Binding Tournaments}" SeparatorColor="{DynamicResource TextColor}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid x:DataType="hscApi:TournamentListDto" Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="20" />
+                                <RowDefinition Height="20" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Title}"></Label>
+                            <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
+                                <Label Text="{Binding GameTimeMinutes}"></Label>
+                                <Label Text="{Binding GameIncrement, StringFormat=' + {0}'}"></Label>
+                            </HorizontalStackLayout>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding StartTime, StringFormat='{0:yyyy.MM.dd HH:mm:ss}'}"></Label>
+                            <HorizontalStackLayout Grid.Row="0" Grid.Column="1">
+                                <Label Text="{localize:Localize Key=Tournaments.BuyIn}"></Label>
+                                <Label Text="{Binding BuyIn, StringFormat=' {0:F2}$'}"></Label>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Grid.Row="1" Grid.Column="1">
+                                <Label Text="{localize:Localize Key=Tournaments.PrizePool}"></Label>
+                                <Label Text="{Binding PrizePool, StringFormat=' {0:F2}$'}"></Label>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Grid.Row="2" Grid.Column="1">
+                                <Label Text="{Binding PlayerCount}"></Label>
+                                <Label FontFamily="MaterialDesignIcons" Text="{x:Static helpers:IconFont.Account}" FontSize="16" VerticalOptions="Center"></Label>
+                            </HorizontalStackLayout>
+                            <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Text="{localize:Localize Key=Tournaments.Details}" Command="{Binding DetailsCommand, Source={RelativeSource AncestorType={x:Type tournamentsPage:TournamentsViewModel}}}" CommandParameter="{Binding Id}" HeightRequest="40"></Button>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ContentPage>

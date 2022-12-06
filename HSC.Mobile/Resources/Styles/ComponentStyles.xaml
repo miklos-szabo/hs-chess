@@ -18,7 +18,7 @@
 
     <Style TargetType="Entry">
         <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
-        <Setter Property="PlaceholderColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="PlaceholderColor" Value="#c2c2c2" />
         <Setter Property="FontFamily" Value="Verdana" />
     </Style>
 
@@ -42,7 +42,7 @@
 
     <Style TargetType="Editor">
         <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
-        <Setter Property="PlaceholderColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="PlaceholderColor" Value="#c2c2c2" />
         <Setter Property="FontFamily" Value="Verdana" />
     </Style>
 </ResourceDictionary>
